@@ -1,0 +1,4 @@
+#python /mnt/home/hufnag30/Shiu/Scripts/R_2_4_GFF_to_bed.py TAIR10_GFF3_genes.gff TAIR10_GFF3_genes.gff.4col gene At
+AT1G01010.1	AtChr1	3631	5899
+AT1G01020.1	AtChr1	5928	8737
+AT1G01030.1	AtChr1	11649	13714

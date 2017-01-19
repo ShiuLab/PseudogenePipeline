@@ -1,0 +1,52 @@
+#
+# $Name: fa_34_26_5 $ - $Id: Makefile.pvm4_sql,v 1.26 2006/05/19 16:29:45 wrp Exp $
+#
+# tested with pvm3.4.beta7 and pvm3.3.11.  Tested on DEC Alpha, x86
+# and Alpha LINUX for DEC/Compaq Alpha/LINUX
+#
+
+#CC=/opt/parasoft/bin.linux2/insure -g -DDEBUG
+CC= cc -g
+NCC= cc -O -g
+
+#ARCH   =       NETBSDPOWERPC
+
+PLIB    =       ${PVM_ROOT}/lib/$(ARCH)/libpvm3.a
+XDIR    =       /seqprg/pvm3/bin/$(ARCH)
+#XDIR    =       /wrpx00.p0/users/wrp/pvm3/bin/$(ARCH)
+SDIR    =       .
+PVMSRC  =	${PVM_ROOT}/src
+
+CFLAGS= -DPVM_SRC -DUNIX -DPCOMPLIB -DBFR=1200 -DBIGMEM -I${PVM_ROOT}/include -DSRAND=srandom -DRAND=random -c -DHAS_INTTYPES  -DSAMP_STATS -DMYSQL_DB -I/usr/include/mysql -DM10_CONS  -DSHOWSIM
+# -DSFCHAR="'|'" -DSUPERFAMNUM
+
+HFLAGS= -o
+NFLAGS= -o
+
+NCBL_LIB=ncbl2_mlib.o mysql_lib.o
+#  pgsql_lib.o
+#NCBL_LIB=ncbl2_mlib.o
+LIB_M= -L/usr/lib/mysql -lmysqlclient -lm
+#LIB_M=  -lm
+LIB_WM= -lm
+
+# standard nxgetaa, no memory mapping for 0 - 6
+#LGETLIB=lgetlib.o
+#NGETLIB=nmgetlib
+
+# memory mapping for 0FASTA, 5PIRVMS, 6GCGBIN
+LGETLIB=lgetlib.o lgetaa_m.o
+NGETLIB=nmgetlib
+
+NRAND=nrandom
+
+# non-ALTIVEC versions
+DROPGSW_O = dropgsw.o
+DROPNFA_O = drop_nfa.o
+
+# common pv34comp programs
+include Makefile.pvcom
+
+# common *.o files for all environments
+include Makefile.fcom
+

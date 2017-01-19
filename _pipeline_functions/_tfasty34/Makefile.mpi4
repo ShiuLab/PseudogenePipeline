@@ -1,0 +1,60 @@
+#
+# $Name: fa_34_26_5 $ - $Id: Makefile.mpi4,v 1.26 2006/12/12 16:58:51 wrp Exp $
+#
+# 21 July, 2000
+#
+# Makefile for MPI versions of the parallel library comparison programs.
+# this file is derived from Makefile.pvm, with only a few differences:
+# (1) -DMPI_SRC instead of -DPVM_SRC
+# (2) programs are mp34comp*, ms34comp*, and mu34comp* rather than pv34comp*, etc.
+# (3) MPI does not require/allow a "worker" program, thus no c3.work*
+#
+
+# setenv MPI_CC gcc-3.3 for best performance
+
+MPI_ROOT = /m0/xshare/mpich2
+MPICC = ${MPI_ROOT}/bin/mpicc
+
+CC= ${MPICC} -g -falign-loops=32 -O3 -mcpu=7450 -faltivec -DSW_ALTIVEC
+NCC= ${MPICC} -g -falign-loops=32 -O3 -mcpu=7450 -faltivec -DSW_ALTIVEC
+LCC= ${MPICC}
+
+#ARCH   =       ALPHAMP  (get from $ARCH)
+
+PLIB    =       -L${MPI_ROOT}/lib -lmpich
+XDIR    =       /home/slib/mpi/bin/
+SDIR    =       .
+
+CFLAGS= -DMPI_SRC -DUNIX -DPCOMPLIB -DBFR=120 -DSHOWSIM -I${MPI_ROOT}/include -DSRAND=srand -DRAND=random -c -DHAS_INTTYPES -DSAMP_STATS -DSW_ALTIVEC
+# -DMYSQL_DB -I/usr/include/mysql
+# -DSFCHAR="'|'" -DSUPERFAMNUM 
+
+# standard nxgetaa, no memory mapping for 0 - 6
+#LGETLIB=getseq.o lgetlib.o
+#NGETLIB=nmgetlib
+
+# memory mapping for 0FASTA, 5PIRVMS, 6GCGBIN
+LGETLIB=getseq.o lgetlib.o lgetaa_m.o
+NGETLIB=nmgetlib
+
+NRAND=nrandom
+
+SHOWBESTC = mshowbest.c
+SHOWALIGN = mshowalign
+MWH = p_mw.h
+MWHP = p_mw.h w_mw.h
+
+#NCBL_LIB=ncbl2_mlib.o mysql_lib.o
+NCBL_LIB=ncbl2_mlib.o
+#LIB_M= -L/usr/lib/mysql -lmysqlclient -lz -lm
+LIB_M= -lm
+
+LFLAGS= -o
+
+DROPGSW_O = dropgsw.o smith_waterman_altivec.o
+DROPNFA_O = drop_nfa.o
+
+include Makefile.mpcom
+
+include Makefile.fcom
+

@@ -1,0 +1,210 @@
+
+ $Name: fa_34_26_5 $ - $Id: readme.pvm_3.3,v 1.13 2000/08/04 18:45:15 wrp Exp $
+
+================
+pvcomp* - FAQ's, November, 1999
+
+(The comments below apply to the pv3comp* programs.  This problem has
+been addressed in the pv4comp* programs, by dramatically changing
+the way databases are distributed.)
+
+I believe that the number one reason why the pvcomp* programs do not
+work properly is that the second library must be fully specified.
+If you simply type:
+
+	pv3compfa query.lib database.lib
+
+The program will not be able to find database.lib on the worker machines.
+You need to use:
+
+	pv3compfa query.lib /home/user/lib/database.lib
+
+and /home/user/lib/database.lib must be accessible to all of the worker
+nodes.
+
+To find error messages from the workers, look at /tmp/pvml.uid, where
+uid is your unix uid.
+
+================
+Program summary:
+
+Programs to produce conventional scores and alignments:
+
+pv3compfa	protein vs protein, DNA vs DNA
+pv3compsw	protein vs protein, DNA vs DNA
+pv3compfx/	DNA vs protein
+pv3comptfx/y	protein vs DNA
+
+Programs to summarize the effectiveness of a search (require
+super-family-labeled databases):
+
+ps3compfa	protein vs protein, DNA vs DNA
+ps3compsw	protein vs protein, DNA vs DNA
+ps3compfx/	DNA vs protein
+ps3comptfx/y	protein vs DNA
+
+Programs to report the scores and alignments of the highest scoring
+unrelated sequence (require super-family-labeled databases). These
+programs are used to evaluate the super-family labeling.
+
+pu3compfa	protein vs protein, DNA vs DNA
+pu3compsw	protein vs protein, DNA vs DNA
+pucompfx/	DNA vs protein
+pu3comptfx/y	protein vs DNA
+
+Note that the current parallel implementations distribute the second
+database among 'N' parallel workers by approximately dividing the
+database into 'N' parts by seeking into the middle of the database and
+finding the next entry.  This strategy fails when the database is a
+single long sequence (the first worker gets the entire database, the
+others get nothing).
+
+================
+Release notes:
+
+--> July 18, 2000
+
+Increase SQSZ in pxgetaa.c to 200000 for long Genbank entries.  This
+may still not be long enough.  This increase may allow overlaps to
+occur.
+
+--> July 10, 2000
+
+Corrections to the code for breaking up very long sequences.  The last
+portion of a long sequence did not have the correct offset.
+
+--> July 1, 2000
+
+Modified pxgetaa.c to read Genbank flatfiles.
+
+Additional pieces of a long sequence no longer have a '+' at the
+beginning.
+
+--> June 12, 2000
+
+Restructured p_complib.c, p_workcomp.c to make the -m 9 display more
+consistent with the fast33(_t) set of programs.  The alignment (%_id,
+swscore, boundary) information is now calculated at the do_opt() stage
+of the calculation.  This rearrangement uncovered a problem with the
+do_opt() stage (s_func=1) that has been fixed.  This has not yet been
+tested with the MPI implementation.
+
+Many changes were made to allow k_H, k_comp information to be passed
+back so that the -z 6 scaleswn.c (proc_hist_mle2) function could be
+used.
+
+--> February 6, 2000
+
+Corrected some problems with proc_hist_ml() to correctly reinitialize
+hist_db_size and num_db_entries.
+
+--> January 20, 2000
+
+   The structure of the p[vsu]comp* programs has not changed, but the
+the code has been modified to accomodate both PVM and MPI versions of
+the programs from the same source code.  Thus, all of the PVM-specific
+code is now surrounded by #ifdef PVM_SRC/#endif.  The source files
+pvcomplib.c and pvworkcomp.c have been replaced by p_complib.c and
+p_workcomp.c, respectively.  Additional changes were made to ensure
+that "FIRSTNODE" is used appropriately.  In general, FIRSTNODE=0 for
+PVM programs (although with > 8 nodes, FIRSTNODE=1 may be more
+effective), but FIRSTNODE=1 for MPI programs.
+
+  Modest changes were made to reduce warning messages during
+compilation.
+
+--> January, 2000
+
+   Modification to hxgetaa.c, pxgetaa.c to handle library sequences,
+such as those from NCBI/NR, with very long comment lines.  Additional
+modifications to correct problems with long comments, long DNA
+sequences with pv3comptfx/tfy.
+
+--> v3.33	December, 1999
+
+Substantial updates to pvcomplib.c/pvworkcomp.c to improve efficiency
+and to provide pv3compf[xy] and pv3comptf[xy].  Previous versions of
+pvcomplib.c/pvworkcomp.c passed the entire struct mngmsg (structs.h)
+each time a new query was initiated or alignments were required.  This
+version sends struct mngmsg only once and sends struct qmng_str
+(w_msg.h), which is much smaller, for the queries and alignments. In
+addition, the buffer size for results is now variable (but can be as
+large as 1200, vs 600 previously), which may improve performance when
+large numbers of workers are available.  The maximum number of library
+sequences per worker has been raised to 200,000 from 50,000.
+Nevertheless, very large databases (est_human) may have too many
+entries to be examined by 4 workers.
+
+It is likely that pv3comptf[xy] may have problems with very long
+sequences.  pv3compf[xy]/tf[xy] have not been tested extensively.
+
+--> v3.32 December, 1999
+
+Substantial corrections to showsum.c (showbest()) for the case of DNA
+queries, where two scores are calculated for each query.  As a result
+of the changes, bptr[] no longer mapped exactly to best[], which
+caused a bug that was very difficult to track down.  To ensure that
+bptr[]=best[], bptr[] is now re-initialized for each query.
+
+The output format has changed significantly as well.  Lots of
+redundant /** **/ comments have been removed.  An E() value has been
+added to the "equ num:" line in showsum.c.
+
+The organization of the inner while() loop in pvcomplib.c has been
+modified so that new query sequences can be sent to workers
+immediately as soon as a worker is available, rather than waiting for
+all to finish and the statistical analysis.
+
+--> v3.30	October, 1999
+
+The p*comp*/c.work* programs have been renamed to pv3compfa,
+ps3compfa, etc.  and c3.work* so that the older version 3.2 programs
+can co-exist with this version.
+
+Corrected problem with "-n" option that prevented it from functioning
+properly.  Include "ACGTCN" in check for DNA query library.a
+
+(from readme.pvm_3.2)
+
+--> August, 1999
+
+Corrected problem with opt_cut initialization that only appeared
+with p?compfa programs.
+
+--> v3.26	July, 1999
+
+pvcomp* programs now use the same method for working with forward and
+reverse strands as the standard fast*3(_t) programs.  Thus, statistics
+for DNA sequences should be very similar for pvcompfa and fasta3 or
+fasta3_t.
+
+ 		February, 1999
+
+With release fasta32t02 of the FASTA package, the alignment
+routines for pvcompfa, pvcompsw, etc now work properly
+again.
+
+The PVM versions of the FASTA and Smith-Waterman search programs
+should now be functionally identical to the multithreaded (fasta3_t,
+ssearch3_t) and non-threaded (fasta3, ssearch3) versions.
+
+The programs have also been updated to provide similar -m 10
+information to the non-pvm versions.  There are some slight
+differences, because the pvcomp* versions are designed to work with
+multiple sequences.  But, in general, a script that looks for /^>>>/
+to start an alignment set and /^>>><<</ to end the set work
+properly.
+
+--> v3.23	March, 1999 
+
+Modified Makefile.pvm, showsum.c so that showsum.c is used by
+both the complib/_thr and pvcomplib (pvm parallel) versions.
+
+Corrected bug in reading first query for DNA sequences.
+
+--> v3.25	May, 1999
+
+Fixed pvm_showalign.c so that FIRSTNODE (in msg.h) can be 1, rather
+than 0.  #define FIRSTNODE 1 is recommended when the virtual machine
+has 8 or more nodes.
+

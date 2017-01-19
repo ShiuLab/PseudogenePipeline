@@ -1,0 +1,95 @@
+
+August, 2002
+
+The latest versions of the FASTA search programs are in fasta3.shar.Z.
+This file contains the fasta34 series of programs.  fasta34 also runs
+the exact same functions threaded (fasta33, fasta33_t) and in parallel
+using PVM and MPI.
+
+Here is a list of the programs, and where they can be found:
+
+program         fasta2          fasta34                 replaced by
+
+fasta           yes             fasta34, fasta34_t
+
+ssearch         yes             ssearch34, ssearch34_t
+
+tfasta          yes             tfasta34, tfasta34_t    (tfastx34 preferred)
+
+fastx           yes             fastx34, fastx34_t
+fasty           no              fasty34, fasty34_t
+
+tfastx          yes             tfastx34, tfastx34_t
+tfasty          no              tfasty34, tfasty34_t
+
+fasts/tfasts    no              fasts34(_t), tfasts34(_t)
+
+fastf/tfastf    no              fastf34(_t), tfastf34(_t)
+
+prss            yes             prss34
+
+prfx            no              prfx34
+
+================
+
+The following programs are part of the fasta2 program package.  The
+latest version of fasta2 is fasta20u66.shar.Z.
+
+The most useful fasta2 programs are lalign and plalign, which calculate
+multiple non-intersecting local alignments using Webb Miller's "sim"
+implementation of the Waterman-Eggert algorithm.
+
+You should not use the fasta2 programs for library searching; the
+fasta3 programs are more sensitive and have better statistics.
+
+lalign          yes             no
+
+plalign         yes             no
+
+flalign         yes             no
+
+align           yes             no
+
+align0          yes             no
+
+lfasta          yes             no
+
+randseq         yes             no
+
+crandseq        yes             no
+
+aacomp          yes             no
+
+bestscor        yes             no
+
+grease          yes             no
+
+tgrease         yes             no
+
+garnier         yes             no
+
+================
+
+The fasta3.shar.Z and fasta2.shar.Z files a Unix "shell archive" files.
+To unpack them, go into an empty directory and type:
+
+        zcat fasta3.shar.Z | sh
+
+You can then make the programs by typing:
+
+        make all
+
+Makefile's are available for many platforms, e.g.
+
+        make -f Makefile.linux
+        make -f Makefile.sun
+
+etc.  You are much better off using the pre-configured Makefile.???
+than trying to edit the Makefile (which is designed for a Compaq/HP
+Alpha).
+
+Precompiled versions of the programs for Mac and Windows are available
+in the mac_fasta and win32_fasta directories.  If you are running
+MacOSX from the command line, use the Unix version (fasta3.shar.Z and
+Makefile.os_x).
+

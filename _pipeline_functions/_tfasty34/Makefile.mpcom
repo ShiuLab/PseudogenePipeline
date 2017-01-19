@@ -1,0 +1,109 @@
+
+PROGS= mp34compfa mp34compsw mp34compfx mp34comptfx mp34compfy mp34comptfy mp34compfs mp34comptfs
+
+# ms34compfa, etc provides a summaries of effectiveness, require
+# superfamily annotated database. ms34compss uses dropnsw.c instead of
+# dropgsw.c, thus allowing high gap penalties.
+
+SPROGS = ms34compfa ms34compsw ms34compss ms34compfx ms34compfy ms34comptfx ms34comptfy
+
+# report highest unrelated sequences
+UPROGS = mu34compfa mu34compsw mu34compfx mu34comptfx mu34compfy mu34comptfy
+
+vall : $(PROGS) $(WPROGS)
+
+uall : $(UPROGS) $(WPROGS)
+
+sall : $(SPROGS) $(WPROGS)
+
+all : $(PROGS) $(UPROGS) $(SPROGS) $(WPROGS)
+
+clean-up:
+	rm -f *.o $(PROGS) $(WPROGS) $(SPROGS) $(UPROGS)
+
+install : $(PROGS) $(WPROGS)
+	cp $(PROGS) $(WPROGS) $(XDIR)
+
+sinstall : $(SPROGS) $(WPROGS)
+	cp $(SPROGS) $(WPROGS) $(XDIR)
+
+uinstall : $(UPROGS) $(WPROGS)
+	cp $(UPROGS) $(WPROGS) $(XDIR)
+
+mp34compfa : p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fa.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o $(DROPNFA_O) workacc.o faatran.o $(NRAND).o
+	$(LCC) $(LFLAGS) mp34compfa p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fa.o scaleswn.o karlin.o c_dispn.o  p2_workcomp.o $(DROPNFA_O) workacc.o faatran.o $(NRAND).o $(PLIB) $(LIB_M)
+
+ms34compfa : p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fa.o scaleswn.o karlin.o p2_workcomp.o $(DROPNFA_O) workacc.o faatran.o $(NRAND).o
+	$(LCC) $(LFLAGS) ms34compfa p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fa.o scaleswn.o karlin.o p2_workcomp.o $(DROPNFA_O) workacc.o faatran.o $(NRAND).o $(PLIB) $(LIB_M)
+
+mu34compfa : p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fa.o scaleswn.o karlin.o p2_workcomp.o $(DROPNFA_O) workacc.o faatran.o $(NRAND).o c_dispn.o
+	$(LCC) $(LFLAGS) mu34compfa p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fa.o scaleswn.o karlin.o p2_workcomp.o $(DROPNFA_O) workacc.o faatran.o $(NRAND).o c_dispn.o $(PLIB) $(LIB_M)
+
+mr34compfa : p2_complib.o compacc.o lib_sel.o url_subs.o manshowrel.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fa.o scaleswn.o karlin.o p2_workcomp.o $(DROPNFA_O) workacc.o faatran.o $(NRAND).o
+	$(LCC) $(LFLAGS) mr34compfa p2_complib.o compacc.o lib_sel.o url_subs.o manshowrel.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fa.o scaleswn.o karlin.o p2_workcomp.o $(DROPNFA_O) workacc.o faatran.o $(NRAND).o $(PLIB) $(LIB_M)
+
+mp34compsw : p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o pssm_asn_subs.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o $(DROPGSW_O) workacc.o faatran.o $(NRAND).o
+	$(LCC) $(LFLAGS) mp34compsw p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o pssm_asn_subs.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o $(DROPGSW_O) workacc.o faatran.o $(NRAND).o $(PLIB) $(LIB_M)
+
+ms34compsw : p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o pssm_asn_subs.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o p2_workcomp.o $(DROPGSW_O) workacc.o faatran.o $(NRAND).o
+	$(LCC) $(LFLAGS) ms34compsw p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o pssm_asn_subs.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o p2_workcomp.o $(DROPGSW_O) workacc.o faatran.o $(NRAND).o $(PLIB) $(LIB_M)
+
+mu34compsw : p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o pssm_asn_subs.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o p2_workcomp.o $(DROPGSW_O) workacc.o faatran.o $(NRAND).o c_dispn.o
+	$(LCC) $(LFLAGS) mu34compsw p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o pssm_asn_subs.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o p2_workcomp.o $(DROPGSW_O) workacc.o faatran.o $(NRAND).o c_dispn.o $(PLIB) $(LIB_M)
+
+mp34compss : p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o dropnsw.o workacc.o faatran.o $(NRAND).o
+	$(LCC) $(LFLAGS) mp34compss p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o dropnsw.o workacc.o faatran.o $(NRAND).o $(PLIB) $(LIB_M)
+
+ms34compss : p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o p2_workcomp.o dropnsw.o workacc.o faatran.o $(NRAND).o
+	$(LCC) $(LFLAGS) ms34compss p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o p2_workcomp.o dropnsw.o workacc.o faatran.o $(NRAND).o $(PLIB) $(LIB_M)
+
+mu34compss : p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o p2_workcomp.o dropnsw.o workacc.o faatran.o $(NRAND).o c_dispn.o
+	$(LCC) $(LFLAGS) mu34compss p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_sw.o scaleswn.o karlin.o p2_workcomp.o dropnsw.o workacc.o faatran.o $(NRAND).o c_dispn.o $(PLIB) $(LIB_M)
+
+mp34compfx : p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fx.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_fx.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) mp34compfx p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fx.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_fx.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+ms34compfx : p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fx.o scaleswn.o karlin.o p2_workcomp.o drop_fx.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) ms34compfx p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fx.o scaleswn.o karlin.o p2_workcomp.o drop_fx.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+mu34compfx : p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fx.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_fx.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) mu34compfx p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fx.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_fx.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+mp34compfy : p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fy.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_fz.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) mp34compfy p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fy.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_fz.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+ms34compfy : p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fy.o scaleswn.o karlin.o p2_workcomp.o drop_fz.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) ms34compfy p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fy.o scaleswn.o karlin.o p2_workcomp.o drop_fz.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+mu34compfy : p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fy.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_fz.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) mu34compfy p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fy.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_fz.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+mp34compfs : p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fs.o scaleswts.o tatstats_fs.o last_tat.o karlin.o c_dispn.o p2_workcomp.o drop_fs.o workacc.o faatran.o $(NRAND).o
+	$(LCC) $(LFLAGS) mp34compfs p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fs.o scaleswts.o tatstats_fs.o last_tat.o karlin.o c_dispn.o p2_workcomp.o drop_fs.o workacc.o faatran.o $(NRAND).o $(PLIB) $(LIB_M)
+
+mp34comptfs : p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfs.o scaleswts.o tatstats_fs.o last_tat.o karlin.o c_dispn.o p2_workcomp.o drop_tfs.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) mp34comptfs p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_fs.o scaleswts.o tatstats_fs.o last_tat.o karlin.o c_dispn.o p2_workcomp.o drop_fz.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+mp34comptfx : p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfx.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_tfx.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) mp34comptfx p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfx.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_tfx.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+ms34comptfx : p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfx.o scaleswn.o karlin.o p2_workcomp.o drop_tfx.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) ms34comptfx p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfx.o scaleswn.o karlin.o p2_workcomp.o drop_tfx.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+mu34comptfx : p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfx.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_tfx.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) mu34comptfx p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfx.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_tfx.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+mp34comptfy : p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfy.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_tfz.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) mp34comptfy p2_complib.o compacc.o lib_sel.o url_subs.o showbest.o $(SHOWALIGN).o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfy.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_tfz.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+ms34comptfy : p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfy.o scaleswn.o karlin.o p2_workcomp.o drop_tfz.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) ms34comptfy p2_complib.o compacc.o lib_sel.o url_subs.o showsum.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfy.o scaleswn.o karlin.o p2_workcomp.o drop_tfz.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+mu34comptfy : p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfy.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_tfz.o workacc.o $(NRAND).o faatran.o
+	$(LCC) $(LFLAGS) mu34comptfy p2_complib.o compacc.o lib_sel.o url_subs.o showun.o $(SHOWALIGN)_u.o htime.o hostacc.o $(LGETLIB) $(NCBL_LIB) apam.o doinit.o init_tfy.o scaleswn.o karlin.o c_dispn.o p2_workcomp.o drop_tfz.o workacc.o $(NRAND).o faatran.o $(PLIB) $(LIB_M)
+
+p2_complib.o : p2_complib.c msg.h defs.h upam.h uascii.h param.h structs.h
+	$(CC) $(CFLAGS) p2_complib.c -o p2_complib.o 
+
+p2_workcomp.o : p2_workcomp.c structs.h msg.h defs.h mw.h upam.h uascii.h param.h
+	$(NCC) $(CFLAGS) p2_workcomp.c

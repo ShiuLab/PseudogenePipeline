@@ -1,0 +1,261 @@
+.TH PVCOMPFA/PVCOMPSW/v3.4 1 "January, 2003"
+.SH NAME
+.B pv34compfa
+\- scan a protein or DNA sequence library for similar
+sequences using the FASTA algorithm in parallel on a network of
+machines running pvm3.
+
+.B pv34compsw
+\- scan a protein or DNA sequence library for similar
+sequences using the Smith-Waterman algorithm in parallel on a network
+of machines running pvm3.
+
+.B ps34compfa
+\- evaluate sequence comparison parameters using the FASTA
+algorithm and super-family-annotated libraries.
+
+.B ps34compsw
+\- evaluate sequence comparison parameters using the
+Smith-Waterman algorithm and super-family-annotated libraries.
+
+.SH SYNOPSIS
+.B pv34compfa
+[-Q|q -B -b # -d # -E # -f # -g # -H -i J # -n -o -p #
+\& -R
+.I STATFILE
+\& -r "+n/-m" \& -S -s
+.I SMATRIX
+\& -w # -1 ] query-library reference-library [
+.I ktup
+]
+.B pv34compfa
+[\-QBbcefgHiJnopRrSsw1] \- interactive mode
+
+.B pv34compsw
+[-Q|q -B -b # -e -f delval -g gapval -i
+\& -n -p # -R -R
+.I STATFILE
+\& -r "+n/-m" \& -S -s
+\& -s
+.I SMATRIX
+ ] query-library reference-library [
+.I ktup
+]
+
+.B pv34compsw
+[\-QBbefgnpRrsS] \- interactive mode
+
+.SH DESCRIPTION
+.B pv34compfa
+and
+.B pv34compsw
+compare all of the sequences in one DNA or protein sequence library
+(the query library) with to all of the entries in a reference sequence
+library using the FASTA (pv34compfa) or Smith-Waterman (pv34compsw)
+algorithms.  For example,
+.B pv34compfa
+can compare a library of protein sequences to all of the sequences in
+the NBRF PIR protein sequence database.
+.B pv34compfa
+and
+.B pv34compsw
+are designed to run in parallel on networks of unix workstations using
+the PVM parallel programming system. (For more information on PVM,
+send email to "netlib@ornl.gov" with the message "send index for pvm3").
+.PP
+.B pv34compfa
+uses the rapid sequence comparison algorithm
+described in Pearson and Lipman, Proc. Natl. Acad. USA, (1988) 85:2444.
+The program can be invoked either with command line arguments or in
+interactive mode.  The optional third argument,
+.I ktup
+sets the sensitivity and speed of the search.  If
+.I ktup=2,
+similar regions in the two sequences being compared are found by
+looking at pairs of aligned residues; if
+.I ktup=1,
+single aligned amino acids are examined.
+.I ktup
+can be set to 2 or 1 for protein sequences, or from 1 to 6 for DNA sequences.
+The default if
+.I
+ktup
+is not specified is 2 for proteins and 6 for DNA.
+.PP
+.B pv34compfa
+compares a library of query sequences (there need be only one) to a
+reference sequence library.  Normally
+.B pv34compfa
+sorts the output by the
+.I initn
+score.  By using the
+.I \-1
+option, sequences are ranked by their
+.B init1
+score.  Alternative, the
+.I \-o
+option causes optimized scores to be calculated for every sequence
+greater than a threshold and the output to be sorted by the optimized
+scores.
+.PP
+.B pv34compsw
+uses the rigorous Smith-Waterman algorithm to compare protein or
+DNA sequences. The gap penalties and scoring matrices can be
+modified with the 
+.I -f\c
+\&, 
+.I -k\c
+\&, and 
+.I -s
+options.
+.PP
+.B pv34compfa
+(and
+.B pv34compsw\c
+\&) will automatically decide whether the query sequence is DNA or
+protein by reading the query sequence as protein and determining
+whether the `amino-acid composition' is more than 85% A+C+G+T.
+.PP
+.B ps34compfa
+and
+.B ps34compsw
+are versions of
+.B pv34compfa
+and
+.B pv34compsw
+that evaluate the quality of a search by reporting how many
+high-scoring related sequences and low-scoring unrelated sequences
+were found.  These programs require that both the query library and
+the reference library be annotated with superfamily numbers for every
+sequence in the library.
+.SH OPTIONS
+.LP
+.B Pv34compfa
+and
+.B pv34compsw
+now support all the options of the fasta3(_t) programs.
+.TP
+\-B
+Report z-score, rather than bit-score, in list of best hits.
+.TP
+\-b #
+The number of similarity scores to be shown (10 by default).
+.TP
+\-E #
+Expectation value limit for displaying best scores.
+.TP
+\-d #
+The number of alignments to be shown.
+.TP
+\-f #
+(delval) penalty for the first residue in a gap. -12 by default for proteins.
+.TP
+\-g #
+(gapval) penalty for additional residues in a gap after the first. -2
+by default for proteins.
+.TP
+\-H #
+turn on histogram display (off by default).
+.TP
+\-i
+invert (reverse complement) DNA sequence.
+.TP
+\-J M:N
+start at the M-th sequence in the query library and continue to the
+"N-th".  By default, J=1 and the search begins with the first sequence
+and ends with the last, but sometimes it makes sense to start in the
+middle of the query library if a run partially completed, and to
+finish "early" if the analysis will be run on several parallel
+clusters.
+.TP
+\-n
+Force the program to use DNA sequence parameters.
+.TP
+\-p #
+Number of "slave" processors to use.  Typically, one less than
+the number of processors available with
+.B pv34compfa
+so that one processor can be used to collate results.  With
+.B pv34compsw\c
+\&, it is more efficient to use every processor as a slave and
+not use this option.
+.TP
+\-Q \-q
+Quiet option.  The programs will not prompt for input.
+.TP
+\-R file
+(STATFILE) Causes
+.B pv34compfa
+and
+.B pv34compsw
+to write out the sequence identifier, superfamily number (if available),
+and similarity scores to 
+.I STATFILE
+for every sequence in the library.  These results are not sorted.
+.TP
+\-r
+specify DNA match/mismatch ratio as "+3/-2".  Default is "+5/-4".
+The "+" and "-" are required.
+.TP
+\-S
+Treat lower case residues as low complexity regions.
+.TP
+\-s file
+the filename of an alternative scoring matrix file.
+.LP
+.B
+pv34compfa
+only
+.TP
+\-1
+sort similarity scores by
+.I init1
+scores instead of
+.I initn
+scores.
+.TP
+\-c #
+(OPTCUT) the threshold for optimization with the
+.B -o
+option.
+.TP
+\-o
+(no-optimize); causes 
+.B pv34compfa
+not to perform the default optimization on all of the sequences in the library
+with
+.B initn
+scores greater than
+.B OPTCUT\c
+\&.
+.TP
+\-y #
+Width for limited optimization (32 by default).
+.SH FILES
+.LP
+Query library files must be in Pearson/FASTA format, e.g.
+.in +0.5i
+.nf
+>seq-id | sfnum descriptive line
+tmlyrghi... (sequence)
+
+.fi
+.in -0.5i
+.PP
+.B pv34compfa
+and
+.B pv34compsw
+recognize the following library formats: 0 - Pearson/FASTA; 1 - Genbank tape;
+2 - NBRF/PIR Codata; 3 - EMBL/SWISS-PROT; 5 - NBRF/PIR VMS.
+.PP
+.I Scoring matrices \-
+These programs use a different format for the scoring (PAM) matrix
+file from FASTA; they use the PAM matrix file that is used by BLASTP
+and produced by Altshul's "pam.c" program in the BLAST package.
+.SH BUGS
+The program has been tested extensively only with type 0 and type 5
+files.  This documentation file may not be up to date.
+.SH AUTHOR
+Bill Pearson
+.br
+wrp@virginia.EDU

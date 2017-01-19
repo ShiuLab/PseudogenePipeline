@@ -1,0 +1,55 @@
+doinit.c
+  case 'a': m_msg->aln.showall = 1;
+  case 'B': m_msg->z_bits = 0;
+  case 'b': m_msg->mshow
+  case 'C': m_msg->nmlen
+  case 'd': m_msg->ashow);
+  case 'D': ppst->debug_lib = 1;
+  case 'E': m_msg->e_cut
+  case 'F': m_msg->e_low
+  case 'f': ppst->gdelval
+  case 'g': ppst->ggapval
+  case 'H':  m_msg->nohist = 1; break;
+  case 'i':  m_msg->revcomp = 1; break;
+  case 'I':  m_msg->self = 1; break;
+  case 'J':  m_msg->ql_start, ql_stop
+  case 'K':  max_buf_cnt (PCOMPLIB)
+  case 'l':  m_msg->flstr
+  case 'L':  m_msg->long_info = 1
+  case 'M':  m_msg->n1_low,&m_msg->n1_high
+  case 'm':  m_msg->markx
+  case 'n':  m_msg->qdnaseq = 1
+  case 'N':  m_msg->maxn
+  case 'p':  m_msg->qdnaseq = 0;
+  case 'O':  m_msg->outfile
+  case 'q':
+  case 'Q':  m_msg->quiet = 1;
+  case 'r':  ppst->p_d_mat,&ppst->p_d_mis
+  case 'R':  m_msg->dfile
+  case 's':  standard_pam(smstr); ppst->pamoff=atoi(bp+1);
+  case 'S':  ppst->ext_sq_set = 1;
+  case 't':  ppst->tr_type
+  case 'T':  PCOMPLIB: worker_1,worker_n
+      	     _t: max_workers
+  case 'v':  ppst->zs_win
+  case 'w':  m_msg->aln.llen
+  case 'W':  m_msg->aln.llcntx);
+  case 'X':  m_msg->sq0off,&m_msg->sq1off
+  case 'x':  ppst->pam_x
+  case 'z':  ppst->zsflag
+  case 'Z':  ppst->zdb_size
+
+initfa.c
+  case '1': ppst->param_u.fa.iniflag=1;
+  case '3': m_msg->nframe = 3; /* TFASTA */
+	    m_msg->nframe = 1;	/* for TFASTXY */
+	    m_msg->qframe = 1;  /* for FASTA, FASTX */
+  case 'A': ppst->sw_flag= 1;
+  case 'c': ppst->param_u.fa.optcut
+  case 'h': ppst->gshift
+  case 'j': ppst->gsubs
+  case 'o': ppst->param_u.fa.optflag = 0;
+  case 'y': ppst->param_u.fa.optwid
+
+initsw.c
+  case '3': m_msg->qframe = m_msg->nframe = 1; 

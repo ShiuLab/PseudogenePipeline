@@ -1,0 +1,35 @@
+#
+# makefile for fasta33
+#
+# for more information on FASTA on CRAY's, see:
+#
+#       http://home.cray.com/~cpsosa/ChemApps/BioInf/fasta/fasta.html
+#	provided by: Carlos P. Sosa, cpsosa@cray.com
+#
+
+CC= cc -h inline1,scalar3,task0,vector2
+
+HFLAGS= -o
+NFLAGS= -o
+
+LIB_M=
+#
+
+CFLAGS= -DUNIX -DTIMES -DSFCHAR="':'" -DMAX_WORKERS=4
+-DTHR_EXIT=pthread_exit -DPROGRESS
+-DFASTA_HOST='"crick.med.virginia.edu/fasta/cgi"' -DIS_BIG_ENDIAN
+
+THR_SUBS = pthr_subs
+THR_LIBS = -lpthread
+THR_CC =
+
+XDIR = /seqprg/slib/bin
+
+DROPNFA_O = drop_nfa.o
+DROPGSW_O = dropgsw.o
+DROPRSS_O = dropnsw.o
+
+# renamed (fasta33)  programs
+include Makefile33.nommap
+# conventional (fasta3) names
+# include Makefile.common

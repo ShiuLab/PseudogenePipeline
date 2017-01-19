@@ -1,0 +1,152 @@
+<html>
+<head>
+<title>FASTA Sequence Comparison Engine</title></head>
+<body bgcolor="white" >
+
+<h1 align=center>Search with FASTA</h1>
+
+<form action="http://fasta.bioch.virginia.edu/fasta/cgi/searchnn.cgi" method=post>
+
+<b>Choose program and database(s) to query:</b><br>
+<b>Program:</b>
+<select name = "program">
+ <option> FASTA 
+ <option> FASTX 
+ <option> FASTY
+ <option> FASTF
+ <option> FASTS
+ <option> TFASTX 
+ <option> TFASTY 
+ <option> TFASTF 
+ <option> TFASTS
+ <option> SSEARCH
+</select><br><br>
+
+<b>Databases:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="blue">Blue databases</font> and possibly DNA databases can be re-searched<br>
+<table align=center cellspacing=10>
+<tr>
+<td><b>Protein</b><br>
+  <input type=checkbox name = "libpa" value="a">NBRF Annotated Protein Database (rel. 53)<br>
+  <input type=checkbox name = "libpp" value="p">NBRF Protein Database (complete)<br>
+  <input type=checkbox name = "libpd" value="d">NRL_3d structure database<br>
+  <input type=checkbox name = "libpn" value="n"><font color="blue">NCBI/Blast NR protein database</font><br>
+  <input type=checkbox name = "libpk" value="k"><font color="blue">NCBI/Blast NR protein database (seg)</font><br>
+  <input type=checkbox name = "libps" value="q"><font color="blue">NCBI/Blast Swiss-Prot</font><br>
+  <input type=checkbox name = "libpr" value="r"><font color="blue">NCBI/BLAST Swiss-Prot (seg)</font><br>
+  <input type=checkbox name = "libpo" value="o">OWL Nonredundant database<br>
+  <input type=checkbox name = "libpy" value="y">Yeast Proteins<br>
+</td>
+
+<td><b>DNA</b><br>
+  <input type=checkbox name = "libnp" value="p">Primate<br>
+  <input type=checkbox name = "libnr" value="r">Rodent<br>
+  <input type=checkbox name = "libnm" value="m">Other Mammals<br> 
+  <input type=checkbox name = "libnb" value="b">Vertebrates<br>
+  <input type=checkbox name = "libnh" value="h">High Throughput Genomics<br>
+  <input type=checkbox name = "libni" value="i">Invertebrates<br>
+  <input type=checkbox name = "libnl" value="l">Plants<br>
+  <input type=checkbox name = "libnt" value="t">Bacteria<br>
+</td>
+
+<td valign=top><br>
+  <input type=checkbox name = "libns" value="s">Structural RNA<br>
+  <input type=checkbox name = "libnv" value="v">Viral<br>
+  <input type=checkbox name = "libng" value="g">Phage<br>
+  <input type=checkbox name = "libnz" value="z">Synthetics<br>
+  <input type=checkbox name = "libne" value="e">EST sequences<br>
+  <input type=checkbox name = "libnf" value="f"><font color="blue">BLAST human ESTs</A><br>
+  <input type=checkbox name = "libnc" value="c"><font color="blue">BLAST mouse ESTs</A><br>
+</td>
+</tr>
+</table>
+<p>
+<b>Sequence type:</b><br>
+<input type=radio name="seqtype" value=1 checked>Protein 
+<input type=radio name="seqtype" value=2>DNA (both strands)
+<input type=radio name="seqtype" value=3>DNA (forward only)
+<input type=radio name="seqtype" value=4>DNA (rev-comp only)
+
+<p>
+<b>Enter query sequence:&nbsp;</b><select name="in_seq"><option>FASTA format<option>Accession/GI number</select>  <b>Subset range:</b>
+<input type=text name="ssr" maxlength=20 size=10></input>
+<table>
+<tr>
+<td>
+<textarea name="sequence" rows=6 cols=60 wrap=hard align=left></textarea>
+<td valign=top>
+<a href="http://www.ncbi.nlm.nih.gov/Entrez/protein.html" target="entrez_window">Entrez protein sequence browser</A><br><br>
+<a href="http://www.ncbi.nlm.nih.gov/Entrez/nucleotide.html" target="entrez_window">Entrez DNA sequence browser</A>
+<br><br>
+<input type=submit name="input" value="Submit Query">
+</table>
+<br><br>
+
+<b>Other options:</b><br>
+<table>
+<tr>
+<td>
+<b>Ktup:</b><br>
+<input type=text name="ktup" maxlength=3 size=3></input>
+<td>
+<b>Protein matrix:</b><br>
+<select name = "pmatrix">
+ <option> Default
+ <option> Blosum50
+ <option> Blosum62
+ <option> Blosum80
+ <option> Pam250
+ <option> Pam120
+ <option> MD20
+ <option> MD10
+</select>
+<td>
+ <b>DNA matrix:</b><br>
+<select name = "dmatrix">
+ <option> Default
+ <option> +4/-3
+ <option> blastn2
+ <option> +4/-4
+ <option> +4/-8
+</select>
+<td>
+  <b>gap:</b><br>
+<input type=text name="gap" maxlength=4 size=3></input>
+<td>
+  <b>ext:</b><br>
+<input type=text name="ext" maxlength=4 size=3></input>
+<td>
+<b>misc:</b><br>
+<input type=text name="out_opt" maxlength=10 size=5></input>
+</tr>
+</table>
+<br>
+
+<b>Output limits:</b><br>
+<b>E():</b><input type=text name="eval" maxlength=6 size=4></input>
+<b>Highest E():</b><input type=text name="etop" maxlength=6 size=4></input>
+<b>scores:</b><input type=text name="best" maxlength=3 size=3></input>
+<b>alignments:</b><input type=text name="align" maxlength=3 size=3></input>
+</form>
+<br>
+
+<hr>
+<CENTER>
+<a href="http://fasta.bioch.virginia.edu/">FASTA Home</a> | <a href="search.html">Search FASTA</a> | 
+<a href="ftp://ftp.virginia.edu/pub/fasta/"> Get FASTA</a> |  
+<a href="http://www.people.virginia.edu/~wrp/pearson.html">About the Author </a>
+<hr>
+
+<br>
+
+<font size=-1><i><br> 
+Copyright 1988, 1991, 1992, 1993, 1994 1995, 1997, 1999 by
+William R. Pearson and the University of Virginia.  All rights
+reserved. The FASTA program and documentation may not be sold or
+incorporated into a commercial product, in whole or in part, without
+written consent of William R. Pearson and the University of Virginia.
+
+</center>
+
+</body>
+ </frameset>
+</html>

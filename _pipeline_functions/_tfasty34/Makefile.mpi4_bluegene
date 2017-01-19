@@ -1,0 +1,56 @@
+#
+# $Name: fa_34_26_5 $ - $Id: Makefile.mpi4_bluegene,v 1.1 2006/04/01 14:09:11 wrp Exp $
+#
+# 21 July, 2000
+#
+# Makefile for MPI versions of the parallel library comparison programs.
+# this file is derived from Makefile.pvm, with only a few differences:
+# (1) -DMPI_SRC instead of -DPVM_SRC
+# (2) programs are mp34comp*, ms34comp*, and mu34comp* rather than pv34comp*, etc.
+# (3) MPI does not require/allow a "worker" program, thus no c3.work*
+#
+# 1-April-2006 - Makefile for IBM BlueGene - use -DMAXWRKR to set the
+# maximum number of workers.
+#
+CC= blrts_xlc -O3 -qsource -qlist -qarch=440d -qtune=440
+NCC= blrts_xlc -O3  -qsource -qlist -qarch=440d -qtune=440
+LCC= blrts_xlc -O3
+
+MPI_ROOT = /bgl/BlueLight/ppcfloor/bglsys
+PLIB    =      -L${MPI_ROOT}/lib -lmpich.rts -lrts.rts -ldevices.rts -lmsglayer.rts -ldevices.440
+XDIR    =       /home/slib/mpi/bin/
+SDIR    =       .
+
+CFLAGS= -DMPI_SRC -DMAXWRKR=128 -DUNIX -DPCOMPLIB -DBFR=1200 -I${MPI_ROOT}/include -DSRAND=srand -DRAND=random -c -DHAS_INTTYPES -DSAMP_STATS
+# -DMYSQL_DB -I/usr/include/mysql
+# -DSFCHAR="'|'" -DSUPERFAMNUM 
+
+# standard nxgetaa, no memory mapping for 0 - 6
+#LGETLIB=getseq.o lgetlib.o
+#NGETLIB=nmgetlib
+
+# memory mapping for 0FASTA, 5PIRVMS, 6GCGBIN
+LGETLIB=getseq.o lgetlib.o lgetaa_m.o
+NGETLIB=nmgetlib
+
+NRAND=nrandom
+
+SHOWBESTC = mshowbest.c
+SHOWALIGN = mshowalign
+MWH = p_mw.h
+MWHP = p_mw.h w_mw.h
+
+#NCBL_LIB=ncbl2_mlib.o mysql_lib.o
+NCBL_LIB=ncbl2_mlib.o
+#LIB_M= -L/usr/lib/mysql -lmysqlclient -lz -lm
+LIB_M= -lm
+
+LFLAGS= -o
+
+DROPGSW_O = dropgsw.o
+DROPNFA_O = drop_nfa.o
+
+include Makefile.mpcom
+
+include Makefile.fcom
+

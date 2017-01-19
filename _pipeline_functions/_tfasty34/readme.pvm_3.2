@@ -1,0 +1,42 @@
+--> August, 1999
+
+Corrected problem with opt_cut initialization that only appeared
+with p?compfa programs.
+
+--> v3.26	July, 1999
+
+pvcomp* programs now use the same method for working with forward and
+reverse strands as the standard fast*3(_t) programs.  Thus, statistics
+for DNA sequences should be very similar for pvcompfa and fasta3 or
+fasta3_t.
+
+ 		February, 1999
+
+With release fasta32t02 of the FASTA package, the alignment
+routines for pvcompfa, pvcompsw, etc now work properly
+again.
+
+The PVM versions of the FASTA and Smith-Waterman search programs
+should now be functionally identical to the multithreaded (fasta3_t,
+ssearch3_t) and non-threaded (fasta3, ssearch3) versions.
+
+The programs have also been updated to provide similar -m 10
+information to the non-pvm versions.  There are some slight
+differences, because the pvcomp* versions are designed to work with
+multiple sequences.  But, in general, a script that looks for /^>>>/
+to start an alignment set and /^>>><<</ to end the set work work
+properly.
+
+--> v3.23	March, 1999 
+
+Modified Makefile.pvm, showsum.c so that showsum.c is used by
+both the complib/_thr and pvcomplib (pvm parallel) versions.
+
+Corrected bug in reading first query for DNA sequences.
+
+--> v3.25	May, 1999
+
+Fixed pvm_showalign.c so that FIRSTNODE (in msg.h) can be 1, rather
+than 0.  #define FIRSTNODE 1 is recommended when the virtual machine
+has 8 or more nodes.
+

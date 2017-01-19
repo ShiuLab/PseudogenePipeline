@@ -1,0 +1,31 @@
+
+			1-January-2002
+
+
+This is the first release of the fasta34t10 distribution for the 
+Macintosh.  In addition to the traditional "classic" applications that have 
+been available in the past for Macintosh FASTA distributions, this release 
+also includes "Carbon" versions of the FASTA programs.  Carbon 
+applications are designed to work under both MacOSX and under MacOS8.6 and 
+later.
+
+This is the first "Carbon" implementation of the FASTA programs.  In this 
+first implementation, the Mac-like interface for selecting sequence files 
+has been disabled, as the older file interface I used is not available 
+under Carbon.  This should be implemented in the future.
+
+Today, the main advantage of the Carbon implementation is its ability to 
+run under MacOSX without needing the classic environment.  However, the 
+unix version of the FASTA programs compiles and runs fine under MacOSX, 
+simply type:
+
+	make -f Makefile.os_x all
+
+However, the Unix version of the FASTA programs expects sequence files and 
+libraries to have lines that ends with a linefeed characther ('\n', \012), 
+which is different from the traditional Mac return ('\r', \015) end-of-line 
+character.  If you work with Mac-like text files under MacOSX, try the "carbon"
+FASTA programs.  If you work with Unix-like text files, use the Unix 
+version.
+
+Bill Pearson

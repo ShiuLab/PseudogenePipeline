@@ -1,0 +1,49 @@
+#
+# $Name: fa_34_26_5 $ - $Id: Makefile34.common_sql,v 1.10 2005/12/07 17:22:02 wrp Exp $
+#
+# commands common to all architectures
+# if your architecture does not support "include", append at the end.
+#
+
+# use for "normal" fasta34(_t) programs - only one query
+COMP_LIBO=comp_lib.o
+COMP_THRO=comp_thr.o
+GETSEQO = getseq.o
+# use for multiple query sequences, requires "-n" for DNA fasta, does not
+# work with prss34 (yet)
+#COMP_LIB=comp_mlib.o
+#COMP_THRO=comp_mthr.o
+#
+# standard nxgetaa, no memory mapping for 0 - 6
+LGETLIB=getseq.o lgetlib.o lgetaa_m.o
+NGETLIB=nmgetlib
+
+# memory mapping for 0FASTA, 5PIRVMS, 6GCGBIN
+# LGETLIB=getseq.o lgetlib.o lgetaa_m.o
+# NGETLIB=nmgetlib
+
+NRAND=nrandom
+
+# use ncbl_lib.c for BLAST1.4 support instead of ncbl2_mlib.c
+#NCBL_LIB=ncbl_lib.o
+
+# this option should support both formats (BLAST1.4 not currently supported): 
+#NCBL_LIB=ncbl_lib.o ncbl2_mlib.o
+
+# normally use ncbl2_mlib.c
+#NCBL_LIB=ncbl2_mlib.o
+#LIB_M= -lm
+
+# this option supports NCBI BLAST2 and mySQL
+# it requires  "-I/usr/include/mysql -DMYSQL_DB" in CFLAGS
+# and "-L/usr/lib/mysql -lmysqlclient -lz" in LIB_M
+# some systems may also require a LD_LIBRARY_PATH change
+LIB_M= -L/usr/lib/mysql -lmysqlclient -lz -lm
+#LIB_M= -lm
+NCBL_LIB=ncbl2_mlib.o mysql_lib.o
+#NCBL_LIB=ncbl2_mlib.o
+
+include Makefile.pcom
+
+include Makefile.fcom
+
