@@ -1,0 +1,12 @@
+b_out=BrapPseu.tblastn
+p_seq=Brapa_197_protein_primaryTranscriptOnly.fa.mod
+g_seq=Brapa_197.fa.mod
+b_filter=y
+p_codes=/mnt/home/panchyni/1_SideProjects/3_PseudoGenes/7_ModdifiedPipelineFiles/PseudogeneScripts
+o_codes=/mnt/home/panchyni/1_SideProjects/3_PseudoGenes/7_ModdifiedPipelineFiles/PseudogeneScripts
+f_dir=XXX
+f_prog=tfastyXX
+blosum=/mnt/home/panchyni/1_SideProjects/3_PseudoGenes/7_ModdifiedPipelineFiles/blosum50.matrix
+gff=Brapa_197_gene.gff3.mod
+repCut=300
+repDiv=30
