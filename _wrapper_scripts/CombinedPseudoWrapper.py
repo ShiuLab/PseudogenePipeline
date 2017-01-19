@@ -19,23 +19,24 @@
 #
 #
 
-# Temporary, may move to seperate file [Nick]
 # FUNCTIONS
 def GFFto4col(gff,feature,f_index,c_index,start,stop,name,truncate):
-    # Creates a 4 column file from of selected features from a GFF file and return the name of the 4col file
-    #
-    # Inputs
-    #    gff      := name of GFF file
-    #    feature  := type of feature you are looking for
-    #    f_index  := column position of features in GFF file
-    #    c_index  := column position of chromosome in GFF file
-    #    start    := column position of start site in GFF file
-    #    stop     := position of stop site in GFF file
-    #    name     := position of information from which the sequence name can be derived
-    #    truncate := determines whether or not to truncate gene-names because of spaces
-    #    NOTE: One is substracted from each index b/c python begin indexing at 0
-    # Outputs
-    #    returns "gene_4col" the name of the 4 column file which is written to the current folder
+    """
+    Creates a 4 column file from of selected features from a GFF file and return the name of the 4col file
+    
+    Inputs
+        gff      := name of GFF file
+        feature  := type of feature you are looking for
+        f_index  := column position of features in GFF file
+        c_index  := column position of chromosome in GFF file
+        start    := column position of start site in GFF file
+        stop     := position of stop site in GFF file
+        name     := position of information from which the sequence name can be derived
+        truncate := determines whether or not to truncate gene-names because of spaces
+        NOTE: One is substracted from each index b/c python begin indexing at 0
+    Outputs
+        returns "gene_4col" the name of the 4 column file which is written to the current folder
+    """
 
     gff_source = open(gff,'r')
     gene_4col = gff+".gene4col"
@@ -72,11 +73,14 @@ def GFFto4col(gff,feature,f_index,c_index,start,stop,name,truncate):
     return gene_4col
 
 def FormatTime(seconds):
-    # Return a formatted string of the current time from the number of seconds that have passed since starting the program
-    # Input
-    #     seconds := number of seconds (use time.time() - start_imter)
-    # Output
-    #     current_time := formated string of time since program start
+    """
+    Return a formatted string of the current time from the number of seconds that have passed since starting the program
+    Input
+         seconds := number of seconds (use time.time() - start_imter)
+    Output
+         current_time := formated string of time since program start
+    """
+
     m,s = divmod(seconds,60)
     h,m = divmod(m,60)
     current_time = "%d:%02d:%02d" % (h, m, s)
@@ -84,6 +88,8 @@ def FormatTime(seconds):
 
 def percentile(N, percent, key=lambda x:x):
     """
+    From: http://code.activestate.com/recipes/511478/ (r1)
+
     Find the percentile of a list of values.
 
     @parameter N - is a list of values. Note N MUST BE already sorted.
@@ -119,7 +125,8 @@ print "Begin Execution  [" + FormatTime(time.time() - start_timer) + "]"
 # Help Function 
 ###
 
-if len(sys.argv) != 2: # i.e. if not arguments are passed with the command
+# Print help if asked for or if no argument given
+if len(sys.argv) != 2 or "--help" in sys.argv:
         print "Usage: pseudo_wrap.py parameter_file"
         print " Parameter file includes the following required values:"
         print "   b_out     Blast output (protein vs. genome)"
@@ -140,7 +147,7 @@ if len(sys.argv) != 2: # i.e. if not arguments are passed with the command
         print "   ml_p      Matching region proprotion to query threshold, default 0.05"
         print "   il_t      95th percentile intron length (skips calculating from gff file" 
         print "   "
-        print " Parameter file example - /home/public/script/pseudo/example/parameter"
+        print " Parameter file example - /_example_files/parameter_file"
         sys.exit(0)
 
 ###
