@@ -1,0 +1,59 @@
+==================================================
+file name: test_tblastn_tabular.out_parsed.4col.true.fa.mod.mod
+sequences:          1159
+total length:     378831 bp  (378831 bp excl N/X-runs)
+GC level:         42.41 %
+bases masked:     184577 bp ( 48.72 %)
+==================================================
+               number of      length   percentage
+               elements*    occupied  of sequence
+--------------------------------------------------
+Retroelements          419       120581 bp   31.83 %
+   SINEs:               11         1167 bp    0.31 %
+   Penelope              0            0 bp    0.00 %
+   LINEs:              113        35855 bp    9.46 %
+    CRE/SLACS            0            0 bp    0.00 %
+     L2/CR1/Rex          0            0 bp    0.00 %
+     R1/LOA/Jockey       0            0 bp    0.00 %
+     R2/R4/NeSL          0            0 bp    0.00 %
+     RTE/Bov-B           0            0 bp    0.00 %
+     L1/CIN4           110        35557 bp    9.39 %
+   LTR elements:       295        83559 bp   22.06 %
+     BEL/Pao             0            0 bp    0.00 %
+     Ty1/Copia          75        38760 bp   10.23 %
+     Gypsy/DIRS1       218        44622 bp   11.78 %
+       Retroviral        0            0 bp    0.00 %
+
+DNA transposons        125        31027 bp    8.19 %
+   hobo-Activator       22         5260 bp    1.39 %
+   Tc1-IS630-Pogo        7          896 bp    0.24 %
+   En-Spm                0            0 bp    0.00 %
+   MuDR-IS905            0            0 bp    0.00 %
+   PiggyBac              0            0 bp    0.00 %
+   Tourist/Harbinger    21         5803 bp    1.53 %
+   Other (Mirage,        0            0 bp    0.00 %
+    P-element, Transib)
+
+Rolling-circles          0            0 bp    0.00 %
+
+Unclassified:           27         6909 bp    1.82 %
+
+Total interspersed repeats:      158517 bp   41.84 %
+
+
+Small RNA:               9          874 bp    0.23 %
+
+Satellites:            117        25070 bp    6.62 %
+Simple repeats:         20          806 bp    0.21 %
+Low complexity:          3          154 bp    0.04 %
+==================================================
+
+* most repeats fragmented by insertions or deletions
+  have been counted as one element
+                                                      
+
+The query species was assumed to be viridiplantae 
+RepeatMasker version open-4.0.5 , default mode
+                                   
+run with rmblastn version 2.2.27+
+RepBase Update 20140131, RM database version 20140131

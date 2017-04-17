@@ -1,0 +1,13 @@
+b_out=test_tblastn_tabular.out
+p_seq=test_protein_sequences.fa
+g_seq=test_genome.fa
+b_filter=y
+b_data=tabular
+p_codes=../_pipeline_scripts
+o_codes=../_pipeline_scripts
+f_dir=<path to FASTA package install>
+f_prog=<tfasty program name>
+blosum=../_example_files/blosum50.matrix
+gff=test_gff
+repCut=300
+repDiv=30
