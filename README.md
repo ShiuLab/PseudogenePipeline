@@ -13,7 +13,7 @@ Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline.
 ## Useage
 
   The pipline is run using:  
-  * _wrapper_scripts/CombinedPseudoWrapper.py [parameter_file]
+  <pre><code> _wrapper_scripts/CombinedPseudoWrapper.py [parameter_file]
 
   An example parameter_file can found in in the _example_files folder
 
@@ -21,7 +21,7 @@ Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline.
   the _testcase folder using the following command from within _testcase. You will
   need to supply the path to your local FASTA install and the name of the tfasty
   program you are using in test_parameter_file.txt.
-  * python ../_wrapper_scripts/CombinedPseudoWrapper.py test_parameter_file.txt
+  <pre><code> python ../_wrapper_scripts/CombinedPseudoWrapper.py test_parameter_file.txt
 
   The test case takes about 15-30 minutes to run. Expected results of this run
   can be found in the _expected_results subfolder
