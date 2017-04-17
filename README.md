@@ -2,13 +2,15 @@
 Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline. 
 
 # Overview
-1. Requirements 
+
+## Requirements 
+
   * python (2.7 or later, not 3; https://www.python.org/downloads/)
   * python scripts in the _pipeline_scripts folder
   * RepeatMaster (http://www.repeatmasker.org/)
   * tfasty (part of the FASTA package, version 36 or later; http://faculty.virginia.edu/wrpearson/fasta/)
 
-2. Useage
+## Useage
 
   The pipline is run using:  
   * _wrapper_scripts/CombinedPseudoWrapper.py [parameter_file]
@@ -24,7 +26,7 @@ Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline.
   The test case takes about 15-30 minutes to run. Expected results of this run
   can be found in the _expected_results subfolder
 
-3. Ouput
+## Ouput
 
   The output of the pipeline is seperated into the following subfolder:
   
