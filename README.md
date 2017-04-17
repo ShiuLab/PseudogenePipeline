@@ -1,5 +1,5 @@
 # Pseudogene pipeline
-Scripts, programs and wrapper file needed to run the pseduogene pipeline. 
+Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline. 
 
 # Overview
 1. Requirements 
@@ -27,7 +27,7 @@ Scripts, programs and wrapper file needed to run the pseduogene pipeline.
 
 3. Ouput
 
-The output of the pipeline is seperated into the following subfolder:
+  The output of the pipeline is seperated into the following subfolder:
   
   * _intermediate: Intermediate files used to generate final results. These may be removed following a successful run, however if you want a list of pseudogenes generated prior to high confidence filtering and/or RepatMasker filtering they will be here
   * _logs: log files or the current rung
