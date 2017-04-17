@@ -11,26 +11,27 @@ Scripts, programs and wrapper file needed to run the pseduogene pipeline.
 
 2. Useage
 
-The pipline is run using _wrapper_scripts/CombinedPseudoWrapper.py [parameter_file]
+  The pipline is run using:  
+  * _wrapper_scripts/CombinedPseudoWrapper.py [parameter_file]
 
-An example parameter_file can found in in the _example_files folder
+  An example parameter_file can found in in the _example_files folder
 
-Additionally, a test case using chromosome 4 from A. thaliana can be run from
-the _testcase folder using the following command from within _testcase. You will
-need to supply the path to your local FASTA install and the name of the tfasty
-program you are using in test_parameter_file.txt.
-    python ../_wrapper_scripts/CombinedPseudoWrapper.py test_parameter_file.txt
+  Additionally, a test case using chromosome 4 from A. thaliana can be run from
+  the _testcase folder using the following command from within _testcase. You will
+  need to supply the path to your local FASTA install and the name of the tfasty
+  program you are using in test_parameter_file.txt.
+  * python ../_wrapper_scripts/CombinedPseudoWrapper.py test_parameter_file.txt
 
-The test case takes about 15-30 minutes to run. Expected results of this run
-can be found in the _expected_results subfolder
+  The test case takes about 15-30 minutes to run. Expected results of this run
+  can be found in the _expected_results subfolder
 
 3. Ouput
 
 The output of the pipeline is seperated into the following subfolder:
   
-  *_intermediate: Intermediate files used to generate final results. These may be removed following a successful run, however if you want a list of pseudogenes generated prior to high confidence filtering and/or RepatMasker filtering they will be here
-  *_logs: log files or the current rung
-  *_results: Output files for the final list of pseudogenes following high confidence and and RepeatMasker filtering
+  * _intermediate: Intermediate files used to generate final results. These may be removed following a successful run, however if you want a list of pseudogenes generated prior to high confidence filtering and/or RepatMasker filtering they will be here
+  * _logs: log files or the current rung
+  * _results: Output files for the final list of pseudogenes following high confidence and and RepeatMasker filtering
     1. hiConf.RMfilt/hiConf.RMfilt.cdnm - position information for pseudogenes
     2. fa.hiConf.RMfilt/fa.hiConf.RMfilt.cdnm - sequence information for pseudogenes
     3. hiConf.RMfilt.cdnm.gff - gff file with pseudogene annotations
