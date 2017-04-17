@@ -7,7 +7,6 @@ Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline.
   * python scripts in the _pipeline_scripts folder
   * RepeatMaster (http://www.repeatmasker.org/)
   * tfasty (part of the FASTA package, version 36 or later; http://faculty.virginia.edu/wrpearson/fasta/)
-    Note: The included version of tfasty was complied using "make -f ../make/Makefile.linux_sse2 all"
 
 2. Useage
 
@@ -34,5 +33,5 @@ Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline.
   * _results: Output files for the final list of pseudogenes following high confidence and and RepeatMasker filtering
     1. hiConf.RMfilt/hiConf.RMfilt.cdnm - position information for pseudogenes
     2. fa.hiConf.RMfilt/fa.hiConf.RMfilt.cdnm - sequence information for pseudogenes
-    3. hiConf.RMfilt.cdnm.gff - gff file with pseudogene annotations
-      Note: cdnm versions of the output use simplified pseudogene names.
+    3. hiConf.RMfilt.cdnm.gff - gff file with pseudogene annotations 
+      * NOTE: cdnm versions of the output use simplified pseudogene names.
