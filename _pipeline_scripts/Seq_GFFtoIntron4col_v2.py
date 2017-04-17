@@ -16,7 +16,7 @@ def OrderCoords(coor1, coor2):
         small = coor2
         big = coor1
     else:
-        print "***MINOR ERROR HERE***"
+        #print "WARNING: Intron start/end cooridnates are the same" #
         return coor1,coor2
 
     return small, big

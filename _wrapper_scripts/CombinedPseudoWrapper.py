@@ -119,6 +119,18 @@ def main():
     ### Setup
     ########
 
+    # Prepare timer  
+    start_timer = time.time()
+    print "Begin Execution  [" + FormatTime(time.time() - start_timer) + "]"
+
+    #########
+    ### Read and Check Parameter Files
+    #########
+
+    ###
+    # Help Function 
+    ###
+
     # Print help if asked for or if no argument given
     if len(sys.argv) != 2 or "--help" in sys.argv:
         print "Usage: pseudo_wrap.py parameter_file"
@@ -126,6 +138,7 @@ def main():
         print "   b_out     Blast output (protein vs. genome)"
         print "   p_seq     Query protein sequence file"
         print "   g_seq     Genome/DNA sequence"
+        print "   b_data    The type of tblastn data: tabular, blastall, or blastplus"
         print "   b_filter  Filter blast output (y) or not (n)"
         print "   p_codes   Path to pseudo pipeline scripts"
         print "   o_codes   Path to blast parser script"
@@ -143,18 +156,6 @@ def main():
         print "   "
         print " Parameter file example - /_example_files/parameter_file"
         sys.exit(0)
-
-    # Prepare timer  
-    start_timer = time.time()
-    print "Begin Execution  [" + FormatTime(time.time() - start_timer) + "]"
-
-    #########
-    ### Read and Check Parameter Files
-    #########
-
-    ###
-    # Help Function 
-    ###
 
     ###
     # Read and check parameters
@@ -174,7 +175,7 @@ def main():
         P[L[0]] = L[1]
 
     # Check if required values are missing
-    required = ["b_out","p_seq","g_seq","p_codes","b_filter","o_codes","f_dir","f_prog","blosum","gff","repCut","repDiv"]
+    required = ["b_out","p_seq","g_seq","p_codes","b_data","b_filter","o_codes","f_dir","f_prog","blosum","gff","repCut","repDiv"]
     p_missing = 0
     for i in required:
         if i not in P:
@@ -197,6 +198,21 @@ def main():
     if f_missing:
         sys.exit(0)
 
+    if not P["b_data"] == "tabular":
+
+        # If not not tabular, parse the raw tblastn data
+        print "Process tblastn to tabular format...  [" + FormatTime(time.time() - start_timer) + "]"
+        old_tblastn = P["b_out"]
+        if P["b_data"] == "blast":
+            os.system("python %s/ParseBlast.py -f parse_align2 -blast %s" % (P["p_codes"],old_tblastn))
+        # For BLAST/blastall
+        elif P["b_data"] == "blastall":
+        # For BLAST+/tblastn
+            os.system("python %s/ParseBlast_ModPanchy.py -f parse_align2_blastall -blast %s" % (P["p_codes"],old_tblastn)) 
+        elif P["b_data"] == "blastplus":
+            os.system("python %s/ParseBlast_ModPanchy.py -f parse_align2_blastPlus -blast %s" % (P["p_codes"],old_tblastn))
+        P["b_out"] = old_tblastn + ".mod"
+
     # Check that names match between genome seq, protein seq, and blast output 
     mismatch_status = "none"
     
@@ -216,6 +232,7 @@ def main():
     
     genome_names_set = set(genome_names_list)
     protein_names_set = set(protein_names_list)
+
     blast_output_proteinNames_set = set(blast_output_proteinNames)
     blast_output_contigNames_set = set (blast_output_contigNames)
     protein_coverage = float(len(blast_output_proteinNames_set.intersection(protein_names_set)))/float(len(blast_output_proteinNames_set))
@@ -448,10 +465,10 @@ def main():
     print "Repeat Masked files end with '.RMfilt'  [" + FormatTime(time.time() - start_timer) + "]"
 
     # Cleanup
-    os.system("Temp")
+    #os.system("mkdir Temp")
     #os.system("mv %s.tblastn_* Temp" % (base))
-    os.system("mv %s.4col.true.fa.mod.mod* Temp" % (base))
-    os.system("mv Temp/*count .")
+    #os.system("mv %s.4col.true.fa.mod.mod* Temp" % (base))
+    #os.system("mv Temp/*count .")
 
     # Do high confidence filter
     print "Run High-Confidence Filter... [" + FormatTime(time.time() - start_timer) + "]"
@@ -494,10 +511,25 @@ def main():
             gff_original_out.write(original_line)
         gff_source.close()
         gff_original_out.close()
-        print "GFF file with non-truncated names:" + base + ".4col.true.fa.ref %s.4col.true.RMfilt.hiConf.cdnm.origina.gff  [" + FormatTime(time.time() - start_timer) + "]"
-        print "Removing temporary genome and protein sequences files... [" + FormatTime(time.time() - start_timer) + "]"
-        os.system("rm %s" % (P["p_seq"])) 
-        os.system("rm %s" % (P["g_seq"]))
+        print "GFF file with non-truncated names:" + base + ".4col.true.RMfilt.hiConf.cdnm.original.gff  [" + FormatTime(time.time() - start_timer) + "]"
+        
+    print "Removing temporary genome and protein sequences files... [" + FormatTime(time.time() - start_timer) + "]"
+    os.system("rm %s.*" % (P["p_seq"])) 
+    os.system("rm %s.*" % (P["g_seq"]))
+
+    print "Moving intermediate files to _intermediate... [" + FormatTime(time.time() - start_timer) + "]"
+    os.system("mkdir _intermediate")
+    os.system("mv %s* _intermediate" % (P["b_out"]))
+
+    print "Move hiConf, codename and gff files to _results"
+    os.system("mkdir _results")
+    os.system("mv _intermediate/*.hiConf _results")
+    os.system("mv _intermediate/*.hiConf.cdnm _results")
+    os.system("mv _intermediate/*.hiConf.cdnm.gff _results")
+
+    print "Move log files to _logs"
+    os.system("mkdir _logs")
+    os.system("mv log* _logs")
 
     ###
     # End of section & Pipline

@@ -892,13 +892,13 @@ class blast_util:
 		seq   = 0
 		while inl != "":
 			if inl.find(tag3) != -1:
-				print "tag3:",[inl] #
+				#print "tag3:",[inl] #
 				#   1>>>xxxx xxxx aa - xxxx aa
 				#            ^^^^
 				seq1L = inl[inl.find(">>>"):].split(" ")[1]
 			# tag1 in this line
 			elif inl.find(tag1) != -1:
-				print "tag1:",[inl] #
+				#print "tag1:",[inl] #
 				foundTag1 = 1
 			# tag1 found already
 			elif foundTag1:
@@ -912,7 +912,7 @@ class blast_util:
 					for j in L:
 						if j != "":
 							tmp.append(j)
-					print "tmp1:",tmp #
+					#print "tmp1:",tmp #
 					# only take initn and on
 					for j in range(-4,0):
 						info[j+4].append(tmp[j])
@@ -921,7 +921,7 @@ class blast_util:
 					#print "tag1 end"
 					foundTag1 = 0
 			elif inl.find(tag2) != -1:
-				print "tag2:",[inl] #
+				#print  "tag2:",[inl] #
 				L = inl.split(" ")
 				# 0  1  2         3   4  5         6
 				# xx xx sw_score; id% xx (similar% (overlap)
@@ -929,7 +929,7 @@ class blast_util:
 				for j in L:
 					if j != "":
 						tmp.append(j)
-				print "tmp2:",tmp #
+				#print "tmp2:",tmp #
 				info[4].append(tmp[2][:-1])
 				info[5].append(tmp[3][:-1])
 				info[6].append(tmp[5][1:-1])
@@ -943,26 +943,26 @@ class blast_util:
 			elif foundTag2 > 0:
 				if inl[:-1] != "":
 					if inl.startswith(">") and not inl.startswith(">--"): # Account for the ">--" line in tfasty36
-						print "seq start:",foundTag2 #
+						#print "seq start:",foundTag2 # 
 						seq += 1
 					elif seq == 1:
-						print "seq1:",inl[:-1] #
+						#print "seq1:",inl[:-1] #
 						if info[8][foundTag2-1] == []:
 							info[8][foundTag2-1].append(inl[:-1])
 						else:
 							info[8][foundTag2-1][0] = \
 										info[8][foundTag2-1][0]+inl[:-1]
 					elif seq == 2:
-						print "seq2:",inl[:-1] #
+						#print "seq2:",inl[:-1] #
 						if len(info[8][foundTag2-1]) == 1:
-							print ">>" #
+							#print ">>" #
 							info[8][foundTag2-1].append(inl[:-1])
 						else:
-							print ">>>" #
+							#print ">>>" #
 							info[8][foundTag2-1][1] = \
 										info[8][foundTag2-1][1]+inl[:-1]
 				else:
-					print "tag2 end" #
+					# print "tag2 end" #
 					# reset sequence count, 0: query, 1: subject
 					seq = 0
 					

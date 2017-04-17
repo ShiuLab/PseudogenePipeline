@@ -2497,8 +2497,8 @@ class parser:
 				
 				# reset
 				olist = [""]*12
-				olist[0] = query
-				olist[1] = subj
+				olist[0] = query.strip(" ")
+				olist[1] = subj.strip(" ")
 				qL = qR = sL = sR = 0
 								
 				# rid of space
@@ -2507,13 +2507,13 @@ class parser:
 				for j in ilist:
 					if j != "":
 						tmp.append(j)
-				ilist = tmp
-				
-				# expect is the last non-empty element, make sure it doesn't
-				# start with e
-				if ilist[-1][0] == "e":
-					ilist[-1] = "1"+ilist[-1]
-				olist[10] = ilist[-1]
+				ilist = tmp				
+	
+                                # In blastplus, method is the end of this line
+                                # Instead, index expect value from front (7th value)
+                                if ilist[7][0] == "e":
+                                        ilist[7] = "1"+ilist[7]
+                                olist[10] = ilist[7].strip(",")
 				
 				# score is the second non-empty element
 				olist[11] = ilist[2]
@@ -2530,8 +2530,6 @@ class parser:
 				# alignment length and mismatch
 				mismatch = ilist[2].split("/")
 				olist[3] = mismatch[1]
-				mismatch = int(mismatch[1]) - int(mismatch[0])
-				olist[4] = "%i" % mismatch
 				# id
 				olist[2] = ilist[3][ilist[3].find("(")+1:ilist[3].find("%")]
 				# gap length, not really gap openings! 
@@ -2539,6 +2537,9 @@ class parser:
 					olist[5] = "0"
 				else:
 					olist[5] = ilist[-2][:ilist[-2].find("/")]
+				mismatch = int(mismatch[1]) - int(mismatch[0]) - int(olist[5])
+				olist[4] = "%i" % mismatch
+
 			
 			# parse coords				
 			elif inl.find("Query") != -1 or inl.find("Sbjct") != -1:
@@ -2566,8 +2567,8 @@ class parser:
 		# write the last query
 		olist[6:10] = [qL,qR,sL,sR]
 		#print olist
-                # make sure all items in olist are strings
-                olist = [str(item) for item in olist]
+                # make sure all items in olist are strings and remove trailing spaces
+                olist = [str(item.strip()) for item in olist]
 		oup.write("%s\n" % (string.joinfields(olist,"\t")))
 		
 		if flag:
@@ -2628,8 +2629,8 @@ class parser:
 				
 				# reset
 				olist = [""]*12
-				olist[0] = query
-				olist[1] = subj
+				olist[0] = query.strip(" ")
+				olist[1] = subj.strip(" ")
 				qL = qR = sL = sR = 0
 								
 				# rid of space
@@ -2661,8 +2662,6 @@ class parser:
 				# alignment length and mismatch
 				mismatch = ilist[2].split("/")
 				olist[3] = mismatch[1]
-				mismatch = int(mismatch[1]) - int(mismatch[0])
-				olist[4] = "%i" % mismatch
 				# id
 				olist[2] = ilist[3][ilist[3].find("(")+1:ilist[3].find("%")]
 				# gap length, not really gap openings! 
@@ -2670,6 +2669,9 @@ class parser:
 					olist[5] = "0"
 				else:
 					olist[5] = ilist[-2][:ilist[-2].find("/")]
+				mismatch = int(mismatch[1]) - int(mismatch[0]) - int(olist[5])
+				olist[4] = "%i" % mismatch
+
 			
 			# parse coords				
 			elif inl.find("Query:") != -1 or inl.find("Sbjct:") != -1:
@@ -2698,7 +2700,7 @@ class parser:
 		olist[6:10] = [qL,qR,sL,sR]
 		#print olist
                 # make sure all items in olist are strings
-                olist = [str(item) for item in olist]
+                olist = [str(item).strip(" ") for item in olist]
 		oup.write("%s\n" % (string.joinfields(olist,"\t")))
 		
 		if flag:
