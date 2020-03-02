@@ -3,6 +3,11 @@ Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline.
 
 # Overview
 
+## Associated publication
+
+* Zou C, Lehti-Shiu, MD, Thibaud-Nissen F, Prakash Th, Buell CR, and Shiu SH (2009) Evolutionary and Expression Signatures of Pseudogenes in Arabidopsis thaliana and Rice. Plant Physiol. 151:3-15. [pubmed](https://pubmed.ncbi.nlm.nih.gov/19641029-evolutionary-and-expression-signatures-of-pseudogenes-in-arabidopsis-and-rice/)
+* Campbell M, Law MY, Holt C, Stein J, Moghe G, Hufnagel Du, Lei J, Achawanantakun R, Jiao D, Lawrence C, Ware D, Shiu SH, Childs K, Sun Y, Jiang N, Yandell M (2014) MAKER-P: a tool-kit for the rapid creation, management, and quality control of plant genome annotations. Plant Physiol164(2):513-24 [pubmed](http://www.plantphysiol.org/content/151/1/3)
+
 ## Requirements 
 
   * python (2.7 or later, not 3; https://www.python.org/downloads/)
