@@ -13,7 +13,8 @@ Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline.
   * python 3 (https://www.python.org/downloads/)
   * python scripts in the _pipeline_scripts folder
   * RepeatMaster (http://www.repeatmasker.org/)
-  * tfasty (part of the FASTA package, version 36 or later; https://github.com/wrpearson/fasta36): Note that the GitHub version need to be compiled. Please follow the instruction in the README.
+  * tfasty (part of the FASTA package, version 36 or later; https://github.com/wrpearson/fasta36): 
+    * Note that the GitHub version need to be compiled. Please follow the instruction in the README.
 
 ## Useage
 
