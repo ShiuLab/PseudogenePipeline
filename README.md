@@ -7,14 +7,16 @@ Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline.
 
 * Zou C, Lehti-Shiu, MD, Thibaud-Nissen F, Prakash Th, Buell CR, and Shiu SH (2009) Evolutionary and Expression Signatures of Pseudogenes in Arabidopsis thaliana and Rice. Plant Physiol. 151:3-15. [pubmed](https://pubmed.ncbi.nlm.nih.gov/19641029-evolutionary-and-expression-signatures-of-pseudogenes-in-arabidopsis-and-rice/)
 * Campbell M, Law MY, Holt C, Stein J, Moghe G, Hufnagel Du, Lei J, Achawanantakun R, Jiao D, Lawrence C, Ware D, Shiu SH, Childs K, Sun Y, Jiang N, Yandell M (2014) MAKER-P: a tool-kit for the rapid creation, management, and quality control of plant genome annotations. Plant Physiol164(2):513-24 [pubmed](http://www.plantphysiol.org/content/151/1/3)
+* Lloyd JP, Tsai ZTY, Sowers RPu, Panchy NL, Shiu SH (2018) A model-based approach for identifying functional intergenic transcribed regions and non-coding RNAs. Mol. Biol. Evol. 35(6):1422-1436 [pubmed](https://pubmed.ncbi.nlm.nih.gov/29554332/) 
 
 ## Requirements 
 
   * python 3 (https://www.python.org/downloads/)
   * python scripts in the _pipeline_scripts folder
   * RepeatMaster (http://www.repeatmasker.org/)
-  * tfasty (part of the FASTA package, version 36 or later; https://github.com/wrpearson/fasta36): 
-    * Note that the GitHub version need to be compiled. Please follow the instruction in the README.
+    * A local installation of RepeatMasker is needed. Note that RepeatMasker has other dependencies.
+  * tfasty (part of the fasta36 package, version 36.0.0 or later; https://github.com/wrpearson/fasta36): 
+    * The GitHub version need to be compiled and installed. Please follow the instruction in the README for fasta36.
 
 ## Useage
 
