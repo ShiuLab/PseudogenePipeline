@@ -13,14 +13,14 @@ disOut = open(sys.argv[5], "w")   #disable_count output file (.fullyFiltered.dis
 fourOut = open(sys.argv[6], "w")  #4col format output file   (.real4col.RMfilt)
 fastaOut = open(sys.argv[7], "w") #fasta format output file  (.real4col.mod.fa.RMfilt)
 
-print "\nyour parameters:"
-print "repM: ", repM
-print "dis: ", dis
-print "four: ", four
-print "fasta: ", fasta
-print "disOut: ", disOut
-print "fourOut: ", fourOut
-print "fastaOut: ", fastaOut
+print("\nyour parameters:")
+print("repM: ", repM)
+print("dis: ", dis)
+print("four: ", four)
+print("fasta: ", fasta)
+print("disOut: ", disOut)
+print("fourOut: ", fourOut)
+print("fastaOut: ", fastaOut)
 
 
 
@@ -38,7 +38,7 @@ for line in repM:
         lineLst = line.split("\t")
         repSet.add(lineLst[1])
 
-print "set: ", len(repSet)
+print("set: ", len(repSet))
 
 #print repSet
 
@@ -85,7 +85,7 @@ for line in fasta:
 
 
 
-print "Done!"
+print("Done!")
 repM.close()
 dis.close()
 four.close()

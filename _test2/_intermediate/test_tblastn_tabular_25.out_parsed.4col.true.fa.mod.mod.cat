@@ -1,0 +1,7 @@
+## Total Sequences: 13
+## Total Length: 2991
+## Total NonMask ( excluding >20bp runs of N/X bases ): 2991
+## Total NonSub ( excluding all non ACGT bases ):2991
+RepeatMasker version 4.1.2-p1 , default mode
+run with nhmmscan version 3.2.1 (June 2018)
+RM Library: HMM-Dfam_3.3

@@ -20,7 +20,7 @@ def OrderCoords(coor1, coor2):
         small = coor2
         big = coor1
     else:
-        print "***ORDERCOORDS ERROR HERE***"
+        print("***ORDERCOORDS ERROR HERE***")
         return coor1,coor2
 
     return small, big

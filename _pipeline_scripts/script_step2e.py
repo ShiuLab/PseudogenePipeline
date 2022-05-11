@@ -1,9 +1,9 @@
 import sys, pickle
 
 if len(sys.argv) != 3:
-	print "Usage: script_step3e.py blast gapL"
-	print "       blast: filtered blast tabular output between prot and genome"
-	print "QUIT!"
+	print("Usage: script_step3e.py blast gapL")
+	print("       blast: filtered blast tabular output between prot and genome")
+	print("QUIT!")
 	sys.exit(0)
 
 
@@ -20,7 +20,7 @@ c   = 0
 cS  = 0    # count # of subjects (intergenic seq)
 while inl != "":
 	if c % 1e4 == 0:
-		print " %i x 10k" % (c/1e4)
+		print(" %i x 10k" % (c/1e4))
 	c += 1
 	
 	L  = inl.split("\t")
@@ -41,7 +41,7 @@ while inl != "":
 	inl = inp.readline()
 	
 	
-print "Number of intergenic sequences with hit:",cS
+print("Number of intergenic sequences with hit:",cS)
 
 def add(qC,sC,eV,oL,pr,v1,v2,v3,v4,v5,v6,v7):
 	qC.append([v1,v2])
@@ -57,9 +57,9 @@ c   = 0
 D2  = {}
 for i in D:                   # interg seq ID
 	if c % 1e3 == 0:
-		print " %i k" % (c/1e3)
+		print(" %i k" % (c/1e3))
 	c += 1
-	intL = D[i].keys() # intergSeqL
+	intL = list(D[i].keys()) # intergSeqL
 	intL.sort()
 	qC = []
 	sC = []
@@ -87,7 +87,7 @@ for i in D:                   # interg seq ID
 				if j < L[1]:
 					# enclosed
 					if n[0] <= L[1] or j == L[0] and n[0] >= L[1]:
-						print "1",eV[-1],n[3]
+						print("1",eV[-1],n[3])
 						# smaller e value in new one, seach upward
 						r = 0 # replace flag
 						while 1:
@@ -102,14 +102,14 @@ for i in D:                   # interg seq ID
 								# not enclosed and e value better than the one
 								# just deleted
 								else:
-									print "added1"
+									print("added1")
 									add(qC,sC,eV,oL,pr,
 										n[1],n[2],j,n[0],n[3],ori,n[4])
 								break
 							else:
 								r = 1
 								if n[0] <= L[1] or j == L[0] and n[0] >= L[1]:
-									print "del",L
+									print("del",L)
 									del(qC[-1])
 									del(sC[-1])
 									del(eV[-1])
@@ -122,28 +122,28 @@ for i in D:                   # interg seq ID
 											n[1],n[2],j,n[0],n[3],ori,n[4])
 										break										
 								else:
-									print "added2"
+									print("added2")
 									add(qC,sC,eV,oL,pr,
 										n[1],n[2],j,n[0],n[3],ori,n[4])
 									break									
 					# not enclosed
 					else:
-						print "2"
+						print("2")
 						add(qC,sC,eV,oL,pr,
 							n[1],n[2],j,n[0],n[3],ori,n[4])
 				# does not overlap but right next to each other
 				elif j-L[1] == 1:
-					print "3"
+					print("3")
 					add(qC,sC,eV,oL,pr,
 						n[1],n[2],j,n[0],n[3],ori,n[4])
 				# does not overlap but gap <= gapL
 				elif j - L[1] <= gapL:
-					print "4"
+					print("4")
 					add(qC,sC,eV,oL,pr,
 						n[1],n[2],j,n[0],n[3],ori,n[4])					
 				# does not overlap and with gap > gapL
 				else: 
-					print "5"
+					print("5")
 					cP += 1
 					if oL.find("+") != -1 and oL.find("-") != -1:
 						cO += 1
@@ -160,12 +160,12 @@ for i in D:                   # interg seq ID
 	cP+=1
 	# output last set									
 	# intergID, protID, subjtCoord, queryCoord, evalues
-	print "5"
+	print("5")
 	oup.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (i,
 											str(sC),str(qC),str(eV),oL,str(pr)))
 
 
 oup.close()
-print "Number of pseudoexons:",cP
-print "Number of PE with opp ori:",cO
-print "Done!"
+print("Number of pseudoexons:",cP)
+print("Number of PE with opp ori:",cO)
+print("Done!")

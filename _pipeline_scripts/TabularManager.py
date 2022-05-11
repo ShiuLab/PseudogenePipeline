@@ -43,11 +43,11 @@ class Tabular:
     def DiffBetween2FilesAtCol(self):
         #Import the smaller file (ref) into a list
         #itemLst = self.ExtractColFromFileIntoList(ref)
-	itemLst = []
+        itemLst = []
         for line in ref:
             if not line.startswith("#"):
                 lineLst = line.strip().split("\t")
-		itemLst.append(lineLst[ind])
+            itemLst.append(lineLst[ind])
 
         #Go through the larger file and output lines where it is not in itemLst
         for line in inp:
@@ -77,7 +77,7 @@ class Tabular:
                 lineLst = line.split("\t")
                 theSet.add(lineLst[ind])
 
-        print "%s unique items in column %s (index %s)" % (len(theSet), col, ind)
+        print("%s unique items in column %s (index %s)" % (len(theSet), col, ind))
         sys.exit(1)
 
     #Rearranges columns into a new specific order.
@@ -194,8 +194,8 @@ class Tabular:
             newDict[chromo] = self.GetIntergenicSubFunc(bigDict[chromo])
 
         #Add chromosomes without proteins on them
-        for chromo in chromoDict.keys():
-            if chromo not in bigDict.keys():
+        for chromo in list(chromoDict.keys()):
+            if chromo not in list(bigDict.keys()):
                 newDict[chromo] = [("1", chromoDict[chromo]),]
         
         #Output info
@@ -310,7 +310,7 @@ class Tabular:
 
     #takes coordinates in a file and orders them from small to big
     def OrderCoordsF(self):
-        print "in"
+        print("in")
         for line in inp:
             if not line.startswith("#"):
                 lineLst = line.strip().split("\t")
@@ -353,7 +353,7 @@ class Tabular:
                 if not lineLst[nameInd] in nameDict:
                     nameDict[lineLst[nameInd]] = (lineLst[ind], lineLst[ind+1], lineLst[chroInd])
                 else:
-                    print "/n/n/n***Major Error in RemoveOverlap!***/n/n/n"
+                    print("/n/n/n***Major Error in RemoveOverlap!***/n/n/n")
                 lastLine = lineLst
                 
         #add the last chromosome data
@@ -391,7 +391,7 @@ class Tabular:
                 if currInfo[0] == currInfo[1]:
                     doSet = False
                     doWrite = False
-                    print "ERROR: make sure this works! in RemoveOverlap TabularManager.py"
+                    print("ERROR: make sure this works! in RemoveOverlap TabularManager.py")
                 
                 #Look for overlap between currCoor and lastCoor, if found, bring
                 #currCoor and lastCoor together and call it currCoor (soon to be lastCoor)
@@ -432,7 +432,7 @@ class Tabular:
             #Print the last line of last line info
             else:
                 self.OutputInfo(lastName, lastChromo, lastCoor, lineLen)
-        print "\n%s instances of overlap found and fixed" % (overlapCnt)
+        print("\n%s instances of overlap found and fixed" % (overlapCnt))
                     
     #Used in RemoveOvelap
     def OutputInfo(self, name, chromo, coords, lineLen):
@@ -473,7 +473,7 @@ class Tabular:
 
         #output info
         newLine = "Sum: %s" % (modSum)
-        print newLine
+        print(newLine)
 
     #gets the median of all values in a column and prints the result
     def GetColMedian(self):
@@ -487,7 +487,7 @@ class Tabular:
         #get the median of the numbers
         median = self.Median(numLst)
         
-        print median
+        print(median)
 
     #filters blast by removing all but the best match to the query.
     #NOT RECIPROCAL BM!
@@ -530,7 +530,7 @@ class Tabular:
                 elif FR == "R":
                     refDict[lineLst[1].strip()] = lineLst[0]
                 else:
-                    print "\n***Error in ExtractFromRefFile!***\n"
+                    print("\n***Error in ExtractFromRefFile!***\n")
 
         return refDict
 
@@ -555,7 +555,7 @@ class Tabular:
             big = coor1
         else:
             small = coor1; big = coor2
-            print "***ERROR HERE***"
+            print("***ERROR HERE***")
 
         return small, big
 
@@ -612,7 +612,7 @@ class Tabular:
 
         #Find the actual median
         if isOdd == True:
-            print 1
+            print(1)
             median = float(newLst[len(newLst)/2])
         else:
             leftMid = newLst[(len(newLst)/2)-1]
@@ -626,100 +626,100 @@ class Tabular:
         out.write("#python %s\n" % (" ".join(sys.argv)))
         
     def Help(self):
-        print "\nDescription:"
-        print "This script is designed to do all things related to handling tabular files"
-        print "except name changing (see NameChangeManager.py) like GFF -> 4col conversion or"
-        print "replacing codes with real names (I know, I know, I consider it a"
-        print "replacement and not a name change)."
-        print "Created by David E. Hufnagel on July 17, 2012"
-        print "    -f function:"
-        print "        RemCodeName - Replaces a code name in a column with the real name"
-        print "            (or vice versa). REQ: inp, out, col, ref, FR"
-        print "        GetFastaFromName - Takes a subset of sequences from a"
-        print "            fasta file using the tablular file as the reference."
-        print "            (AKA all names in the tabular file are retained)"
-        print "            REQ: inp, out, col, ref (where inp is the fasta file"
-        print "                 and ref is the 4col file)"
-        print "        Diff - Outputs the lines that are in inp, but not in ref."
-        print "               The comparison is done on only one specified column."
-        print "               REQ: inp, out, col, ref (where inp is the bigger file"
-        print "                    and ref is the smaller file)"
-        print "        GetSizes - makes a .size file from a tabular file with"
-        print "             coordinates.  REQ: inp, out, name, col (col is the"
-        print "             col of the first coordinate and the second is"
-        print "             assumed to be at col + 1. (NOT THE INDEX)  Name is the"
-        print "             col of the name to be used for each col"
-        print "        CntUnique - counts the number of unique elements in a"
-        print "             specific column. REQ: inp, col"
-        print "        ShiftCols - Rearranges columns into a new"
-        print "             specific order. REQ: inp, out, cols"
-        print "        GetNotInGff - puts the names of items not in a gff file"
-        print "             into an output file with one line per item name."
-        print "             REQ: inp, out, cols, ref (where inp is the tabular"
-        print "             file to parse through and ref is the gff file)"
-        print "        GetIntergenic - Makes a 4col file, in the format gene,"
-        print "             chromo, start, end, from a protein file with"
-        print "             coordinates. Includes empty chromos and regions between"
-        print "             chromo starts/stops and protein starts/stops. REQ: inp,"
-        print "             out, col, ref, spe (col is the"
-        print "             col of the first coordinate and the second is"
-        print "             assumed to be at col + 1. (NOT THE INDEX) (ref is"
-        print "             a genomic chromosome .size file)"
-        print "        GetIntergenicStrict - Makes a 4col file, in the format gene,"
-        print "             chromo, start, end, from a protein file with"
-        print "             coordinates. Without empty chromos and regions between"
-        print "             chromo starts/stops and protein starts/stops. REQ: inp,"
-        print "             out, col, spe (col is the"
-        print "             col of the first coordinate and the second is"
-        print "             assumed to be at col + 1. (NOT THE INDEX)"
-        print "        FilterColByThresh - Filters a file by a threshold at a"
-        print "             specific column.  REQ: inp, out, col, thresh, threshAct"
-        print "        RemoveSelfBlast - removes self-self matches in an m8 tabular BLAST"
-        print "             output file. REQ: inp, out"
-        print "        BestMatchBlast - filters blast by removing all but the"
-        print "             best match to the query. NOT RECIPROCAL BM! REQ: inp, out"
-        print "        AddStrToCol - Concatenates a string to the"
-        print "             start of a col REQ: inp, out, col, string"
-        print "        OrderCoords - takes coordinates and orders them from small"
-        print "             to big REQ: inp, out, col (col is the"
-        print "             col of the first coordinate and the second is"
-        print "             assumed to be at col + 1. (NOT THE INDEX))"
-        print "        RemoveByKeyword - removes lines containing keywords at a given"
-        print "             column. REQ: inp, out, col, string (string is the keyword)"
-        print "        RemoveOverlap - takes a tabular file and concatenates features that"
-        print "             overlap with each other and separates the names with a '_'"
-        print "             Does not retain features other than name, chromo and coords."
-        print "             REQ: inp, out, col, name, chroCol"
-        print "        GetColSum - adds up all values in a column and prints the result"
-        print "             REQ: inp, col (col is in number form and NOT AN INDEX)"
-        print "        GetColMedian - gets the median of all values in a column and prints the result"
-        print "             REQ: inp, col (col is in number form and NOT AN INDEX)"
-        print "        RemoveNotInFasta - removes lines from a tabular file that don't"
-        print "             match fasta names REQ: inp, ref, out, col (inp is the tabular"
-        print "             file and ref is the fasta file)"
-        print "        Make4col - makes a 4col from a file with names in it and"
-        print "             a 4col where the first file is a subset of the 4col."
-        print "             REQ: inp, ref, out, col (where inp is the file with names,"
-        print "             col is the column where the names can be found and ref is the"
-        print "             greater 4col file"
-        print "    -inp - the input file to be modified."
-        print "    -out - the modified output file."
-        print "    -col - the column to work with (number form, NOT AN INDEX)"
-        print "    -cols - the columns to work with.  Comma seperated."
-        print "        (number form, NOT AN INDEX)"
-        print "    -ref - a reference file for remCodeName"
-        print "    -FR - Forward or Reverse (for remCodeName: F = names matching the 1st col"
-        print "        of the reference file are to be replaced with names matching the"
-        print "        second. R = vice versa)"
-        print "    -name - the column of a name (number form, NOT AN INDEX)"
-        print "    -spe - A 2 character species code"
-        print "    -thresh - A threshold for filtering"
-        print "    -threshAct - the action to take for the threshold options:"
-        print "        G,GE,L,LE which stand for greater than, greater or equal"
-        print "        to, lesser than and lesser than or equal to respecively."
-        print "        in other words, what to keep."
-        print "    -string - a general purpose string"
-        print "    -chroCol - the column where the chromosome name is contained"
+        print("\nDescription:")
+        print("This script is designed to do all things related to handling tabular files")
+        print("except name changing (see NameChangeManager.py) like GFF -> 4col conversion or")
+        print("replacing codes with real names (I know, I know, I consider it a")
+        print("replacement and not a name change).")
+        print("Created by David E. Hufnagel on July 17, 2012")
+        print("    -f function:")
+        print("        RemCodeName - Replaces a code name in a column with the real name")
+        print("            (or vice versa). REQ: inp, out, col, ref, FR")
+        print("        GetFastaFromName - Takes a subset of sequences from a")
+        print("            fasta file using the tablular file as the reference.")
+        print("            (AKA all names in the tabular file are retained)")
+        print("            REQ: inp, out, col, ref (where inp is the fasta file")
+        print("                 and ref is the 4col file)")
+        print("        Diff - Outputs the lines that are in inp, but not in ref.")
+        print("               The comparison is done on only one specified column.")
+        print("               REQ: inp, out, col, ref (where inp is the bigger file")
+        print("                    and ref is the smaller file)")
+        print("        GetSizes - makes a .size file from a tabular file with")
+        print("             coordinates.  REQ: inp, out, name, col (col is the")
+        print("             col of the first coordinate and the second is")
+        print("             assumed to be at col + 1. (NOT THE INDEX)  Name is the")
+        print("             col of the name to be used for each col")
+        print("        CntUnique - counts the number of unique elements in a")
+        print("             specific column. REQ: inp, col")
+        print("        ShiftCols - Rearranges columns into a new")
+        print("             specific order. REQ: inp, out, cols")
+        print("        GetNotInGff - puts the names of items not in a gff file")
+        print("             into an output file with one line per item name.")
+        print("             REQ: inp, out, cols, ref (where inp is the tabular")
+        print("             file to parse through and ref is the gff file)")
+        print("        GetIntergenic - Makes a 4col file, in the format gene,")
+        print("             chromo, start, end, from a protein file with")
+        print("             coordinates. Includes empty chromos and regions between")
+        print("             chromo starts/stops and protein starts/stops. REQ: inp,")
+        print("             out, col, ref, spe (col is the")
+        print("             col of the first coordinate and the second is")
+        print("             assumed to be at col + 1. (NOT THE INDEX) (ref is")
+        print("             a genomic chromosome .size file)")
+        print("        GetIntergenicStrict - Makes a 4col file, in the format gene,")
+        print("             chromo, start, end, from a protein file with")
+        print("             coordinates. Without empty chromos and regions between")
+        print("             chromo starts/stops and protein starts/stops. REQ: inp,")
+        print("             out, col, spe (col is the")
+        print("             col of the first coordinate and the second is")
+        print("             assumed to be at col + 1. (NOT THE INDEX)")
+        print("        FilterColByThresh - Filters a file by a threshold at a")
+        print("             specific column.  REQ: inp, out, col, thresh, threshAct")
+        print("        RemoveSelfBlast - removes self-self matches in an m8 tabular BLAST")
+        print("             output file. REQ: inp, out")
+        print("        BestMatchBlast - filters blast by removing all but the")
+        print("             best match to the query. NOT RECIPROCAL BM! REQ: inp, out")
+        print("        AddStrToCol - Concatenates a string to the")
+        print("             start of a col REQ: inp, out, col, string")
+        print("        OrderCoords - takes coordinates and orders them from small")
+        print("             to big REQ: inp, out, col (col is the")
+        print("             col of the first coordinate and the second is")
+        print("             assumed to be at col + 1. (NOT THE INDEX))")
+        print("        RemoveByKeyword - removes lines containing keywords at a given")
+        print("             column. REQ: inp, out, col, string (string is the keyword)")
+        print("        RemoveOverlap - takes a tabular file and concatenates features that")
+        print("             overlap with each other and separates the names with a '_'")
+        print("             Does not retain features other than name, chromo and coords.")
+        print("             REQ: inp, out, col, name, chroCol")
+        print("        GetColSum - adds up all values in a column and prints the result")
+        print("             REQ: inp, col (col is in number form and NOT AN INDEX)")
+        print("        GetColMedian - gets the median of all values in a column and prints the result")
+        print("             REQ: inp, col (col is in number form and NOT AN INDEX)")
+        print("        RemoveNotInFasta - removes lines from a tabular file that don't")
+        print("             match fasta names REQ: inp, ref, out, col (inp is the tabular")
+        print("             file and ref is the fasta file)")
+        print("        Make4col - makes a 4col from a file with names in it and")
+        print("             a 4col where the first file is a subset of the 4col.")
+        print("             REQ: inp, ref, out, col (where inp is the file with names,")
+        print("             col is the column where the names can be found and ref is the")
+        print("             greater 4col file")
+        print("    -inp - the input file to be modified.")
+        print("    -out - the modified output file.")
+        print("    -col - the column to work with (number form, NOT AN INDEX)")
+        print("    -cols - the columns to work with.  Comma seperated.")
+        print("        (number form, NOT AN INDEX)")
+        print("    -ref - a reference file for remCodeName")
+        print("    -FR - Forward or Reverse (for remCodeName: F = names matching the 1st col")
+        print("        of the reference file are to be replaced with names matching the")
+        print("        second. R = vice versa)")
+        print("    -name - the column of a name (number form, NOT AN INDEX)")
+        print("    -spe - A 2 character species code")
+        print("    -thresh - A threshold for filtering")
+        print("    -threshAct - the action to take for the threshold options:")
+        print("        G,GE,L,LE which stand for greater than, greater or equal")
+        print("        to, lesser than and lesser than or equal to respecively.")
+        print("        in other words, what to keep.")
+        print("    -string - a general purpose string")
+        print("    -chroCol - the column where the chromosome name is contained")
 
         sys.exit(0)
         
@@ -749,8 +749,8 @@ for i in range(1,len(sys.argv),2):
     elif sys.argv[i] == "-FR":
         FR = sys.argv[i+1]
         if FR not in FRList:
-            print "error: improper FR!:",sys.argv[i+1]
-            print "add -h to get help"
+            print("error: improper FR!:",sys.argv[i+1])
+            print("add -h to get help")
             sys.exit(0)
         elif FR == "f":
             FR == "F"
@@ -765,30 +765,30 @@ for i in range(1,len(sys.argv),2):
     elif sys.argv[i] == "-cols":
         cols = sys.argv[i+1].split(",")
         if 0 in cols:
-            print "error: improper cols!:", sys.argv[i+1]
-            print "add -h to get help"
+            print("error: improper cols!:", sys.argv[i+1])
+            print("add -h to get help")
             sys.exit(0)
     elif sys.argv[i] == "-spe":
         spe = sys.argv[i+1]
         if len(spe) != 2:
-            print "error: improper spe!:", sys.argv[i+1]
-            print "add -h to get help"
+            print("error: improper spe!:", sys.argv[i+1])
+            print("add -h to get help")
             sys.exit(0)
     elif sys.argv[i] == "-thresh":
         thresh = float(sys.argv[i+1])
     elif sys.argv[i] == "-threshAct":
         threshAct = sys.argv[i+1]
         if threshAct not in TAoptions:
-            print "error: improper threshAct!:", sys.argv[i+1]
-            print "add -h to get help"
+            print("error: improper threshAct!:", sys.argv[i+1])
+            print("add -h to get help")
             sys.exit(0)
     elif sys.argv[i] == "-string":
         string = sys.argv[i+1]
     elif sys.argv[i] == "-h":
         TB.Help()
     else:
-        print "UNKNOWN FLAG:",sys.argv[i]
-        print "add -h to get help."
+        print("UNKNOWN FLAG:",sys.argv[i])
+        print("add -h to get help.")
         sys.exit(0)
     isEmpty = False
 
@@ -800,7 +800,7 @@ if isEmpty == True:
 #functions without an output file
 if function == "CntUnique" or function == "cntUnique":
     if inp == "" or col == 0:
-        print "\n***missing parameter(s) REQ: inp, col***\n"
+        print("\n***missing parameter(s) REQ: inp, col***\n")
         TB.Help()
     TB.CntUnique()
 
@@ -808,95 +808,95 @@ if function == "CntUnique" or function == "cntUnique":
 TB.WriteCallLine()
 if function == "RemCodeName" or function == "remCodeName":
     if inp == "" or out == "temp" or col == 0 or ref == "" or FR == "":
-        print "\n***missing parameter(s) REQ: inp, out, col, ref, FR***\n"
+        print("\n***missing parameter(s) REQ: inp, out, col, ref, FR***\n")
         TB.Help()
     TB.ReplaceNameWCodeName()
 elif function == "GetFastaFromName" or function == "getFastaFromName":
     if inp == "" or out == "temp" or col == 0 or ref == "":
-        print "\n***missing parameter(s) REQ: inp, out, col, ref***\n"
+        print("\n***missing parameter(s) REQ: inp, out, col, ref***\n")
         TB.Help()
     TB.GetFastaFromName()
 elif function == "Diff" or function == "diff":
     if inp == "" or out == "temp" or col == 0 or ref == "":
-        print "\n***missing parameter(s) REQ: inp, out, col, ref***\n"
+        print("\n***missing parameter(s) REQ: inp, out, col, ref***\n")
         TB.Help()
     TB.DiffBetween2FilesAtCol()
 elif function == "GetSizes" or function == "Getsizes" or function == "getSizes" or function == "getsizes":
     if inp == "" or out == "temp" or name == -1 or col == 0:
-        print "\n***missing parameter(s) REQ: inp, out, name, col***\n"
+        print("\n***missing parameter(s) REQ: inp, out, name, col***\n")
         TB.Help()
     TB.GetSizes()
 elif function == "ShiftCols" or function == "shiftCols":
     if inp == "" or out == "temp" or cols == "":
-        print "\n***missing parameter(s) REQ: inp, out, cols***\n"
+        print("\n***missing parameter(s) REQ: inp, out, cols***\n")
         TB.Help()
     TB.RearrangeColumns()
 elif function == "GetNotInGff" or function == "getNotInGff":
     if inp == "" or out == "temp" or cols == "" or ref == "":
-        print "\n***missing parameter(s) REQ: inp, out, cols, ref***\n"
+        print("\n***missing parameter(s) REQ: inp, out, cols, ref***\n")
         TB.Help()
     TB.GetNotInGff()
 elif function == "GetIntergenic" or function == "getIntergenic":
     if inp == "" or out == "temp" or ref == "" or col == 0:
-        print "\n***missing parameter(s) REQ: inp, out, ref, col***\n"
+        print("\n***missing parameter(s) REQ: inp, out, ref, col***\n")
         TB.Help()
     FR = "F" #see ExtractFromRefFile()
     TB.GetIntergenic()
 elif function == "GetIntergenicStrict" or function == "getIntergenicStrict":
     if inp == "" or out == "temp" or col == 0:
-        print "\n***missing parameter(s) REQ: inp, out, col***\n"
+        print("\n***missing parameter(s) REQ: inp, out, col***\n")
         TB.Help()
     FR = "F" #see ExtractFromRefFile()
     TB.GetIntergenicStrict()
 elif function == "FilterColByThresh" or function == "filterColByThresh":
     if inp == "" or out == "temp" or col == 0 or thresh == "" or threshAct == "":
-        print "\n***missing parameter(s) REQ: inp, out, col, thresh, threshAct***\n"
+        print("\n***missing parameter(s) REQ: inp, out, col, thresh, threshAct***\n")
         TB.Help()
     TB.FilterColByThresh()
 elif function == "RemoveSelfBlast" or function == "removeSelfBlast":
     if inp == "" or out == "temp":
-        print "\n***missing parameter(s) REQ: inp, out***\n"
+        print("\n***missing parameter(s) REQ: inp, out***\n")
         TB.Help()
     TB.RemoveSelfBlast()
 elif function == "AddStrToCol" or function == "addStrToCol":
     if inp == "" or out == "temp" or col == 0 or string == "":
-        print "\n***missing parameter(s) REQ: inp, out, col, string***\n"
+        print("\n***missing parameter(s) REQ: inp, out, col, string***\n")
         TB.Help()
     TB.AddStrToCol()
 elif function == "OrderCoords" or function == "orderCoords":
     if inp == "" or out == "temp" or col == 0:
-        print "\n***missing parameter(s) REQ: inp, out, col***\n"
+        print("\n***missing parameter(s) REQ: inp, out, col***\n")
         TB.Help()
     TB.OrderCoordsF()
 elif function == "RemoveByKeyword" or function == "removeByKeyword":
     if inp == "" or out == "temp" or col == 0 or string == "":
-        print "\n***missing parameter(s) REQ: inp, out, col, string***\n"
+        print("\n***missing parameter(s) REQ: inp, out, col, string***\n")
         TB.Help()
     TB.RemoveByKeyword()
 elif function == "RemoveOverlap" or function == "removeOverlap":
     if inp == "" or out == "temp" or col == 0 or name == "" or chroCol == 0:
-        print "\n***missing parameter(s) REQ: inp, out, col, name,chroCol***\n"
+        print("\n***missing parameter(s) REQ: inp, out, col, name,chroCol***\n")
         TB.Help()
     TB.RemoveOverlap()
 elif function == "GetColSum" or function == "getColSum":
     if inp == "" or col == 0:
-        print "\n***missing parameter(s) REQ: inp, col ***\n"
+        print("\n***missing parameter(s) REQ: inp, col ***\n")
         TB.Help()
     TB.GetColSum()
 elif function == "GetColMedian" or function == "getColMedian":
     if inp == "" or col == 0:
-        print "\n***missing parameter(s) REQ: inp, col ***\n"
+        print("\n***missing parameter(s) REQ: inp, col ***\n")
         TB.Help()
     TB.GetColMedian()
 elif function == "BestMatchBlast" or function == "bestMatchBlast":
     if inp == "" or out == "temp":
-        print "\n***missing parameter(s) REQ: inp, out***\n"
+        print("\n***missing parameter(s) REQ: inp, out***\n")
         TB.Help()
     TB.BestMatchBlast()
 elif function == "Make4col" or function == "make4col":
     if inp == "" or out == "temp" or col == 0 or ref == "":
-        print "\n***missing parameter(s) REQ: inp, out, col, ref***\n"
+        print("\n***missing parameter(s) REQ: inp, out, col, ref***\n")
         TB.Help()
     TB.Make4col()
 else:
-    print "\n***unknown function: need more functionality***\n"
+    print("\n***unknown function: need more functionality***\n")

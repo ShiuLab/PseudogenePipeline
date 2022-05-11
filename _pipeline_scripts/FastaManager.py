@@ -27,38 +27,38 @@ class fasta_manager:
 	#
 	def mask(self,fasta,coords):
 		
-		print "Read fasta into dict..."
+		print("Read fasta into dict...")
 		F = self.fasta_to_dict(fasta,dflag=0)
 		
-		print "Read coords into dict..."
+		print("Read coords into dict...")
 		C   = {}
 		inp = open(coords)
 		inl = inp.readline()
 		while inl != "":
 			L = inl.split("\t")
-			if C.has_key(L[0]):
+			if L[0] in C:
 				C[L[0]].append([int(L[1]),int(L[2])])
 			else:
 				C[L[0]] = [[int(L[1]),int(L[2])]]
 			inl = inp.readline()
 		
-		print "Concatenate seq..."
+		print("Concatenate seq...")
 		for i in C:
-			if F.has_key(i):
-				print "",i,"%i features" % len(C[i])
+			if i in F:
+				print("",i,"%i features" % len(C[i]))
 				c = 0
 				for j in C[i]:
 					if c % 100 == 0:
-						print " %i x100" % (c/100)
+						print(" %i x100" % (c/100))
 					c += 1
 					F[i] = "%s%s%s" % \
 							(F[i][:j[0]-1],"N"*(j[1]-j[0]+1),F[i][j[1]:])
 			else:
-				print "SEQ ABSENT:",i
+				print("SEQ ABSENT:",i)
 		
-		print "Write sequences..."
+		print("Write sequences...")
 		self.dict_to_fasta(F,fasta+".mask")
-		print "Done!"
+		print("Done!")
 		
 		
 	def dict_to_fasta(self,fdict,fname):
@@ -89,9 +89,9 @@ class fasta_manager:
 	##
 	def get_stretch2(self,fasta,coords,call=0,isfile=0):
 		
-		print "Fasta   :",fasta
-		print "Coord   :",coords
-		print "isfile  :",isfile
+		print("Fasta   :",fasta)
+		print("Coord   :",coords)
+		print("isfile  :",isfile)
 
 		# check if coord is a file
 		if isfile:
@@ -106,7 +106,7 @@ class fasta_manager:
 				order[int(L[0])] = int(L[1])
 				inl = inp.readline()
 			
-			okeys = order.keys()
+			okeys = list(order.keys())
 			okeys.sort()
 			clist = []
 			for i in okeys:
@@ -177,13 +177,13 @@ class fasta_manager:
 					#print " store->",[ostr]
 					
 					if saved % 10000 == 0:
-						print " %i x 10k" % (saved/10000)
+						print(" %i x 10k" % (saved/10000))
 					saved += 1
 					
 					# deal with coords in reverse
 					if int(clist[0]) > int(clist[1]):
 						ostr = trans.rc(ostr)
-						print "rc:",[ostr]
+						print("rc:",[ostr])
 					
 					odict["%s|%s" % (clist[0],clist[1])] = ostr					
 					# reset everything
@@ -213,7 +213,7 @@ class fasta_manager:
 			for i in odict:
 				oup.write(">%s_%s\n%s" % (idx,i,odict[i]))
 				
-			print "Done!"		
+			print("Done!")		
 	
 	# for multiple chr, derived from get_stretch3.
 	# 2/24/12, coordinates used to be [chr][L][R] or can be multiple coordinates
@@ -225,7 +225,7 @@ class fasta_manager:
 	#               (1) or not (0, default)
 	def get_stretch4(self,fasta,coords,seqid):
 		
-		print "Sequence to dict..."
+		print("Sequence to dict...")
 		seq = self.fasta_to_dict(fasta,0)
 		# fasta_to_dict got rid of "\n" already
 	
@@ -234,14 +234,14 @@ class fasta_manager:
 		c = 0 # count total
 		m = 0 # count not in fasta
 		if coords.find(",") == -1:
-			print "Read coordinates..."
+			print("Read coordinates...")
 			inp = open(coords)
 			oup = open(coords+".fa","w")
 			oup2= open(coords+".missing","w")
 			inl = inp.readline()
 			while inl != "":    # Go through each coord
 				if c % 1000 == 0:
-					print " %i k" % (c/1000)
+					print(" %i k" % (c/1000))
 				c  += 1
 				L  = inl.strip().split("\t")
 				seqName = L[0]	# Sequnece name
@@ -260,7 +260,7 @@ class fasta_manager:
 								S = seq[seqName][cL-1:cR]
 	
 							if S == "":
-								print "ERR COORD: %s,[%i,%i]" % (seqName,cL,cR)
+								print("ERR COORD: %s,[%i,%i]" % (seqName,cL,cR))
 							else:
 								if ori == -1:
 									S = trans.rc(S)
@@ -289,22 +289,22 @@ class fasta_manager:
 									S += seq[seqName][cL-1:cR]
 							oup.write(">%s|%s\n%s\n" % (seqName,"-".join(coordList),S))
 						else:
-							print "Unknown cooord format:",L
-							print "Quit!"
+							print("Unknown cooord format:",L)
+							print("Quit!")
 							sys.exit(0)
 
 				else:
 					m += 1
 					oup2.write(inl)
 				inl = inp.readline()
-			print "Total coords:",c
-			print "Not in seq  :",m
+			print("Total coords:",c)
+			print("Not in seq  :",m)
 			oup2.close()
 
 		# coordinates are passed
 		else:
 			coords = coords.split(",")
-			print "Coords:",coords
+			print("Coords:",coords)
 			oup = open("%s_%s.fa" % (fasta,"-".join(coords)),"w")
 			C = []
 			for i in coords:
@@ -316,7 +316,7 @@ class fasta_manager:
 				oup.write(">%s\n%s\n" % (i,s))
 					
 		oup.close()
-		print "Done!"		
+		print("Done!")		
 		
 	#
 	# Well... get_strech2 is problematic when overlapping sequences are needed.
@@ -330,7 +330,7 @@ class fasta_manager:
 	#
 	def get_stretch3(self,fasta,coords):
 		
-		print "Covert fasta into a string..."
+		print("Covert fasta into a string...")
 		inp = open(fasta)
 		inl = inp.readlines()
 		idx = self.rmlb(inl[0])[1:]
@@ -341,17 +341,17 @@ class fasta_manager:
 			seq = string.joinfields(seq.split("\r\n"),"")
 		if seq.find("\n") != -1:
 			seq = string.joinfields(seq.split("\n"),"")
-		print len(seq)
+		print(len(seq))
 		
-		print "Read coords and output seq..."
+		print("Read coords and output seq...")
 		inp = open(coords)
 		oup = open(coords+".fa","w")
 		inl = inp.readline()
 		c = 0
 		while inl != "":
-			print [inl]
+			print([inl])
 			if c % 10000 == 0:
-				print " %i x 10k" % (c/10000)
+				print(" %i x 10k" % (c/10000))
 			c += 1
 			L = inl.split("\t")
 			
@@ -366,7 +366,7 @@ class fasta_manager:
 			
 			S = seq[cL-1:cR]
 			if S == "":
-				print "ERR COORD: [%i,%i]" % (cL,cR)
+				print("ERR COORD: [%i,%i]" % (cL,cR))
 			else:
 				if ori == 1:
 					oup.write(">%s|%i-%i\n%s\n" % (idx,cL,cR,S))
@@ -377,7 +377,7 @@ class fasta_manager:
 						
 			inl = inp.readline()
 		
-		print "Done!"
+		print("Done!")
 		
 
 	##
@@ -391,7 +391,7 @@ class fasta_manager:
 		while inl != "":
 			if inl[0] == ">":
 				if inl.find(" ") == -1 or inl.find("-") == -1:
-					print "Wrong descriptor format, Quit!"
+					print("Wrong descriptor format, Quit!")
 					sys.exit(0)
 					
 				L = inl.split(" ")
@@ -412,7 +412,7 @@ class fasta_manager:
 	# @style  coord connected to id via underscore: 0 [default], or space [1]
 	def delete_coord(self,fasta,style):
 
-		print "NOT SURE THIS IS WORKING YET"
+		print("NOT SURE THIS IS WORKING YET")
 
 		inp = open(fasta,"r")
 		oup = open(fasta+".mod.fa","w")
@@ -463,7 +463,7 @@ class fasta_manager:
 				pass
 			elif inl[0] == ">":
 				if verbose and c%1e3 == 0:
-					print " %i k" % (c/1e3)
+					print(" %i k" % (c/1e3))
 				c += 1
 				# rid of anything after space if asked
 				if dflag and inl.find(" ") != -1:
@@ -486,25 +486,25 @@ class fasta_manager:
 						break
 				seq = "".join(slist)
 				
-				if fdict.has_key(idx):
+				if idx in fdict:
 					if verbose:
-						print "Redundant_id:",idx,
+						print("Redundant_id:",idx, end=' ')
 					if dflag:
 						if len(fdict[idx][1]) < len(seq):
 							fdict[idx] = [desc,seq]
 							if verbose:
-								print "longer"
+								print("longer")
 						else:
 							if verbose:
-								print "shorter"
+								print("shorter")
 					else:
 						if len(fdict[idx]) < len(seq):
 							fdict[idx] = seq
 							if verbose:
-								print "longer"
+								print("longer")
 						else:
 							if verbose:
-								print "shorter"
+								print("shorter")
 				else:
 					N += 1
 					if dflag:
@@ -518,7 +518,7 @@ class fasta_manager:
 				inl = inp.readline()
 		inp.close()
 		if verbose:
-			print "Total %i sequences, %i with non-redun names" % (c,N)
+			print("Total %i sequences, %i with non-redun names" % (c,N))
 		
 		return fdict
 
@@ -526,10 +526,10 @@ class fasta_manager:
 	# @param t  Truncated or not, default no.
 	def fasta_to_phylip(self,fasta,t=0):
 		
-		print "To oneline..."
+		print("To oneline...")
 		self.fasta_to_oneline(fasta)
 		
-		print "To phylip..."
+		print("To phylip...")
 		inp = open(fasta+".pep")
 		oup = open(fasta+".phylip","w")
 		inl = inp.readlines()
@@ -554,7 +554,7 @@ class fasta_manager:
 			n = L[0]
 			if t:
 				if len(n) > 10:
-					print "Truncate name:",n
+					print("Truncate name:",n)
 					n = n[:10]
 				oup.write("%s%s%s\n" % (n," "*(10-len(n)+1),L[1]))
 			else:
@@ -562,7 +562,7 @@ class fasta_manager:
 			
 		inp.close()
 		oup.close()
-		print "Done!"
+		print("Done!")
 
 	#
 	# This is mainly done for HMMER3...
@@ -588,7 +588,7 @@ class fasta_manager:
 		oup = open(fasta+".stockholm","w")
 		oup.write("# STOCKHOLM 1.0\n\n")
 		
-		nkeys = fa.keys()
+		nkeys = list(fa.keys())
 		nkeys.sort()
 		for i in range(nblc):
 			for j in nkeys:
@@ -611,9 +611,9 @@ class fasta_manager:
 	##
 	def get_sp(self,fasta,species):
 
-		print "Get sequences for a particular species:"
-		print " Fasta  :",fasta
-		print " Species:",species
+		print("Get sequences for a particular species:")
+		print(" Fasta  :",fasta)
+		print(" Species:",species)
 		
 		inp = open(fasta,"r")
 		oup = open(fasta+".%s.fa" % species,"w")
@@ -634,7 +634,7 @@ class fasta_manager:
 				oup.write(inl)       
 			inl = inp.readline()
 
-		print "Total %i sequences" % c
+		print("Total %i sequences" % c)
 
 	##
 	# Count the number of sequences for species specified
@@ -643,14 +643,14 @@ class fasta_manager:
 	# @sp     Species header file, each line one species.
 	##
 	def count_sp(self,fasta,sp):
-		print "Read species info into a dict..."
+		print("Read species info into a dict...")
 		inp = open(sp)
 		inl = inp.readlines()
 		S   = {}
 		for i in inl:
 			S[i.strip()] = 0
 		
-		print "Go through fasta..."
+		print("Go through fasta...")
 		inp = open(fasta)
 		inl = inp.readline()
 		while inl != "":
@@ -661,20 +661,20 @@ class fasta_manager:
 					if j in n:
 						sp.append(j)
 				if len(sp) == 0:
-					print " No sp definition:",n
+					print(" No sp definition:",n)
 				elif len(sp) >1:
-					print " Ambiguous",n,sp
+					print(" Ambiguous",n,sp)
 				else:
 					S[sp[0]] += 1
 			
 			inl = inp.readline()
 		
-		print "Generate output..."
+		print("Generate output...")
 		oup = open(fasta+".sp_count","w")
 		for i in S:
 			oup.write("%s\t%s\n" % (i,S[i]))
 		
-		print "Done!"
+		print("Done!")
 	
 	#
 	# Convert GFF to coord file
@@ -702,14 +702,14 @@ class fasta_manager:
 			elif T[-1] != "":			# no name tag but not empty, use 1st
 				N = n[0].split("=")[1]
 			else:
-				print "No desc:",T
+				print("No desc:",T)
 			
 			if N != "":
 				oup.write("%s\t%s\t%s\t%s\n" % (C,L,R,N))
 				
 			inl = inp.readline()
 			
-		print "Done!"
+		print("Done!")
 
 
 	#
@@ -722,7 +722,7 @@ class fasta_manager:
 			if i[-3:] == ".fa" or i[-6:] == ".fasta":	
 				self.rename2("%s/%s" % (targetDir,i),name,"")
 
-		print "rename_all done!"
+		print("rename_all done!")
 		
 	#
 	# New rename function. But this function is not so good. It's slow and
@@ -730,10 +730,10 @@ class fasta_manager:
 	#
 	def rename2(self,fasta,name,ignore=""):
 		
-		print "Read fasta file:",fasta
+		print("Read fasta file:",fasta)
 		fdict = manager.fasta_to_dict(fasta,0)
 				
-		print "Rename sequence..."
+		print("Rename sequence...")
 		inp = open(name,"r")
 		inl = inp.readline()
 		oup = open(fasta+"_rename.fa","w")
@@ -745,11 +745,11 @@ class fasta_manager:
 		while inl != "":
 			countN += 1
 			inl = inl.strip().split("\t")
-			if fdict.has_key(inl[1]):
+			if inl[1] in fdict:
 				countS += 1
 				oup.write(">%s\n%s\n" % (inl[0],fdict[inl[1]]))
 
-				if ndict.has_key(inl[1]):
+				if inl[1] in ndict:
 					ndict[inl[1]]+= 1
 				else:
 					ndict[inl[1]] = 1
@@ -768,11 +768,11 @@ class fasta_manager:
 			if ndict[i] > 1:
 				oup.write(" %s: %i\n" % (i,ndict[i]))
 		
-		print "Fasta: %i entries, %i with new name" % (len(fdict.keys()),countS)
-		print "Name : %i entries, %i unique, %i not in fasta" % \
-				(countN,len(ndict.keys()),len(absent))
+		print("Fasta: %i entries, %i with new name" % (len(list(fdict.keys())),countS))
+		print("Name : %i entries, %i unique, %i not in fasta" % \
+				(countN,len(list(ndict.keys())),len(absent)))
 		
-		print "Done!"
+		print("Done!")
 		
 
 	##
@@ -792,13 +792,13 @@ class fasta_manager:
 		countR = 0
 		found = 0
 		
-		print "Read name file..."
+		print("Read name file...")
 		oup_log = open(fasta+"_rename.log","w")
 		oup_log.write("Redundant names:\n")
 		while inl != "":
 			inl = self.rmlb(inl)
 			L = inl.split("\t")
-			if ndict.has_key(L[1].lower()):
+			if L[1].lower() in ndict:
 				oup_log.write(" %s\n" % L[1])
 				found = 1
 				countR = countR+1
@@ -806,10 +806,10 @@ class fasta_manager:
 				ndict[L[1].lower()] = L[0]
 			inl = inp.readline()
 		if not found:
-			print " none"
+			print(" none")
 
 		# scan fasta descriptor line
-		print "Read fasta file and change names..."
+		print("Read fasta file and change names...")
 		inp    = open(fasta,"r")
 		oup    = open(fasta+"_rename.fa","w")
 		inl = inp.readline()
@@ -820,7 +820,7 @@ class fasta_manager:
 			if inl[0] == ">":
 				inl = self.rmlb(inl)
 				if ignore == "" or inl.find(ignore) == -1:	
-					if ndict.has_key(inl[1:].lower()):
+					if inl[1:].lower() in ndict:
 						oup.write(">%s\n" % ndict[inl[1:].lower()])
 						countF = countF+1
 					# if no new name, just output old ones.
@@ -829,7 +829,7 @@ class fasta_manager:
 						oup_log.write(" %s\n" % inl[1:])
 						countN = countN+1
 				else:
-					if ndict.has_key(inl[1:inl.find(ignore)].lower()):
+					if inl[1:inl.find(ignore)].lower() in ndict:
 						oup.write(">%s%s\n" % \
 						         (ndict[inl[1:inl.find(ignore)].lower()],\
 								  inl[inl.find(ignore):]))
@@ -844,8 +844,8 @@ class fasta_manager:
 				oup.write(inl)
 			inl = inp.readline()
 			
-		print "Found %s, not found %s, %i redundant" % (countF,countN,countR)
-		print "Done!"
+		print("Found %s, not found %s, %i redundant" % (countF,countN,countR))
+		print("Done!")
 
 	##
 	# Convert fasta seq id back to its original ones
@@ -859,9 +859,9 @@ class fasta_manager:
 	##
 	def change_names(self,fasta,name_file,desc_flag,delim=" "):
 
-		print "Change ID in Fasta file"
-		print " Fasta:",fasta
-		print " Name :",name_file
+		print("Change ID in Fasta file")
+		print(" Fasta:",fasta)
+		print(" Name :",name_file)
 		
 		# read names into a dict
 		ndict = f_util.file_to_dict(name_file,5)
@@ -883,9 +883,9 @@ class fasta_manager:
 				if desc_flag and inl.find(" ") != -1:
 					old  = old[:old.find(" ")]
 					desc = inl[inl.find(" ")+1:-1]
-					print old,">>",desc
+					print(old,">>",desc)
 				
-				if ndict.has_key(old):
+				if old in ndict:
 					if desc != "":
 						oup.write(">%s %s\n" % (ndict[old],desc))
 					else:
@@ -893,14 +893,14 @@ class fasta_manager:
 					countF = countF+1
 				else:
 					oup.write(inl)
-					print "Unknwon id:",inl[1:-1]
+					print("Unknwon id:",inl[1:-1])
 			else:
 				oup.write(inl)       
 
 			inl = inp.readline()
 
-		print "Total %i sequences, %i with new names" % (countA,countF)
-		print "Done!"
+		print("Total %i sequences, %i with new names" % (countA,countF))
+		print("Done!")
 		
 
 	##
@@ -910,9 +910,9 @@ class fasta_manager:
 	##
 	def index_names(self,fasta,start):
 
-		print "Index name for:"
-		print " Fasta:",fasta
-		print " Start index:",start
+		print("Index name for:")
+		print(" Fasta:",fasta)
+		print(" Start index:",start)
 		inp    = open(fasta,"r")
 		oup1   = open(fasta+".fa","w")
 		oup2   = open(fasta+".name","w")
@@ -922,20 +922,20 @@ class fasta_manager:
 		while inl != "":
 			if inl[0] == ">":
 				seq_id = inl[1:-1]
-				if not ndict.has_key(seq_id):
+				if seq_id not in ndict:
 					ndict[seq_id] = c
 					oup1.write(">%i\n" % c)
 					oup2.write("%s\t%i\n" % (seq_id,c))
 					c = c+1
 				else:
-					print "Redundant:",seq_id
+					print("Redundant:",seq_id)
 			else:
 				oup1.write(inl)
 
 			inl = inp.readline()
 
-		print " Ending index:",c-1
-		print "Done!"
+		print(" Ending index:",c-1)
+		print("Done!")
 		return ndict
 	
 	#
@@ -944,11 +944,11 @@ class fasta_manager:
 	#               the pair file.
 	#
 	def index_pairs(self,fasta,pairs):
-		print "Read Fasta into dict..."
+		print("Read Fasta into dict...")
 		fdict = self.fasta_to_dict(fasta)
-		fk    = fdict.keys()
+		fk    = list(fdict.keys())
 		fk.sort()
-		print " %i sequences" % len(fk)
+		print(" %i sequences" % len(fk))
 		
 		# Output indexed sequences and name/index
 		oup = open(fasta+".indexed","w")
@@ -960,18 +960,18 @@ class fasta_manager:
 			oup.write(">%i\n%s\n" % (i,fdict[n]))
 			oup2.write("%s\t%i\n" % (n,i))
 				
-		print "Read pair file..."
+		print("Read pair file...")
 		inp = open(pairs)
 		inl = inp.readline()
 		oup = open(pairs+".indexed","w")
 		while inl != "":
 			L = inl.strip().split("\t")
 			if L[0] not in fdict or L[1] not in fdict:
-				print " not in fasta:"
+				print(" not in fasta:")
 				if L[0] not in fdict:
-					print " ",L[0]
+					print(" ",L[0])
 				if L[1] not in fdict:
-					print " ",L[1]
+					print(" ",L[1])
 			else:
 				c1 = fkd[L[0]]
 				c2 = fkd[L[1]]
@@ -1037,7 +1037,7 @@ class fasta_manager:
 		
 		# write the last entry
 		T += S
-		print "Total length:",T
+		print("Total length:",T)
 		if return_dict:
 			sdict[ID] = S
 			return sdict
@@ -1047,7 +1047,7 @@ class fasta_manager:
 				oup.write("%s\t%i\t%i\t%f\n" %(ID,S,X,pMasked))
 			else:
 				oup.write("%s\t%i\n" %(ID,S))
-			print "Done!"
+			print("Done!")
 
 	##
 	# @param fasta  the fasta sequence file. Should include a sequence called
@@ -1063,17 +1063,17 @@ class fasta_manager:
 		tdict = f_util.file_to_dict(group,7)
 		fdict = self.fasta_to_dict(fasta)
 		
-		if includ_o and not fdict.has_key("OUT"):
-			print "No sequence called OUT but you want to include outgroup."
-			print "QUIT!"
+		if includ_o and "OUT" not in fdict:
+			print("No sequence called OUT but you want to include outgroup.")
+			print("QUIT!")
 			sys.exit(0)
 		
-		print "Get sequences for group:\n"
-		keys = tdict.keys()
+		print("Get sequences for group:\n")
+		keys = list(tdict.keys())
 		keys.sort()
 		# iterate group
 		for i in keys:
-			print " ",i
+			print(" ",i)
 			fname = i			
 			if(create_d):
 				os.system("mkdir %s" % i)
@@ -1081,12 +1081,12 @@ class fasta_manager:
 					
 			oup = open(fname+".fa","w")
 			for j in tdict[i]:
-				if fdict.has_key(j):
+				if j in fdict:
 					# notice that I only take the 2nd element of fdict[j].
 					# the first contain some desc-like stuff, not added.
 					oup.write(">%s\n%s\n" % (j,fdict[j]))
 				else:	
-					print "   %s missing" % j	
+					print("   %s missing" % j)	
 					
 			if includ_o:
 				oup.write(">OUT\n%s\n" % fdict["OUT"][1])
@@ -1130,7 +1130,7 @@ class fasta_manager:
 					countR += 1
 					rlist.append(L[j])
 			inl = inp.readline()
-		countN = len(ndict.keys())
+		countN = len(list(ndict.keys()))
 		
 		#print "\nRead fasta file:"
 		oup = open(name+".fa","w")
@@ -1138,7 +1138,7 @@ class fasta_manager:
 		countF = 0
 		for i in fasta.split(","):
 			if verbose:
-				print "",i
+				print("",i)
 			inp = open(i)
 			inl = inp.readline()
 			flagW  = 0
@@ -1155,7 +1155,7 @@ class fasta_manager:
 						ndict[N] = 1
 						if verbose:
 							if countF % 1e2 == 0:
-								print " %i x100" % (countF/1e2)
+								print(" %i x100" % (countF/1e2))
 						countF += 1
 						flagW = 1
 					else:
@@ -1168,14 +1168,14 @@ class fasta_manager:
 		oup.close()
 	
 		missing = []
-		if countF < len(ndict.keys()):
+		if countF < len(list(ndict.keys())):
 			for i in ndict:
 				if ndict[i] == 0:
 					missing.append(i)
 	
 		if verbose:
-			print " Redun:%i, Unique:%i, Found:%i, Missed:%i" % \
-																					(countR,countN,countF,len(missing))
+			print(" Redun:%i, Unique:%i, Found:%i, Missed:%i" % \
+																					(countR,countN,countF,len(missing)))
 
 		return missing
 			
@@ -1199,15 +1199,15 @@ class fasta_manager:
 	def get_sequences(self,fasta,name_file,segment=0,type=0,match=0,call=0,
 					  outname=""):
 		
-		print "Fasta:",fasta
-		print "Name :",name_file
+		print("Fasta:",fasta)
+		print("Name :",name_file)
 		
 		# construct name list
 		if not call:
 			inp     = open(name_file,"r")
 			inls = inp.readlines()
 			names   = {}
-			print "Redundant names in name file:"
+			print("Redundant names in name file:")
 			flag = 0
 			for i in inls:
 				# check format
@@ -1228,19 +1228,19 @@ class fasta_manager:
 					llist = [i]
 					#llist = [i[:-1]], modified due to format checking
 
-				if not names.has_key(llist[0].lower()):
+				if llist[0].lower() not in names:
 					if len(llist) == 1:
 						names[llist[0].lower()] = [0,""]
 					else:
 						names[llist[0].lower()] = [0,llist[1:]]
 				else:
-					print " ",i
+					print(" ",i)
 					flag = 1
 			
 			if not flag:
-				print " None..."
+				print(" None...")
 
-			print "Total %i names" % len(names.keys())
+			print("Total %i names" % len(list(names.keys())))
 		else:
 			names = name_file
 		
@@ -1257,7 +1257,7 @@ class fasta_manager:
 
 		count = 0
 		flag = 0
-		nkeys = names.keys()
+		nkeys = list(names.keys())
 		#print nkeys
 		key_found = []
 		while inl != "":
@@ -1288,7 +1288,7 @@ class fasta_manager:
 				# include modification that won't take "redundant" sequence.
 				# but this modification may impact the codes getting domains
 				# need to see if this is the case.
-				if (names.has_key(id) and names[id][0] != 1) or gotit:
+				if (id in names and names[id][0] != 1) or gotit:
 					count = count +1
 					#print "Found:",count,id
 					
@@ -1367,16 +1367,16 @@ class fasta_manager:
 		oup.close()
 		oup = open(name_file+".log","w")
 		if not call:
-			for i in names.keys():
+			for i in list(names.keys()):
 				if names[i][0] == 0:
 					flag = 1
 					oup.write("%s\n" % i)
 
 			if not flag:
-				print " None..."
-			print "Found %i out of %i" % (count,len(names.keys()))
+				print(" None...")
+			print("Found %i out of %i" % (count,len(list(names.keys()))))
 			if type:
-				print "%i are in frame, %i out of frame" % (countO,countP)
+				print("%i are in frame, %i out of frame" % (countO,countP))
 
 	##
 	# Convert fasta style file to one line format with [seq_id][seq]
@@ -1445,13 +1445,13 @@ class fasta_manager:
 			return odict
 		else:
 			oup = open(fasta+".pep","w")
-			okeys = odict.keys()
+			okeys = list(odict.keys())
 			okeys.sort()
 			for i in okeys:
 				oup.write("%s\t" % i)
 				oup.write("%s\n"  % odict[i])
 				
-		print "Total %i sequences converted" % count
+		print("Total %i sequences converted" % count)
 
 
 	def oneline_to_fasta(self,oneline):
@@ -1476,8 +1476,8 @@ class fasta_manager:
 			oup.write("\n")
 			inl = inp.readline()
 
-		print "Output to %s.fa" % oneline
-		print "Done!"
+		print("Output to %s.fa" % oneline)
+		print("Done!")
 	
 	
 	##
@@ -1492,9 +1492,9 @@ class fasta_manager:
 	##
 	def parse_desc(self,fasta,style,delim):
 		
-		print "Fasta:",fasta
-		print "Style:",[style]
-		print "Delim:",[delim]
+		print("Fasta:",fasta)
+		print("Style:",[style])
+		print("Delim:",[delim])
 		
 		inp = open(fasta,"r")
 		oup = open(fasta+".desc","w")
@@ -1504,13 +1504,13 @@ class fasta_manager:
 		#elif style == "ensembl":
 		#       oup.write("ID\tGene\tClone\tContig\tChr\tBasePair\tStatus\n")
 		
-		print "\nRead through fasta file..."
+		print("\nRead through fasta file...")
 		inl = inp.readline()
 		c = 0
 		while inl != "":
 			if inl[0] == ">":
 				if c % 1000 == 0:
-					print " %i k" % (c/1000)
+					print(" %i k" % (c/1000))
 				c += 1
 					
 				# rid of ">" and "\n"
@@ -1539,8 +1539,8 @@ class fasta_manager:
 							species  = glist[4][glist[4].find("_")+1:]
 						# all other problems
 						else:
-							print "PROBLEMATIC ENTRY:"
-							print inl		    
+							print("PROBLEMATIC ENTRY:")
+							print(inl)		    
 					else:										   
 						desc   = inl[inl.find(" ")+1:inl.find("[")-1]
 						species= inl[inl.find("["):]
@@ -1568,11 +1568,11 @@ class fasta_manager:
 					oup.write("%s\n" % string.joinfields(L,"\t"))
 					
 			inl = inp.readline()
-		print "Done!"
+		print("Done!")
 
 	def parse_ensembl_fasta(self,fasta,sp):
 
-		print "Parse ensembl fasta:",fasta
+		print("Parse ensembl fasta:",fasta)
 		inp = open(fasta,"r")
 		oup = open(fasta+".ensembl","w")
 		inl = inp.readline()
@@ -1598,7 +1598,7 @@ class fasta_manager:
 							llist.append(llist[0][:-1])
 						llist.extend(["","","0","0",""])
 					else:
-						print "Line token number mismatch, quit!"
+						print("Line token number mismatch, quit!")
 						sys.exit(0)
 
 				elif sp == "dm":
@@ -1634,7 +1634,7 @@ class fasta_manager:
 				seq = seq + inl[:-1]
 			
 			inl = inp.readline()
-		print "Done!"
+		print("Done!")
 
 	#
 	# This is for getting the longest transcript or protein seq of the same
@@ -1645,7 +1645,7 @@ class fasta_manager:
 		# >pep_id pep:xxx chromosome:xxx gene:xxx transcript:xxx
 		
 		# put fasta into dict
-		print "Read fasta into dict:"
+		print("Read fasta into dict:")
 		inp = open(fasta)
 		fd  = {}
 		inl = inp.readline()
@@ -1656,12 +1656,12 @@ class fasta_manager:
 			if inl == "" and seq != "" or inl[0] == ">":
 				if seq != "":
 					if gid == "" or pid == "":
-						print "Problem g or pid:",[gid,pid]
+						print("Problem g or pid:",[gid,pid])
 						sys.exit(0)
 					if gid in fd:
 						countP += 1
 						if pid in fd[gid]:
-							print "This should not happen:",pid
+							print("This should not happen:",pid)
 						else:
 							fd[gid][pid] = seq
 					else:
@@ -1685,10 +1685,10 @@ class fasta_manager:
 				seq += self.rmlb(inl)
 			inl = inp.readline()
 		
-		print " %i genes, %i peptides" % (countG,countP)
+		print(" %i genes, %i peptides" % (countG,countP))
 		
 		# go through each gene and output the longeset one
-		print "Get the longest one..."
+		print("Get the longest one...")
 		oup = open(fasta+".long","w")
 		for i in fd:
 			longest = []
@@ -1697,17 +1697,17 @@ class fasta_manager:
 					longest = [j,len(fd[i][j])]
 			oup.write(">%s\n%s\n" % (longest[0],fd[i][longest[0]]))
 		
-		print "Done!"	
+		print("Done!")	
 	
 	#
 	# Delimiter: if "\t", should send "tab"
 	#
 	def simplify_desc(self,fasta,style,delim,tokens):
 
-		print " Process:%s" % fasta
-		print " Output :%s.mod.fa" % fasta
-		print " Delim  :",[delim]
-		print " Tokens :",[tokens]
+		print(" Process:%s" % fasta)
+		print(" Output :%s.mod.fa" % fasta)
+		print(" Delim  :",[delim])
+		print(" Tokens :",[tokens])
 		
 		if delim in ["\\t","tab"]:
 			delim = "\t"
@@ -1718,7 +1718,7 @@ class fasta_manager:
 			for i in tmp:
 				tokens.append(int(i))
 		
-		print " Style  :%s\n" % style
+		print(" Style  :%s\n" % style)
 		inp = open(fasta,"r")
 		oup = open(fasta+".mod.fa","w")
 		inl = inp.readline()
@@ -1731,7 +1731,7 @@ class fasta_manager:
 				count = count+1
 				if style == "gb":
 					if inl.find("|") == -1:
-						print inl
+						print(inl)
 					llist = inl.split("|")
 					inl = ">" + llist[1]
 				elif style == "ensembl":
@@ -1764,7 +1764,7 @@ class fasta_manager:
 			inl = inp.readline()
 
 		oup.close()
-		print " Total %i entries" % count
+		print(" Total %i entries" % count)
 		#print "Done!"
 
 	##
@@ -1773,7 +1773,7 @@ class fasta_manager:
 	##
 	def add_prefix(self,fasta,prefix):
 	
-		print "Add prefix..."
+		print("Add prefix...")
 		inp = open(fasta,"r")
 		oup = open(fasta+".mod.fa","w")
 		inl = inp.readline()
@@ -1788,8 +1788,8 @@ class fasta_manager:
 						
 			inl = inp.readline()
 			
-		print "Output file %s generated." % (fasta+".mod.fa")
-		print "Done!"
+		print("Output file %s generated." % (fasta+".mod.fa"))
+		print("Done!")
 	
 	##
 	# This function assumes that each line of the fasta file is ended in "\n"
@@ -1797,7 +1797,7 @@ class fasta_manager:
 	##
 	def size_filter(self,fasta,threshold,out_name):
 		
-		print "Retreive sequences with length above threshold..."
+		print("Retreive sequences with length above threshold...")
 		
 		if out_name == "":
 			out_name = fasta + "_T%i" % threshold + ".fa"
@@ -1820,7 +1820,7 @@ class fasta_manager:
 							size = size + len(i) - 1
 						else:
 							size = size + len(i)						    
-					if sdict.has_key(size):
+					if size in sdict:
 						sdict[size] = sdict[size]+1
 					else:
 						sdict[size] = 1
@@ -1845,7 +1845,7 @@ class fasta_manager:
 			else:
 				size = size + len(i)
 
-		if sdict.has_key(size):
+		if size in sdict:
 			sdict[size] = sdict[size]+1
 		else:
 			sdict[size] = 1
@@ -1854,18 +1854,18 @@ class fasta_manager:
 			for i in llist:
 				oup.write(i)
 		
-		print "Fasta output %s generated" % out_name
+		print("Fasta output %s generated" % out_name)
 		
 		out_name = out_name + ".stat"
 		
-		keys = sdict.keys()
+		keys = list(sdict.keys())
 		keys.sort()
 		oup = open(out_name,"w")
 		for i in keys:
 			oup.write("%i\t%s\n" % (i,sdict[i]))
 			
-		print "Length statistics %s generated" % out_name
-		print "Done!"	   
+		print("Length statistics %s generated" % out_name)
+		print("Done!")	   
 	
 	##
 	# Compare two lists and generate a output with ".comp" 
@@ -1884,7 +1884,7 @@ class fasta_manager:
 		dict1 = {}
 		inl = inp.readline()
 		while inl != "":
-			if not dict1.has_key(inl[:-1].lower()):
+			if inl[:-1].lower() not in dict1:
 				dict1[inl[:-1].lower()] = 0
 			inl = inp.readline()
 			
@@ -1893,7 +1893,7 @@ class fasta_manager:
 		dict2 = {}
 		inl = inp.readline()
 		while inl != "":
-			if not dict2.has_key(inl[:-1].lower()):
+			if inl[:-1].lower() not in dict2:
 				dict2[inl[:-1].lower()] = 0  
 			inl = inp.readline()
 			
@@ -1903,11 +1903,11 @@ class fasta_manager:
 		oup = open(outname,"w")
 		
 		# compare dict1 against dict2
-		keys1 = dict1.keys()
-		keys2 = dict2.keys()
+		keys1 = list(dict1.keys())
+		keys2 = list(dict2.keys())
 		list1not2 = 0
 		for i in keys1:
-			if dict2.has_key(i):
+			if i in dict2:
 				oup.write(i+"\t"+i+"\n")
 				dict2[i] = 1
 			else:
@@ -1921,8 +1921,8 @@ class fasta_manager:
 				list2not1 = list2not1 +1
 				oup.write("-\t"+i+"\n") 
 		
-		print "In list1 not list2:",list1not2
-		print "   list2 not list1:",list2not1
+		print("In list1 not list2:",list1not2)
+		print("   list2 not list1:",list2not1)
 
 
 	##
@@ -1952,13 +1952,13 @@ class fasta_manager:
 	#
 	def del_redun_names(self,fasta):
 		fdict = self.fasta_to_dict(fasta,0,verbose=1)
-		fkeys = fdict.keys()
+		fkeys = list(fdict.keys())
 		fkeys.sort()
 		oup   = open(fasta+".mod","w")
 		for i in fkeys:
 			oup.write(">%s\n%s\n" % (i,fdict[i]))
 		
-		print "Done!"
+		print("Done!")
 	
 	#
 	# Delete sequences that are completely the same
@@ -1968,7 +1968,7 @@ class fasta_manager:
 	#
 	def del_redun_seqs(self,fasta,delete=1,wsp=0,sp_prefix=0):
 		F  = self.fasta_to_dict(fasta,0,verbose=1)
-		fk = F.keys()
+		fk = list(F.keys())
 		fk.sort()
 		R  = {} # {redundant_with_name:[redundant]}
 		S  = {} # {non_redun_name:non_redun_seq}
@@ -1994,9 +1994,9 @@ class fasta_manager:
 						else:
 							R[fk[i]].append(fk[j])
 
-		print "Redundant:"
+		print("Redundant:")
 		for i in R:
-			print i,len(R[i]),R[i]
+			print(i,len(R[i]),R[i])
 		
 		if delete:
 			oup = open(fasta+".mRedunSeq","w")					
@@ -2008,20 +2008,20 @@ class fasta_manager:
 			oup.write("%s\n" % i)
 
 		oup.close()
-		print "%i seq redun" % len(R.keys())
-		print "Done!"
+		print("%i seq redun" % len(list(R.keys())))
+		print("Done!")
 	
 	def check_redun(self,dir):		
 		f = os.listdir(dir)
 		for i in f:
 			try:	
-				print i
+				print(i)
 				self.fasta_to_dict(i,0,verbose=1)
-				print ""
+				print("")
 			except IndexError:
 				continue
 		
-		print "Done!"
+		print("Done!")
 
 
 	##
@@ -2035,11 +2035,11 @@ class fasta_manager:
 		
 		dflag = 0
 		try:
-			print "Read delete list:"
+			print("Read delete list:")
 			ddict = f_util.file_to_dict(dlist,0)
-			print "To be deleted:",len(ddict.keys())
+			print("To be deleted:",len(list(ddict.keys())))
 		except IOError:
-			print " not a file."
+			print(" not a file.")
 			dlist = dlist.split(",")
 			dflag = 1
 		
@@ -2067,7 +2067,7 @@ class fasta_manager:
 						write = 1
 						countW += 1
 				else:
-					if ddict.has_key(inl[1:]):
+					if inl[1:] in ddict:
 						ddict[inl[1:]] = -1
 						write = 0
 						countD += 1
@@ -2085,8 +2085,8 @@ class fasta_manager:
 				if ddict[i] != -1:
 					oup.write("%s\n" % i)
 		
-		print "Total %i, write %i, deleted %i" % (countT,countW,countD)
-		print "Deletion done!"
+		print("Total %i, write %i, deleted %i" % (countT,countW,countD))
+		print("Deletion done!")
 		
 	#
 	# Break fasta file into several different files.
@@ -2098,17 +2098,17 @@ class fasta_manager:
 	def divide(self,fasta,by,setdir=0,verbose=0,newline=0):
 		
 		if by == 1:
-			print "What's the point divided by 1?? Quit!"
+			print("What's the point divided by 1?? Quit!")
 			sys.exit(0)
 		
 		fdict = self.fasta_to_dict(fasta,0,verbose,newline)
-		fkeys = fdict.keys()
+		fkeys = list(fdict.keys())
 		fkeys.sort()
 		step  = len(fkeys)/by+1
 		
 		c = 1 # increment, file number
-		print "Number of seq   :",len(fkeys)
-		print "Avg size divided:",step
+		print("Number of seq   :",len(fkeys))
+		print("Avg size divided:",step)
 		for i in range(0,len(fkeys),step):
 			oup  = open(fasta+"_%i" % c,"w")
 			keys = fkeys[i:i+step]
@@ -2141,14 +2141,14 @@ class fasta_manager:
 				os.system("mv %s_%i %i" % (fasta,i,i))
 			C = C+1
 		"""	
-		print "Done!"
+		print("Done!")
 		
 	def divide1seq(self,fasta,size):
 		inp = open(fasta)
 		sid = inp.readline()
 		if sid[0] != ">":
-			print "Fasta file?", fasta
-			print "Quit!"
+			print("Fasta file?", fasta)
+			print("Quit!")
 			sys.exit(0)
 		
 		sid = sid[1:].strip()
@@ -2161,12 +2161,12 @@ class fasta_manager:
 		oup = open(fasta+".divided_%i" % size,"w")
 		seqL= len(seq)
 		frag= seqL/size + 1
-		print "Length:",seqL
+		print("Length:",seqL)
 		for i in range(0,seqL,size):
-			print "",i+1,i+size
+			print("",i+1,i+size)
 			oup.write(">%s|%i-%i\n%s\n" % (sid,i+1,i+size,seq[i:i+size]))
 		
-		print "Done!"
+		print("Done!")
 		
 
 	#
@@ -2187,7 +2187,7 @@ class fasta_manager:
 			oup2.write("%s\t%i\t%i\n" % (i,c+1,c+len(seq)))
 			c = c + len(seq)
 		
-		print "Done!"
+		print("Done!")
 	
 	#
 	# Extension of concat. Use in the following situation, for example:
@@ -2222,7 +2222,7 @@ class fasta_manager:
 					break
 			oup.write("%s\t%s\n" % (i,hit))
 			
-		print "Done!"
+		print("Done!")
 	
 	#
 	# Store each fasta squence in a file into its own file
@@ -2234,12 +2234,12 @@ class fasta_manager:
 		
 		inp = open(fasta)
 		inl = inp.readline()
-		print "Write seq..."
+		print("Write seq...")
 		c = 0
 		while inl != "":
 			if inl[0] == ">":
 				if c % 1e3 == 0:
-					print " %i k" % (c/1e3)
+					print(" %i k" % (c/1e3))
 				c += 1
 				seq = self.rmlb(inl[1:])
 				seq = string.joinfields(seq.split(" "),"_")
@@ -2249,19 +2249,19 @@ class fasta_manager:
 				oup.write(inl)
 			inl = inp.readline()
 		
-		print "Done!"
+		print("Done!")
 	
 	def count(self,fasta):
 		inp = open(fasta)
 		inl = inp.readline()
-		print "Count seq..."
+		print("Count seq...")
 		c = 0
 		while inl != "":
 			if inl[0] == ">":
 				c += 1
 			inl = inp.readline()
-		print "Total %i sequences" % c
-		print "Done!"		
+		print("Total %i sequences" % c)
+		print("Done!")		
 
 	#
 	# @param D the delimiter for alt spliced designation, only consider the last
@@ -2269,7 +2269,7 @@ class fasta_manager:
 	def get_longest(self,fasta,D):
 		
 		fa = self.fasta_to_dict(fasta)
-		fk = fa.keys()
+		fk = list(fa.keys())
 		gn = {} # gn = {gene_name:{ver:length}}
 		countT = 0
 		countG = 0
@@ -2322,7 +2322,7 @@ class fasta_manager:
 		oup1.close()
 		oup2.close()
 		
-		print " Total %i pep belong to %i genes" % (countT,countG)
+		print(" Total %i pep belong to %i genes" % (countT,countG))
 	
 	# Calculat the GC content
 	def get_gc(self,fasta):
@@ -2333,13 +2333,13 @@ class fasta_manager:
 			g = len(s.split("G"))-1
 			c = len(s.split("C"))-1
 			GC.append(float(g+c)/len(s))
-			print i,float(g+c)/len(s)
+			print(i,float(g+c)/len(s))
 		
-		print "GC content:",sum(GC)/len(GC)
+		print("GC content:",sum(GC)/len(GC))
 	
 	def get_names(self,fasta,call=0):
 		fa = self.fasta_to_dict(fasta)
-		fk = fa.keys()
+		fk = list(fa.keys())
 		fk.sort()
 		
 		if call:
@@ -2348,7 +2348,7 @@ class fasta_manager:
 			fk = "\n".join(fk)
 			oup = open(fasta+".names","w")
 			oup.write(fk)
-			print "Done!"
+			print("Done!")
 	
 	#
 	# Format fasta file into certain width and delete stop char if asked
@@ -2366,7 +2366,7 @@ class fasta_manager:
 			for i in range(0,len(seq),linew):
 				oup.write("%s\n" % seq[i:i+linew])
 		
-		print "Done!"
+		print("Done!")
 			
 	def rmlb(self,astr):
 		if astr[-2:] == "\r\n":
@@ -2377,139 +2377,139 @@ class fasta_manager:
 		
 
 	def help(self):
-		print " -f function"
-		print "    get_sequences - get specified sequences. REQUIRES: -fasta"
-		print "       -name, Optional: -type, -match"
-		print "    getseq2 - simpler function. REQUIRES: fasta,name. OPT:tokens"
-		print "    get_group_seq - get sequences for groups based on the group"
-		print "       specification passed. REQUIRES: -fasta, -group. Optional:"
-		print "       create_d, includ_o"
-		print "    get_stretch2 - get segment of a SINGLE sequence. Best for"
-		print "       chromosome seq. REQUIRES: fasta, coords, OPT: isfile"
-		print "    get_stretch3 - Take single seq fasta REQUIRES: fasta, coords"
-		print "    get_stretch4 - Take multiple seq fasta, REQ: fasta,coords"
-		print "    get_gc - calculate GC content"
-		print "    gff_to_coord - convert GFF to coord file for get strech,"
-		print "       NEED: gff"
-		print "    fasta_to_oneline - convert fasta file to one line"
-		print "       format. Requires: -fasta. OPT: d"
-		print "    fasta_to_phylip - NEED: fasta, OPT: nlen"
-		print "    fasta_to_stockholm - NEED: fasta"
-		print "    oneline_to_fasta - convert the other way around"
-		print "	      REQUIRES: -oneline"
-		print "    parse_desc - get the description out of fasta file"
-		print "       NEED: fasta, OPT: style, D"
-		print "    simplify - simplify the header by taking the id imme-"
-		print "       diately after '>'."
-		print "       Requires: -fasta, Optional:-style, -D, tokens"
-		print "    prefix - add whatever prefix to all sequences in"
-		print "       a fasta file. Requires -fasta, -prefix"
-		print "    size_filter - get sequences longer than the treshold"
-		print "       passed. Requires: -fasta, -T. Optional: out_name"
-		print "    compare_lists - compare two lists, requires: -files,"
-		print "       optional: out"
-		print "    cleanup - get rid of bracketed characters and replace"
-		print "       with an '-'. Requires: -fasta"
-		print "    get_sizes - get the sizes of sequences within a fasta"
-		print "    divide - divide fasta file into parts. NEED: fasta,by,setdir"
-		print "       file. REQUIRES: -fasta. OPTIONAL: x, newline"
-		print "    divide1seq - divide 1 sequence in a fasta. NEED: fasta, size"
-		print "    index_names - convert names into indices. Generate a"
-		print "       fasta file with seq_id converted to index, and a"
-		print "       '.name' file with both seq_id and indices"
-		print "       REQUIRES: -fasta"
-		print "    index_pairs - convert names from a pair file into indices"
-		print "       NEED: fasta, pairs"
-		print "    change_names - change names in the Fasta header."
-		print "       REQUIRES: -fasta, -name, -desc OPTIONAL:-delim"
-		print "    rename - Change id within the fasta file"
-		print "       REQUIRES: -fasta, -name"
-		print "    rename_all - change id of all .fa or .fasta file in a dir"
-		print "       NEED: -targetd, -name"
-		print "    del_redun_names - delete seq with redundant names. NEED: -fasta"
-		print "    del_redun_seqs - delete identical sequences and generate a list,"
-		print "       NEED: -fasta, OPT: delete"
-		print "    check_redun - check fasta in a folder. NEED: targetd"
-		print "    get_sp - get species for a particular species"
-		print "       REQUIRES: -fasta, -sp"
-		print "    count_sp - count # of seq. NEED: fasta, sp"
-		print "    parse_ensembl_fasta - parse desc, get len, one line"
-		print "       seqeunce. REQUIRES: -fasta (in ensembl format)"
-		print "    covert_header - coord from id<space>L-R to id_((L-1)*3+1)_R,"
-		print "       NEED: fasta"
-		print "    delete - rid of seqeunces, REQUIRES: -fasta,-dlist"
-		print "    concat - concatenate sequences in a file, REQUIRES: -fasta"
-		print "    locate - a companion function of concat. REQUIRES: c1, c2"
-		print "    indiv  - Store each fasta squence in a file into its own"
-		print "        REQUIRES: fasta, OPT: odir"
-		print "    mask   - masking the areas based on the passed coord."
-		print "        REQUIRES: fasta, coords"
-		print "    count  - count the number of sequences, REQUIRES: fasta"
-		print "    get_longest - get the longest among alternative predictions"
-		print "        NEED: fasta, D"
-		print "    format - format fasta line into certain width and rid of"
-		print "        the stop character if choose to. NEED: fasta, OPT: "
-		print "        linew, ridstop"
-		print " -fasta : location and name of fasta file for getting or con-"
-		print "	  verting sequences."
-		print " -group : group specification [group_name][seq_id]"
-		print " -oneline: sequence in the format [name][seq]"
-		print " -files : names separated by ','" 
-		print " -name  : file with lines of gene names. For change_names(), the"
-		print "	  file is in the format [new_name][old_name]"
-		print " -newline: add new line char"
-		print " -nlen  : name length threshold, for fasta_to_phylip"
-		print " -seqid : (1) use 4th col in coord file as seqid or not (0, default)"
-		print " -style : The fasta description file format:"
-		print "	    GenBank - gb"
-		print " -size  : size of sequence blocks to divide into"
-		print " -prefix: the prefix to be added to the sequence descriptors" 
-		print " -out   : output file name"
-		print " -T     : threshold length of sequences included in the output"
-		print " -start : the starting index, default = 1"
-		print " -type  : peptide [0,default], nucleotide [1]"
-		print " -D     : delimiter"
-		print " -species: two CAPITAL characters species abbreviation"
-		print " -dlist : a list of names to be deleted from fasta file"
-		print " -delim : delimiter between id and other info"
-		print " -match : 0: exacth match to fasta descriptor (default) or 1:"
-		print "	  exact match to the passed name right after '>'"
-		print " -desc  : whether the name contain description [1, default] or"
-		print "          not [0]"
-		print " -coords: the coordinates of the segments to get, the number of"
-		print "	  coordinates should be even and none of them should be"
-		print "	  smaller than 1. They are separated by ','. Alternatively,"
-		print "   For get_stretch2: file contains two coord separated by ',' "
-		print "       get_stretch3: whatever...[L][R]"
-		print "       get_stretch4: two column file with seq name and coord, coord"
-		print "          in the format L1,R1,... or two coords separated by ','"
-		print "          passed through command line"
-		print " -delete: Delete redun seq (1, default) or not (0)"
-		print " -wcoord: output sequence name with coords"
-		print " -create_d: create dir for each sequence groups, default no [0]"
-		print " -includ_o: include outgroup sequence [1], or not [0, default]"
-		print "          For this to work, the fasta file passed should have a"
-		print "          sequence called OUT."
-		print " -ignore: For rename, ignore the string after the specified char"
-		print "          during name matching. And add the string back later"
-		print " -format: 0 (default) for pep or nt coords for pep or nt seq file"
-		print "          respectively. 1 for pep coords to get nt seq."
-		print " -verbose: count line for fasta_to_dict [1], or not [0, default"
-		print " -by    : divide fasta file by the passed integer"
-		print " -add   : add domain info in get_strech. The last token in the"
-		print "          coord file should be domain name. Default 0"
-		print " -x     : count masked region size"
-		print " -wsp   : consider within sp (1) or don't care (0, default)"
-		print " -tokens: indice seperated by ',' defining the tokens to be"
-		print "          taken as names in the passed name file. DEFAULT ''"
-		print " -setdir: make dir for each divided file [1], default no [0]"
-		print " -sp_prefix lenght of species prefix"
-		print " -targetd : target dir"
-		print " -d     : delimiter for fasta_to_oneline, defailt ''"
-		print " -linew : format line width, default 80"
-		print " -ridstop: rid of stop character, default no [0]"
-		print " -odir  : output directory"
-		print ""
+		print(" -f function")
+		print("    get_sequences - get specified sequences. REQUIRES: -fasta")
+		print("       -name, Optional: -type, -match")
+		print("    getseq2 - simpler function. REQUIRES: fasta,name. OPT:tokens")
+		print("    get_group_seq - get sequences for groups based on the group")
+		print("       specification passed. REQUIRES: -fasta, -group. Optional:")
+		print("       create_d, includ_o")
+		print("    get_stretch2 - get segment of a SINGLE sequence. Best for")
+		print("       chromosome seq. REQUIRES: fasta, coords, OPT: isfile")
+		print("    get_stretch3 - Take single seq fasta REQUIRES: fasta, coords")
+		print("    get_stretch4 - Take multiple seq fasta, REQ: fasta,coords")
+		print("    get_gc - calculate GC content")
+		print("    gff_to_coord - convert GFF to coord file for get strech,")
+		print("       NEED: gff")
+		print("    fasta_to_oneline - convert fasta file to one line")
+		print("       format. Requires: -fasta. OPT: d")
+		print("    fasta_to_phylip - NEED: fasta, OPT: nlen")
+		print("    fasta_to_stockholm - NEED: fasta")
+		print("    oneline_to_fasta - convert the other way around")
+		print("	      REQUIRES: -oneline")
+		print("    parse_desc - get the description out of fasta file")
+		print("       NEED: fasta, OPT: style, D")
+		print("    simplify - simplify the header by taking the id imme-")
+		print("       diately after '>'.")
+		print("       Requires: -fasta, Optional:-style, -D, tokens")
+		print("    prefix - add whatever prefix to all sequences in")
+		print("       a fasta file. Requires -fasta, -prefix")
+		print("    size_filter - get sequences longer than the treshold")
+		print("       passed. Requires: -fasta, -T. Optional: out_name")
+		print("    compare_lists - compare two lists, requires: -files,")
+		print("       optional: out")
+		print("    cleanup - get rid of bracketed characters and replace")
+		print("       with an '-'. Requires: -fasta")
+		print("    get_sizes - get the sizes of sequences within a fasta")
+		print("    divide - divide fasta file into parts. NEED: fasta,by,setdir")
+		print("       file. REQUIRES: -fasta. OPTIONAL: x, newline")
+		print("    divide1seq - divide 1 sequence in a fasta. NEED: fasta, size")
+		print("    index_names - convert names into indices. Generate a")
+		print("       fasta file with seq_id converted to index, and a")
+		print("       '.name' file with both seq_id and indices")
+		print("       REQUIRES: -fasta")
+		print("    index_pairs - convert names from a pair file into indices")
+		print("       NEED: fasta, pairs")
+		print("    change_names - change names in the Fasta header.")
+		print("       REQUIRES: -fasta, -name, -desc OPTIONAL:-delim")
+		print("    rename - Change id within the fasta file")
+		print("       REQUIRES: -fasta, -name")
+		print("    rename_all - change id of all .fa or .fasta file in a dir")
+		print("       NEED: -targetd, -name")
+		print("    del_redun_names - delete seq with redundant names. NEED: -fasta")
+		print("    del_redun_seqs - delete identical sequences and generate a list,")
+		print("       NEED: -fasta, OPT: delete")
+		print("    check_redun - check fasta in a folder. NEED: targetd")
+		print("    get_sp - get species for a particular species")
+		print("       REQUIRES: -fasta, -sp")
+		print("    count_sp - count # of seq. NEED: fasta, sp")
+		print("    parse_ensembl_fasta - parse desc, get len, one line")
+		print("       seqeunce. REQUIRES: -fasta (in ensembl format)")
+		print("    covert_header - coord from id<space>L-R to id_((L-1)*3+1)_R,")
+		print("       NEED: fasta")
+		print("    delete - rid of seqeunces, REQUIRES: -fasta,-dlist")
+		print("    concat - concatenate sequences in a file, REQUIRES: -fasta")
+		print("    locate - a companion function of concat. REQUIRES: c1, c2")
+		print("    indiv  - Store each fasta squence in a file into its own")
+		print("        REQUIRES: fasta, OPT: odir")
+		print("    mask   - masking the areas based on the passed coord.")
+		print("        REQUIRES: fasta, coords")
+		print("    count  - count the number of sequences, REQUIRES: fasta")
+		print("    get_longest - get the longest among alternative predictions")
+		print("        NEED: fasta, D")
+		print("    format - format fasta line into certain width and rid of")
+		print("        the stop character if choose to. NEED: fasta, OPT: ")
+		print("        linew, ridstop")
+		print(" -fasta : location and name of fasta file for getting or con-")
+		print("	  verting sequences.")
+		print(" -group : group specification [group_name][seq_id]")
+		print(" -oneline: sequence in the format [name][seq]")
+		print(" -files : names separated by ','") 
+		print(" -name  : file with lines of gene names. For change_names(), the")
+		print("	  file is in the format [new_name][old_name]")
+		print(" -newline: add new line char")
+		print(" -nlen  : name length threshold, for fasta_to_phylip")
+		print(" -seqid : (1) use 4th col in coord file as seqid or not (0, default)")
+		print(" -style : The fasta description file format:")
+		print("	    GenBank - gb")
+		print(" -size  : size of sequence blocks to divide into")
+		print(" -prefix: the prefix to be added to the sequence descriptors") 
+		print(" -out   : output file name")
+		print(" -T     : threshold length of sequences included in the output")
+		print(" -start : the starting index, default = 1")
+		print(" -type  : peptide [0,default], nucleotide [1]")
+		print(" -D     : delimiter")
+		print(" -species: two CAPITAL characters species abbreviation")
+		print(" -dlist : a list of names to be deleted from fasta file")
+		print(" -delim : delimiter between id and other info")
+		print(" -match : 0: exacth match to fasta descriptor (default) or 1:")
+		print("	  exact match to the passed name right after '>'")
+		print(" -desc  : whether the name contain description [1, default] or")
+		print("          not [0]")
+		print(" -coords: the coordinates of the segments to get, the number of")
+		print("	  coordinates should be even and none of them should be")
+		print("	  smaller than 1. They are separated by ','. Alternatively,")
+		print("   For get_stretch2: file contains two coord separated by ',' ")
+		print("       get_stretch3: whatever...[L][R]")
+		print("       get_stretch4: two column file with seq name and coord, coord")
+		print("          in the format L1,R1,... or two coords separated by ','")
+		print("          passed through command line")
+		print(" -delete: Delete redun seq (1, default) or not (0)")
+		print(" -wcoord: output sequence name with coords")
+		print(" -create_d: create dir for each sequence groups, default no [0]")
+		print(" -includ_o: include outgroup sequence [1], or not [0, default]")
+		print("          For this to work, the fasta file passed should have a")
+		print("          sequence called OUT.")
+		print(" -ignore: For rename, ignore the string after the specified char")
+		print("          during name matching. And add the string back later")
+		print(" -format: 0 (default) for pep or nt coords for pep or nt seq file")
+		print("          respectively. 1 for pep coords to get nt seq.")
+		print(" -verbose: count line for fasta_to_dict [1], or not [0, default")
+		print(" -by    : divide fasta file by the passed integer")
+		print(" -add   : add domain info in get_strech. The last token in the")
+		print("          coord file should be domain name. Default 0")
+		print(" -x     : count masked region size")
+		print(" -wsp   : consider within sp (1) or don't care (0, default)")
+		print(" -tokens: indice seperated by ',' defining the tokens to be")
+		print("          taken as names in the passed name file. DEFAULT ''")
+		print(" -setdir: make dir for each divided file [1], default no [0]")
+		print(" -sp_prefix lenght of species prefix")
+		print(" -targetd : target dir")
+		print(" -d     : delimiter for fasta_to_oneline, defailt ''")
+		print(" -linew : format line width, default 80")
+		print(" -ridstop: rid of stop character, default no [0]")
+		print(" -odir  : output directory")
+		print("")
 		sys.exit(0)
 
 		
@@ -2630,234 +2630,234 @@ if __name__ == '__main__':
 		elif sys.argv[i] == "-sp_prefix":
 			sp_prefix = int(sys.argv[i+1])
 		else:
-			print "Unknown parameter:",sys.argv[i]
-			print "Quit!"
+			print("Unknown parameter:",sys.argv[i])
+			print("Quit!")
 			sys.exit(0)
 
 	if function == "get_sequences":
 		if fasta == "" or name_file == "":
-			print "\nNeed fasta file and name file\n"
+			print("\nNeed fasta file and name file\n")
 			manager.help()
 		manager.get_sequences(fasta,name_file,segment,type,match)	
 	elif function == "getseq2":
 		if fasta == "" or name_file == "":
-			print "\nNeed fasta and name.\n"
+			print("\nNeed fasta and name.\n")
 			manager.help()
 		manager.getseq2(fasta,name_file,tokens)
 	elif function == "get_group_seq":
 		if fasta == "" or group == "":
-			print "\nNeed fasta file and group specification.\n"
+			print("\nNeed fasta file and group specification.\n")
 			manager.help()
 		manager.get_group_seq(fasta,group,create_d,includ_o)
 	elif function == "get_stretch":
 		if fasta == "" or coords == "":
-			print "\nNeed fasta file and coordinates\n"
+			print("\nNeed fasta file and coordinates\n")
 			manager.help()
 		manager.get_stretch(fasta,coords,format,wcoord,verbose,call,add)
 	elif function == "get_stretch2":
 		if fasta == "" or coords == "":
-			print "\nNeed fasta file and coordinates\n"
+			print("\nNeed fasta file and coordinates\n")
 			manager.help()
 		manager.get_stretch2(fasta,coords,call,isfile)
 	elif function == "get_stretch3":
 		if fasta == "" or coords == "":
-			print "\nNeed fasta file and coordinates\n"
+			print("\nNeed fasta file and coordinates\n")
 			manager.help()
 		manager.get_stretch3(fasta,coords)
 	elif function == "get_stretch4":
 		if fasta == "" or coords == "":
-			print "\nNeed fasta file and coordinates\n"
+			print("\nNeed fasta file and coordinates\n")
 			manager.help()
 		manager.get_stretch4(fasta,coords,seqid)
 	elif function == "get_names":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.get_names(fasta)
 	elif function == "get_gc":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.get_gc(fasta)
 	elif function == "gff_to_coord":
 		if gff == "":
-			print "\nNeed gff file\n"
+			print("\nNeed gff file\n")
 			manager.help()
 		manager.gff_to_coord(gff)
 	elif function == "fasta_to_oneline":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.fasta_to_oneline(fasta,d)
 	elif function == "fasta_to_phylip":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.fasta_to_phylip(fasta,nlen)
 	elif function == "fasta_to_stockholm":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.fasta_to_stockholm(fasta)
 	elif function == "oneline_to_fasta":
 		if oneline == "":
-			print "\nNeed one line file\n"
+			print("\nNeed one line file\n")
 			manager.help()
 		manager.oneline_to_fasta(oneline)
 	elif function == "simplify":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.simplify_desc(fasta,style,delimiter,tokens)
 	elif function == "prefix":
 		if fasta == "" or prefix == "":
-			print "\nNeed fasta file and prefix\n"
+			print("\nNeed fasta file and prefix\n")
 			manager.help()
 		manager.add_prefix(fasta,prefix)
 	elif function == "size_filter":
 		if fasta == "" and treshold == 0:
-			print "\nNeed fasta files and length threshold\n"
+			print("\nNeed fasta files and length threshold\n")
 			manager.help()
 		manager.size_filter(fasta,threshold,out_name)
 	elif function == "parse_desc":
 		if fasta == "":
-			print "\nNeed fasta file and description style info\n"
+			print("\nNeed fasta file and description style info\n")
 			manager.help()
 		manager.parse_desc(fasta,style,delimiter)
 	elif function == "compare_lists":
 		if files == "" or len(files.split(",")) != 2:
-			print "\nNeed files and it should be exactly 2 names\n"
+			print("\nNeed files and it should be exactly 2 names\n")
 			manager.help()
 		manager.compare_lists(files,out_name)
 	elif function == "cleanup":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.cleanup(fasta)  
 	elif function == "get_sizes":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.get_sizes(fasta,0,x)
 	elif function == "index_names":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.index_names(fasta,start)
 	elif function == "index_pairs":
 		if fasta == "" or pairs == "":
-			print "\nNeed fasta and pair files\n"
+			print("\nNeed fasta and pair files\n")
 			manager.help()
 		manager.index_pairs(fasta,pairs)
 	elif function == "change_names":
 		if fasta == "" or name_file == "" or desc == -1:
-			print "\nNeed fasta file and name file. Also need to specify desc\n"
+			print("\nNeed fasta file and name file. Also need to specify desc\n")
 			manager.help()
 		manager.change_names(fasta,name_file,desc,delim)
 	elif function == "rename":
 		if fasta == "" or name_file == "":
-			print "\nNeed fasta and name files\n"
+			print("\nNeed fasta and name files\n")
 			manager.help()
 		manager.rename2(fasta,name_file,ignore) 
 	elif function == "rename_all":
 		if "" in [targetD,name_file]:
-			print "\nNeed target dir and name files\n"
+			print("\nNeed target dir and name files\n")
 			manager.help()
 		manager.rename_all(targetD,name_file)
 	elif function == "del_redun_names":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.del_redun_names(fasta)
 	elif function == "del_redun_seqs":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.del_redun_seqs(fasta,delete,wsp,sp_prefix)
 	elif function == "check_redun":
 		if targetD == "":
-			print "\nNeed dir\n"
+			print("\nNeed dir\n")
 			manager.help()
 		manager.check_redun(targetD)
 	elif function == "convert_header":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.convert_header(fasta)
 	elif function == "get_sp":
 		if fasta == "" or species == "":
-			print "\nNeed fasta file and a species name specified\n"
+			print("\nNeed fasta file and a species name specified\n")
 			manager.help()
 		manager.get_sp(fasta,species)
 	elif function == "count_sp":
 		if fasta == "" or species == "":
-			print "\nNeed fasta file and a species name specified\n"
+			print("\nNeed fasta file and a species name specified\n")
 			manager.help()
 		manager.count_sp(fasta,species)
 	elif function == "parse_ensembl_fasta":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.parse_ensembl_fasta(fasta,species)
 	elif function == "delete":
 		if fasta == "" or dlist == "":
-			print "\nNeed fasta file and list of names\n"
+			print("\nNeed fasta file and list of names\n")
 			manager.help()
 		manager.delete(fasta,dlist)
 	elif function == "divide":
 		if fasta == "" or by == "":
-			print "\nNeed fasta file and the number of divisions\n"
+			print("\nNeed fasta file and the number of divisions\n")
 			manager.help()
 		manager.divide(fasta,by,setdir,verbose,newline)
 	elif function == "divide1seq":
 		if fasta == "" or size == "":
-			print "\nNeed fasta file and the size of sequenec blocks\n"
+			print("\nNeed fasta file and the size of sequenec blocks\n")
 			manager.help()
 		manager.divide1seq(fasta,size)
 	elif function == "concat":
 		if fasta == "":
-			print "\nNeed fasta file\n"
+			print("\nNeed fasta file\n")
 			manager.help()
 		manager.concat(fasta)
 	elif function == "locate":
 		if c1 == "" or c2 == "":
-			print "\nNeed coordinate files\n"
+			print("\nNeed coordinate files\n")
 			manager.help()
 		manager.concat_locate(c1,c2)
 	elif function == "indiv":
 		if fasta == "":
-			print "\nNeed fasta\n"
+			print("\nNeed fasta\n")
 			manager.help()
 		manager.indiv(fasta,odir)
 	elif function == "mask":
 		if fasta == "" or coords == "":
-			print "\nNeed fasta and coords\n"
+			print("\nNeed fasta and coords\n")
 			manager.help()
 		manager.mask(fasta,coords)
 	elif function == "fasta_to_dict":
 		manager.fasta_to_dict(fasta)
 	elif function == "count":
 		if fasta == "":
-			print "\nNeed fasta\n"
+			print("\nNeed fasta\n")
 			manager.help()
 		manager.count(fasta)
 	elif function == "ensembl_longest":
 		if fasta == "":
-			print "\nNeed fasta\n"
+			print("\nNeed fasta\n")
 			manager.help()
 		manager.ensembl_longest(fasta)
 	elif function == "get_longest":
 		if "" in [fasta,delimiter]:
-			print "\nNeed fasta and deliminter\n"
+			print("\nNeed fasta and deliminter\n")
 			manager.help()
 		manager.get_longest(fasta,delimiter)
 	elif function == "format":
 		if "" in [fasta]:
-			print "\nNeed fasta\n"
+			print("\nNeed fasta\n")
 			manager.help()
 		manager.format(fasta,linew,ridstop)
 	else:
-		print "\nUnknown function...\n"
+		print("\nUnknown function...\n")
 		manager.help()
 
 """

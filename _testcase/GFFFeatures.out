@@ -1,0 +1,41 @@
+Read test_gff
+ 0 x 10k
+ 1 x 10k
+ 2 x 10k
+ 3 x 10k
+ 4 x 10k
+ 5 x 10k
+ 6 x 10k
+ 7 x 10k
+ 8 x 10k
+ 9 x 10k
+ 10 x 10k
+ 11 x 10k
+ 12 x 10k
+ 13 x 10k
+ 14 x 10k
+ 15 x 10k
+ 16 x 10k
+ 17 x 10k
+ 18 x 10k
+ 19 x 10k
+ 20 x 10k
+ 21 x 10k
+ 22 x 10k
+ 23 x 10k
+ 24 x 10k
+ 25 x 10k
+ 26 x 10k
+ 27 x 10k
+ 28 x 10k
+ 29 x 10k
+ 30 x 10k
+ 31 x 10k
+ 32 x 10k
+Col 2
+ CDS 196916
+ five_prime_UTR 34617
+ gene 27205
+ mRNA 35176
+ three_prime_UTR 30634
+Done!

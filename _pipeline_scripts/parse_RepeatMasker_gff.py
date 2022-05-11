@@ -1,7 +1,7 @@
 import sys
-print "INP1: RepeatMasker *.out output"
-print "INP2: Cutoff SW score"
-print "INP3: Cutoff Divergence (20.0,15.0,10.0...)"
+print("INP1: RepeatMasker *.out output")
+print("INP2: Cutoff SW score")
+print("INP3: Cutoff Divergence (20.0,15.0,10.0...)")
 file1=open(sys.argv[1],'r')
 thresh=int(sys.argv[2])
 div=float(sys.argv[3])
@@ -10,13 +10,17 @@ out1=open(sys.argv[1]+".%iCutoff%.1fdivg.4col"%(thresh,div),'w')
 line1=file1.readline()
 m=0;d=0;dict1={}
 while line1:
+    # 5/11/22: In case there is no repeat detected
+    if line1.startswith('There were no repetitive sequences'):
+        break
+    
     tab1=line1.strip().split()
     if tab1!=[]:
         i1=tab1[0]
         if i1.startswith('#') or i1.startswith('SW') or i1.startswith('score'):
             pass
         else:
-            #print tab1
+            print(tab1)
             d+=1
             score=int(tab1[0]); divergence=float(tab1[1])
             if score>=thresh and divergence<=div:
@@ -62,7 +66,7 @@ for v1 in dict1:
         out2.write('%s\t%s\t%s\n'%(v1,v2,count))
         
 out2.close()        
-print "Total features: ", d
-print "No. of features written to 4col file: ", m
-print "Done!"
+print(("Total features: ", d))
+print(("No. of features written to 4col file: ", m))
+print("Done!")
     

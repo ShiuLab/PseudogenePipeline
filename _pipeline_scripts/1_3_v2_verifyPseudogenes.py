@@ -54,37 +54,37 @@ class Pseudogene:
         if type(name) == str:
             self.name = name
         else:
-            print "***Name Type Error!!!***"
+            print("***Name Type Error!!!***")
 
         #uptream region length for the pseudogene
         if type(Xleft) == int:
             self.Xleft = Xleft
         else:
-            print "***Xleft Type Error!!!***"
+            print("***Xleft Type Error!!!***")
 
         #downtream region length for the pseudogene
         if type(Xright) == int:
             self.Xright = Xright
         else:
-            print "***Xright Type Error!!!***"
+            print("***Xright Type Error!!!***")
 
         #estimated intron length
         if type(Z) == int:
             self.Z = Z
         else:
-            print "***Z Type Error!!!***"
+            print("***Z Type Error!!!***")
 
         #uptream region length for the protein matching region
         if type(Yleft) == int:
             self.Yleft = Yleft
         else:
-            print "***Yleft Type Error!!!***"
+            print("***Yleft Type Error!!!***")
 
         #downtream region length for the protein matching region
         if type(Yright) == int:
             self.Yright = Yright
         else:
-            print "***Yright Type Error!!!***"
+            print("***Yright Type Error!!!***")
 
     def __str__(self):
         return "name: %s    XYleft: %d,%d    XYright: %d,%d    Z: %d" % \
@@ -98,13 +98,13 @@ class Pseudogene:
         if type(Yleft) == int:
             self.Yleft = Yleft
         else:
-            print "***Xleft Type Error!!!***"
+            print("***Xleft Type Error!!!***")
 
         #downtream region length for the protein matching region
         if type(Yright) == int:
             self.Yright = Yright
         else:
-            print "***Xright Type Error!!!***"
+            print("***Xright Type Error!!!***")
 
     #Calculates if X > Y + Z and returns the boolean result
     def IsHighConf(self):
@@ -133,17 +133,17 @@ def ForwardOrReverse(start, stop):
 
 
 
-print
-print "inDis      :", inDis
-print "inFour     :", inFour
-print "inFasta    :", inFasta
-print "inSize     :", inSize
-print "inProtSize :", inProtSize
-print "outDis     :", outDis
-print "outFour    :", outFour
-print "outFasta   :", outFasta
-print "Z          :", Z
-print
+print()
+print("inDis      :", inDis)
+print("inFour     :", inFour)
+print("inFasta    :", inFasta)
+print("inSize     :", inSize)
+print("inProtSize :", inProtSize)
+print("outDis     :", outDis)
+print("outFour    :", outFour)
+print("outFasta   :", outFasta)
+print("Z          :", Z)
+print()
 
 #writes the users command line prompt on the first line of the output file.
 outDis.write("#python %s\n" % (" ".join(sys.argv)))
@@ -194,7 +194,7 @@ for key in quesPseuDict:
         Xl = int(sizeDict[chro][0]) - int(val[0][0]) #starts with 0 because it's always a 1 member list because of the way SaveIntoDict works
         Xr = int(val[0][1]) - 1 
     else:
-        print "***FR error 2***"
+        print("***FR error 2***")
         
     newPseu = Pseudogene(key, Xl, Xr, Z)
     pseuList.append(newPseu)

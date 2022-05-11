@@ -20,7 +20,7 @@ out.write("#python %s\n" % (" ".join(sys.argv)))
 
 #1) Go through .4col.true.condensed.noCM file and make a list of names in the file
 nameLst = []
-print true.readline()
+print(true.readline())
 for line in true:
     lineLst = line.split("\t")
     nameLst.append(lineLst[0])

@@ -9,24 +9,24 @@ class single_linkage:
 
 	def get_group_R(self,G,R,R1,R2):
 		
-		print "Group   :",G
-		print "Relation:",R
+		print("Group   :",G)
+		print("Relation:",R)
 		
 		# entry id as key, group as value
-		print "Read groups..."
+		print("Read groups...")
 		gdict = {}
 		inp = open(G,"r")
 		inl = inp.readline()
 		while inl != "":
 			L = self.rnlb(inl).split("\t")
-			if gdict.has_key(L[1]):
-				print "multiple assign:",L[1]
+			if L[1] in gdict:
+				print("multiple assign:",L[1])
 			else:
 				gdict[L[1]] = L[0]
 			inl = inp.readline()
 		
 		# group as key, a list of [id1,id2] as value
-		print "Read relations..."
+		print("Read relations...")
 		edict = {}
 		inp = open(R,"r")
 		#first line is description
@@ -36,18 +36,18 @@ class single_linkage:
 			L = self.rnlb(inl).split("\t")
 			# verify if this pair is from the same group
 			if gdict[L[0]] == gdict[L[1]]:
-				if edict.has_key(gdict[L[0]]):
+				if gdict[L[0]] in edict:
 					edict[gdict[L[0]]].append([L[0],L[1]]) 
 				else:
 					edict[gdict[L[0]]] = [[L[0],L[1]]]
 			inl = inp.readline()
 		
 		# go through groups and get clusters
-		print "Cluster each group..."
+		print("Cluster each group...")
 		oup1 = open(R+".clusters","w")
 		oup1.write("Family\tCluster_id\tSize\tSeq_id\n")
 		for i in edict:
-			print ">",i
+			print(">",i)
 			plist = edict[i]
 			oup2 = open("TMP.R","w")
 			for j in plist:
@@ -61,7 +61,7 @@ class single_linkage:
 				c += 1
 		oup1.close()
 		
-		print "Done!"				
+		print("Done!")				
 
 	##
 	# This is a private method to convert passed file into a format for single
@@ -81,21 +81,21 @@ class single_linkage:
 	##
 	def get_relations(self,relations,R1=0,R2=1,out="",isdict=0):
 		
-		print "Read relations..."
+		print("Read relations...")
 		if isdict:
 			rdict = relations
 		else:
 			rdict = self.file_to_dict(relations,R1,R2)
 		
 		if rdict == {}:
-			print "Problem: relation dict is empty"
+			print("Problem: relation dict is empty")
 			sys.exit(0)
 		
-		print "Get clusters..."
+		print("Get clusters...")
 		clusters = self.dict_to_list(rdict)
 		
 		if out != "":
-			print "Generate output..."
+			print("Generate output...")
 			oup = open(out,"w")
 			oup.write("Cluster_id\tSize\tSeq_id\n")
 			c = 1
@@ -103,7 +103,7 @@ class single_linkage:
 				oup.write("%i\t%i\t%s\n" % (c,len(i),
 											string.joinfields(i,",")))
 				c += 1
-			print "Done!"
+			print("Done!")
 		else:
 			return clusters
 	
@@ -121,25 +121,25 @@ class single_linkage:
 			inline = self.rnlb(inline)
 			llist = inline.split("\t")
 			if len(llist)-1 < R2:
-				print llist
-				print "Insuffiecnt number of tokens, QUIT!"
+				print(llist)
+				print("Insuffiecnt number of tokens, QUIT!")
 				sys.exit(0)
 
-			if not odict.has_key(llist[R1]):
+			if llist[R1] not in odict:
 				odict[llist[R1]] = c
 				c += 1
-			if not odict.has_key(llist[R2]):
+			if llist[R2] not in odict:
 				odict[llist[R2]] = c
 				c += 1		  
 
 			# n-term ipr (ipr1) as key, c-term ipr (ipr2) as value
-			if not rdict.has_key(llist[R1]):
+			if llist[R1] not in rdict:
 				rdict[llist[R1]] = [llist[R2]]
 			else:
 				if llist[R2] not in rdict[llist[R1]]:
 					rdict[llist[R1]].append(llist[R2])
 				else:
-					print "Redun relation:",llist[R1],llist[R2]
+					print("Redun relation:",llist[R1],llist[R2])
 			
 			inline = inp.readline()
 		return rdict
@@ -157,9 +157,9 @@ class single_linkage:
 		c = 0
 		tlist = []
 		
-		print "1.indexing"
+		print("1.indexing")
 		# assign index to rdict keys first, also contruct a nonredundant list
-		for i in rdict.keys():
+		for i in list(rdict.keys()):
 			idict[c] = i
 			odict[i] = c
 			for j in rdict[i]:
@@ -167,23 +167,23 @@ class single_linkage:
 					tlist.append(j)
 			c += 1
 		
-		print "2.index to values"
+		print("2.index to values")
 		# assign index to rdict values
 		for i in tlist:
-			if not i in rdict.keys():
+			if not i in list(rdict.keys()):
 				idict[c] = i
 				odict[i] = c
 				c += 1
 
-		print "3.generate pre-clusters"
+		print("3.generate pre-clusters")
 		clusters = []
-		for i in rdict.keys():
+		for i in list(rdict.keys()):
 			clen = len(clusters)
 			clusters.append([odict[i]])
 			for j in rdict[i]:
 				clusters[clen].append(odict[j])		 
 
-		print "4.single linkage"
+		print("4.single linkage")
 		clusters = self.single_linkage(clusters)
 		#print "Clusters:"
 		#for i in clusters:
@@ -213,12 +213,12 @@ class single_linkage:
 		# be things like a is merged to b, then b need to be merged to c
 		sorted_dict = {}
 		for i in cluster_list:
-			if sorted_dict.has_key(len(i)):
+			if len(i) in sorted_dict:
 				sorted_dict[len(i)].append(i)
 			else:
 				sorted_dict[len(i)] = [i]
 
-		sorted_key = sorted_dict.keys()
+		sorted_key = list(sorted_dict.keys())
 		sorted_key.sort()
 		sorted_key.reverse()
 		sorted_clusters = []
@@ -229,7 +229,7 @@ class single_linkage:
 
 		cluster_list = sorted_clusters
 
-		print "Preclusters:",len(cluster_list)
+		print("Preclusters:",len(cluster_list))
 		for i in range(len(cluster_list)):
 			cluster_list[i].sort()
 			#print " ",i,cluster_list[i]
@@ -237,9 +237,9 @@ class single_linkage:
 		merged = []  # list of merged cluster index
 
 		# the list is sorted according to the size, so len(i) >= len(j)
-		print "Go through preclusters:"
+		print("Go through preclusters:")
 		for i in range(len(cluster_list)):
-			print " ",i
+			print(" ",i)
 			if i in merged:			    # see if i is merged
 				#print "   skipped1",i
 				continue
@@ -300,7 +300,7 @@ class single_linkage:
 			for j in member[1:]:
 				oup2.write("%s\n" % j)
 		
-		print "Done!"
+		print("Done!")
 	
 	def rnlb(self,astr):
 		if astr[-2:] == "\r\n":
@@ -310,18 +310,18 @@ class single_linkage:
 		return astr
 
 	def help(self):
-		print "Usage: SingleLinkage.py "
-		print "   -f  single - single linkage, NEED: R, OPTIONAL: r1,r2,out"
-		print "       group  - single linkage based on groups, NEED: R, G"
-		print "       sort   - Sort the cluster entries so the ones that are"
-		print "                alphabetical will be in front. Also generate a"
-		print "                gene list for deletion. Need: c"
-		print "   -R  relations [entry_id1][entry_id2]"
-		print "   -G  [group_id][entry_id]"
-		print "   -r1 N-terminal token"
-		print "   -r2 C-terminal token"
-		print "   -o  output file name" 
-		print "   -c  cluster file generated by single"                
+		print("Usage: SingleLinkage.py ")
+		print("   -f  single - single linkage, NEED: R, OPTIONAL: r1,r2,out")
+		print("       group  - single linkage based on groups, NEED: R, G")
+		print("       sort   - Sort the cluster entries so the ones that are")
+		print("                alphabetical will be in front. Also generate a")
+		print("                gene list for deletion. Need: c")
+		print("   -R  relations [entry_id1][entry_id2]")
+		print("   -G  [group_id][entry_id]")
+		print("   -r1 N-terminal token")
+		print("   -r2 C-terminal token")
+		print("   -o  output file name") 
+		print("   -c  cluster file generated by single")                
 		sys.exit(0)
 		
 
@@ -350,22 +350,22 @@ if __name__ == '__main__':
 		elif sys.argv[i] == "-c":
 			c    = sys.argv[i+1]
 		else:
-			print "Unknown option",sys.argv[i]
+			print("Unknown option",sys.argv[i])
 			single.help()
 
 	if f == "single":
 		if R == "":
-			print "\nNeed to specify relations\n"
+			print("\nNeed to specify relations\n")
 			single.help()
 		single.get_relations(R,r1,r2,out)
 	elif f == "group":
 		if "" in [R,G]:
-			print "\nNeed to specify relations\n"
+			print("\nNeed to specify relations\n")
 			single.help()
 		single.get_group_R(G,R,r1,r2)
 	elif f == "sort":
 		if c == "":
-			print "\nNeed to specify cluster file\n"
+			print("\nNeed to specify cluster file\n")
 			single.help()
 		single.sort(c)
 	else:

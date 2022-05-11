@@ -28,5 +28,5 @@ while inl != "":
 	inl = inp.readline()
 	
 
-print "Done!"
+print("Done!")
 

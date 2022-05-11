@@ -5,10 +5,10 @@
 # write
 # the PUTname, chr-start-end and ATgene, chr-start-end in a new file
 import sys
-print "INP1: Whole gene gff (Generally reference file like introns/CDS/Exons etc.)"
-print "INP2: Small gff (Generally test feature like PUT/sORF etc.)"
-print "INP3: Whether you want to look at close features (y/n)"
-print "INP4: If INP3=y,specify bp distance (25,50)"
+print("INP1: Whole gene gff (Generally reference file like introns/CDS/Exons etc.)")
+print("INP2: Small gff (Generally test feature like PUT/sORF etc.)")
+print("INP3: Whether you want to look at close features (y/n)")
+print("INP4: If INP3=y,specify bp distance (25,50)")
 file1=open(sys.argv[1], 'r')  #the WHOLE Gene gff file(Bigfile)
 dict1={}
 line1=file1.readline()
@@ -41,7 +41,7 @@ while line1:  #the file sohudl be in the following format
             elif len(tab1)>5:
                 if printed=='FALSE':
                     printed='TRUE'
-                    print "Assuming START as tab1[2] and END as tab1[3]"
+                    print("Assuming START as tab1[2] and END as tab1[3]")
                 lb1=int(tab1[2])  #make changes here if start-end in diff columns
                 rb1=int(tab1[3])
                 
@@ -63,7 +63,7 @@ while line1:  #the file sohudl be in the following format
                     pass
     x+=1
     if x%50000==0:
-        print "File1: ", x
+        print("File1: ", x)
     line1=file1.readline()
 file1.close()
 ############################################
@@ -140,7 +140,7 @@ while line2:  #the file should be in this format
         elif len(tab2)>5:            
             if printed=='FALSE':
                 printed='TRUE'
-                print "Assuming START as tab2[2] and END as tab2[3]"
+                print("Assuming START as tab2[2] and END as tab2[3]")
             start=int(tab2[2])  #make changes here if start-end in diff columns
             end=int(tab2[3])
             true=1
@@ -315,13 +315,13 @@ while line2:  #the file should be in this format
 
         m+=1
         if m%100==0:
-            print m, d            
+            print(m, d)            
     line2=file2.readline()
 ############################################
 out1.close()
 #out2.close()
 #out3.close()
-print "Done!"
+print("Done!")
 '''
 print "Number of sequences completely internal: ", len(mdict.keys())           
 print "Total mapping : ", d
