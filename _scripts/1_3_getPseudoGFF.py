@@ -28,7 +28,7 @@ def OrderCoords(coor1, coor2):
 
         
 #Write the users command line prompt on the first line of the output file.
-out.write("#python %s\n" % (" ".join(sys.argv)))
+#out.write("#python %s\n" % (" ".join(sys.argv)))
 
 #Go through four and make a dict of key: psName val: (chromo, small, big)
 #note: small and big is used instead of start and stop because orientation is

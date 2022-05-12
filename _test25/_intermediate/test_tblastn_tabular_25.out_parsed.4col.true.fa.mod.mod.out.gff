@@ -1,5 +1,0 @@
-##gff-version 2
-##date 2022-05-12
-##sequence-region test_tblastn_tabular_25.out_parsed.4col.true.fa.mod.mod
-Ps000015_AT2G02680	RepeatMasker	similarity	612	634	 9.3	+	.	Target "Motif:(AGA)n" 1 23
-Ps000050_AT2G21930	RepeatMasker	similarity	117	154	15.6	+	.	Target "Motif:(ATC)n" 1 37

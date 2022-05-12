@@ -30,7 +30,6 @@ NOTE, IMPORTANT: Left literally means upstream and Right means downstream in
    all cases in this script
 """
 
-
 import sys
 
 inDis = open(sys.argv[1])         #The disable_count format pseudogene input file for filtering       (.fullyFiltered.disable_count.RMfilt)
@@ -42,10 +41,6 @@ outDis = open(sys.argv[6], "w")   #The output high confidence pseudogenes in the
 outFour = open(sys.argv[7], "w")  #The output high confidence pseudogenes in the four column format   (.real4col.RMfilt.hiConf)
 outFasta = open(sys.argv[8], "w") #The output high confidence pseudogenes in the fasta format         (.real4col.mod.fa.RMfilt.hiConf)
 Z = int(sys.argv[9])              #The intron length to be used in the X >= Y + Z calculation          (intron length)
-
-
-
-
 
 class Pseudogene:
     def __init__(self, name, Xleft, Xright, Z, Yleft=0, Yright=0):
@@ -129,10 +124,7 @@ def ForwardOrReverse(start, stop):
     else:
         return "***FR error!!!***"
 
-
-
-
-
+"""
 print()
 print("inDis      :", inDis)
 print("inFour     :", inFour)
@@ -151,6 +143,7 @@ outDis.write("#python %s\n" % (" ".join(sys.argv)))
 outFour.write("#python %s\n" % (" ".join(sys.argv)))
 #writes the users command line prompt on the first line of the output file.
 outFasta.write("#python %s\n" % (" ".join(sys.argv)))
+"""
 
 #1) Go through inFour and extract pseudogene coordinates into a dict with a
 #   tuple of coordinates as the value.
@@ -267,10 +260,6 @@ for line in inFasta:
         if not line.startswith("#"):
             if write == True:
                 outFasta.write(line)
-
-
-
-
 
 inDis.close()
 inFour.close()

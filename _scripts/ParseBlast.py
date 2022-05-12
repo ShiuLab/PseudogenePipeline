@@ -84,6 +84,8 @@
 
 import sys, math, SingleLinkage, FastaManager, FileUtility, string, os
 
+print("here")
+
 class parser:
 
 	def __init__(self, dbtask="", config=""):
@@ -106,8 +108,6 @@ class parser:
 		self.mega_score("%s.out_T1_evalue_c0h0.sym" % fasta)
 		
 		
-
-
 	##
 	# This function checks if subjects are more closely related to members of
 	# a particular family. Comparison is done based on evalue.
@@ -2450,6 +2450,12 @@ class parser:
 		ID_END    = "%"
 		
 		inp = open(blast,"r")
+
+		# check if the format is correct
+		if not inp.readline().startswith("TBLASTN "):
+			print("ERR: anticipated TBLASTN with output format 0.")
+			sys.exit(0)
+
 		oup = open(blast+".mod","w")
 		inl = inp.readline()
 		subj = query = ""
@@ -2486,7 +2492,7 @@ class parser:
 					# make sure all items in olist are strings 
 					olist = [str(item) for item in olist]
 					#print olist     
-					oup.write("%s\n" % (string.joinfields(olist,"\t")))					
+					oup.write("%s\n" % ("\t".join(olist)))					
 				
 				# reset
 				olist = [""]*12
@@ -2562,7 +2568,7 @@ class parser:
 		#print olist
 		# make sure all items in olist are strings and remove trailing spaces
 		olist = [str(item.strip()) for item in olist]
-		oup.write("%s\n" % (string.joinfields(olist,"\t")))
+		oup.write("%s\n" % ("\t".join(olist)))
 		
 		if flag:
 			print("Total %i subject lines. Done!" % countL)
