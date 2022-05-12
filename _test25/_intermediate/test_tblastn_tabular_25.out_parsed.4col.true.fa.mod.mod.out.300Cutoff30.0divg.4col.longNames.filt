@@ -1,0 +1,1 @@
+#python ../_scripts/1_3_removeCodeNamesFromRM4col.py test_tblastn_tabular_25.out_parsed.4col.true.fa.mod.mod.out.300Cutoff30.0divg.4col test_tblastn_tabular_25.out_parsed.4col.true.fa.ref test_tblastn_tabular_25.out_parsed.4col.true.fa.mod.mod.out.300Cutoff30.0divg.4col.longNames RM4col 0

@@ -1,0 +1,27 @@
+14 9.32 0.00 0.00 Ps000015_AT2G02680 612 634 (869) (AGA)n#Simple_repeat 1 23 (0) m_b1s252i1
+
+  Ps000015_AT2G        612 AGAAGAAGTTGAAGAAGAAGAAG 634
+                                   vv             
+  (AGA)n#Simple          1 AGAAGAAGAAGAAGAAGAAGAAG 23
+
+Matrix = Unknown
+Transitions / transversions = 0.00 (0/2)
+Gap_init rate = 0.00 (0 / 22), avg. gap size = 0.0 (0 / 0)
+
+18 15.56 0.00 2.70 Ps000050_AT2G21930 117 154 (854) (ATC)n#Simple_repeat 1 37 (0) m_b1s252i0
+
+  Ps000050_AT2G        117 ATCATCATCATCATCATCATCTTCTGCTTCTTCAATCA 154
+                                                v  vv v  v  -    
+  (ATC)n#Simple          1 ATCATCATCATCATCATCATCATCATCATCATC-ATCA 37
+
+Matrix = Unknown
+Transitions / transversions = 0.00 (0/5)
+Gap_init rate = 0.03 (1 / 37), avg. gap size = 1.00 (1 / 1)
+
+## Total Sequences: 57
+## Total Length: 28350
+## Total NonMask ( excluding >20bp runs of N/X bases ): 28350
+## Total NonSub ( excluding all non ACGT bases ):28350
+RepeatMasker version 4.1.2-p1 , default mode
+run with nhmmscan version 3.2.1 (June 2018)
+RM Library: HMM-Dfam_3.3
