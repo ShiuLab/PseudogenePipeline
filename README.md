@@ -11,24 +11,40 @@ Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline.
 
 ## Requirements 
 
-  * python 3 (https://www.python.org/downloads/)
-  * python scripts in the _pipeline_scripts folder
-  * RepeatMaster (http://www.repeatmasker.org/)
-    * A local installation of RepeatMasker is needed. Note that RepeatMasker has other dependencies.
-  * tfasty (part of the fasta36 package, version 36.0.0 or later; https://github.com/wrpearson/fasta36): 
-    * The GitHub version need to be compiled and installed. Please follow the instruction in the README for fasta36.
+* python 3 (https://www.python.org/downloads/)
+* python scripts in the _pipeline_scripts folder
+* RepeatMaster (http://www.repeatmasker.org/)
+  * A local installation of RepeatMasker is needed. Note that RepeatMasker has other dependencies.
+* tfasty (part of the fasta36 package, version 36.0.0 or later; https://github.com/wrpearson/fasta36): 
+  * The GitHub version need to be compiled and installed. Please follow the instruction in the README for fasta36.
 
 ## Useage
 
-  The pipline is run using:  
-  <pre><code> _wrapper_scripts/CombinedPseudoWrapper.py [parameter_file]</code></pre>
+### Cut-to-the-chase
 
-  An example parameter_file can found in in the _example_files folder
+The pipline is run using:  
+<pre><code>python _scripts/PseudogenePipeline.py [parameter_file]</code></pre>
 
-  Additionally, a test case using chromosome 4 from A. thaliana can be run from
-  the _testcase folder using the following command from within _testcase. You will
-  need to supply the path to your local FASTA install and the name of the tfasty
-  program you are using in test_parameter_file.txt.
+To invoke the help function, run:
+<pre><code>python _scripts/PseudogenePipeline.py</code></pre>
+
+### About the parameter file
+
+This text file specifies how the pipeline should run and an example can found in in the _example_files folder.
+
+
+### Test run
+
+Two test datasets are provided for you to gauge whether there is any issues.
+
+1. `_test25.tgz`: This compressed file contains a test dataset of 25 proteins. Umcompress this file by:
+
+```Python
+tar xvzf _test25.tgz
+```
+
+2. `_test27206.tgz`: 
+Additionally, a test case using chromosome 4 from A. thaliana can be run from the _testcase_ folder using the following command from within \__testcase_. You will need to supply the path to your local FASTA install and the name of the _tfasty_ program you are using in `test_parameter_file.txt`.
   <pre><code> python ../_wrapper_scripts/CombinedPseudoWrapper.py test_parameter_file.txt</code></pre>
 
   The test case takes about 15-30 minutes to run. Expected results of this run
@@ -46,3 +62,18 @@ Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline.
     2. fa.hiConf.RMfilt/fa.hiConf.RMfilt.cdnm - sequence information for pseudogenes
     3. hiConf.RMfilt.cdnm.gff - gff file with pseudogene annotations 
       * NOTE: cdnm versions of the output use simplified pseudogene names.
+
+## Versio info
+
+### v.2.0.0
+
+- Converted to Python 3.
+- Some changes so the codes are PEP8-compliant.
+- Added license.
+
+### v1.0.0
+
+- Implemented in Python 2.
+- Included functionalities for checking parameter and input files.
+- The version for the [Campbell et al. (2014) Plant Physiol](http://www.plantphysiol.org/content/151/1/3).
+- Python 2-based.
