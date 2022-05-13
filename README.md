@@ -12,7 +12,7 @@ Scripts and wrapper file for runing the Shiu Lab's pseduogene pipeline.
 ## Requirements 
 
 * python 3 (https://www.python.org/downloads/)
-* python scripts in the _pipeline_scripts folder
+* python scripts in the `_scripts` folder
 * RepeatMaster (http://www.repeatmasker.org/)
   * A local installation of RepeatMasker is needed. Note that RepeatMasker has other dependencies.
 * tfasty (part of the fasta36 package, version 36.0.0 or later; https://github.com/wrpearson/fasta36): 
