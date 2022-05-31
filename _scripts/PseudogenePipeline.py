@@ -307,7 +307,7 @@ def get_intron_len(P):
             os.system("python %s/GFFUtil.py -f getfeat -gff %s -feat intron -col 2" % (P["p_codes"], P["gff"]))
             intron_file = P["gff"] + "_col2_intron"   
             intron_source = open(intron_file,'r')
-            intron_sizes = [abs(int(L.strip().split("\t")[3]) - int(L.strip().split("\t")[4])) for L in intron_source if not L.startswith("#")] 
+            intron_sizes = [abs(int(L.strip().split("\t")[3]) - int(L.strip().split("\t")[4]))+1 for L in intron_source if not L.startswith("#")] # Add +1 for start inclusive length
         else:
             print("  no intron info in GFF, get intron size from gene/CDS info")
             os.system("python %s/Seq_removeGFFaltSplicing.py %s %s.noAlt" % \
@@ -316,7 +316,7 @@ def get_intron_len(P):
                                             (P["p_codes"], P["gff"], P["gff"]))
             intron_file = P["gff"] + ".introns"
             intron_source = open(intron_file,'r')
-            intron_sizes = [abs(int(line.strip().split("\t")[2]) - int(line.strip().split("\t")[3])) for line in intron_source if not line.startswith("#")]
+            intron_sizes = [abs(int(line.strip().split("\t")[2]) - int(line.strip().split("\t")[3]))+1 for line in intron_source if not line.startswith("#")] # Add +1 for start inclusive length
         intron_sizes.sort() # Sort the intron_sizes list
         il_t = int(math.ceil(percentile(intron_sizes,.95))) 
         os.system("rm %s" % (intron_file)) 
