@@ -208,7 +208,7 @@ for key in quesPseuDict:
     pseuProt = tuple(key.split(";")[2].split(":")[0].split("-")) #pseudogene coords on the protein
     size = protein_size[prot_name]
     Yl = (int(pseuProt[0]) - 1) * 3
-    Yr = (size - int(pseuProt[1]) -1)* 3
+    Yr = (size - int(pseuProt[1]))* 3
     # go through pseuList and add Yleft and Yright to the current pseudogene
     for pseu in pseuList:
         if pseu.name == key:
