@@ -68,6 +68,7 @@ The output of the pipeline is seperated into the following subfolder:
   1. hiConf.RMfilt/hiConf.RMfilt.cdnm - position information for pseudogenes
   2. fa.hiConf.RMfilt/fa.hiConf.RMfilt.cdnm - sequence information for pseudogenes
   3. hiConf.RMfilt.cdnm.gff - gff file with pseudogene annotations 
+  4. pseudogene_evidence_cod - information on the numbers of stop codons, stop condons near gaps, frameshits, framshifts near gaps. Because the gaps can simply be alignments between coding sequence and introns, any predicted stop and frameshift near them are of lower confidence.
 * NOTE: cdnm versions of the output use simplified pseudogene names.
 
 ## Versio info
